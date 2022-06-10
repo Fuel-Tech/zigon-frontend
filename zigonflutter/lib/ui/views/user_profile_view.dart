@@ -7,8 +7,8 @@ import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
-class UserProfile extends StatelessWidget with ProfileWidgets {
-  const UserProfile({Key? key}) : super(key: key);
+class UserProfileView extends StatelessWidget with ProfileWidgets {
+  const UserProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
