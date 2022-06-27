@@ -17,7 +17,7 @@ class AppUtil {
   }
 
   static double screenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.width;
+    return MediaQuery.of(context).size.height;
   }
 
   ///Text Style 1 - Raleway

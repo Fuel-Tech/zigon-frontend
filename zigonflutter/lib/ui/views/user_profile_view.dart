@@ -13,8 +13,8 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
       backgroundColor: const Color(0xff232323),
       body: Column(
         children: [
@@ -151,6 +151,7 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
             ),
           ),
           SizedBox(height: 30),
+          //Slides List
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 12.0, right: 12.0),
@@ -162,20 +163,27 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                     mainAxisSpacing: 5,
                   ),
                   physics: BouncingScrollPhysics(),
-                  itemCount: 12,
+                  itemCount: 7,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage('assets/images/a2.jpg'),
-                        fit: BoxFit.cover,
-                      )),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/a${index + 1}.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Row()
+                        ],
+                      ),
                     );
                   }),
             ),
           ),
         ],
       ),
+      bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
     );
   }
 }

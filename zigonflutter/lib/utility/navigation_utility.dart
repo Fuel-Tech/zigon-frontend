@@ -1,6 +1,6 @@
-mixin PageRouteList {
-  String splash = '/';
-  String slides = '/slides';
-  String userProfile = '/userprofile';
-  String profile = '/profile';
+class PageRouteList {
+  static String splash = '/';
+  static String slides = '/slides';
+  static String userProfile = '/userprofile';
+  static String profile = '/profile';
 }

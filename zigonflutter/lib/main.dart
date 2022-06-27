@@ -13,7 +13,7 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget with PageRouteList {
+class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
@@ -23,11 +23,12 @@ class MyApp extends StatelessWidget with PageRouteList {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      defaultTransition: Transition.rightToLeftWithFade,
       getPages: [
-        GetPage(name: splash, page: () => SplashScreen()),
-        GetPage(name: slides, page: () => SlidesView()),
-        GetPage(name: userProfile, page: () => UserProfileView()),
-        GetPage(name: profile, page: () => ProfileView()),
+        GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
+        GetPage(name: PageRouteList.slides, page: () => SlidesView()),
+        GetPage(name: PageRouteList.userProfile, page: () => UserProfileView()),
+        GetPage(name: PageRouteList.profile, page: () => ProfileView()),
       ],
     );
   }

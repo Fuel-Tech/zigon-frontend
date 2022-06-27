@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zigonflutter">
    <application
-        android:label="zigonflutter"
+        android:label="ZigOn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
