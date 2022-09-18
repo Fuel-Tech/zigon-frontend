@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
-mixin SlidesWidget {
-  watchAllSlidesButton() {
+class SlidesWidget {
+  static watchAllSlidesButton() {
     return GestureDetector(
       onTap: () {},
       child: Text(
@@ -17,7 +16,7 @@ mixin SlidesWidget {
     );
   }
 
-  onTopGradient(BuildContext context) {
+  static onTopGradient(BuildContext context) {
     return Container(
       width: AppUtil.screenWidth(context),
       height: AppUtil.screenHeight(context),
@@ -31,7 +30,7 @@ mixin SlidesWidget {
           ],
           stops: [
             0.1,
-            0.4,
+            0.8,
             0.8,
             0.9,
           ],
@@ -42,7 +41,7 @@ mixin SlidesWidget {
     );
   }
 
-  Widget settingsWidget() {
+  static Widget settingsWidget() {
     return GestureDetector(
       onTap: () {
         //Settings Function
@@ -74,7 +73,7 @@ mixin SlidesWidget {
     );
   }
 
-  watchFollowingSlidesButton() {
+  static watchFollowingSlidesButton() {
     return GestureDetector(
       onTap: () {},
       child: Text(
@@ -87,7 +86,7 @@ mixin SlidesWidget {
     );
   }
 
-  liveButton() {
+  static liveButton() {
     return GestureDetector(
       onTap: () {},
       child: Row(

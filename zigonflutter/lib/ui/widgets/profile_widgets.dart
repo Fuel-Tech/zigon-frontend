@@ -6,8 +6,8 @@ import 'package:zigonflutter/utility/app_utility.dart';
 mixin ProfileWidgets {
   Widget profilePictureWidget(var path) {
     return Container(
-      height: 150,
-      width: 150,
+      height: 120,
+      width: 120,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('$path'),
@@ -33,7 +33,7 @@ mixin ProfileWidgets {
       style: AppUtil.textStyle1(
         textSize: 24,
         weight: FontWeight.w700,
-        textColor: Colors.white,
+        textColor: Colors.black,
       ),
     );
   }
@@ -41,7 +41,8 @@ mixin ProfileWidgets {
   Widget userIDWidget(var userID) {
     return Text(
       '$userID',
-      style: AppUtil.textStyle1(weight: FontWeight.w500),
+      style:
+          AppUtil.textStyle1(weight: FontWeight.w500, textColor: Colors.black),
     );
   }
 
@@ -56,21 +57,21 @@ mixin ProfileWidgets {
             width: 5,
             height: 5,
             decoration: const BoxDecoration(
-                color: Colors.white, shape: BoxShape.circle),
+                color: Colors.black, shape: BoxShape.circle),
           ),
           const SizedBox(height: 1),
           Container(
             width: 5,
             height: 5,
             decoration: const BoxDecoration(
-                color: Colors.white, shape: BoxShape.circle),
+                color: Colors.black, shape: BoxShape.circle),
           ),
           const SizedBox(height: 1),
           Container(
             width: 5,
             height: 5,
             decoration: const BoxDecoration(
-                color: Colors.white, shape: BoxShape.circle),
+                color: Colors.black, shape: BoxShape.circle),
           ),
         ],
       ),

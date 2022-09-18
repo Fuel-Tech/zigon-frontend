@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.zigonflutter">
+    package="com.fuel.zigonflutter">
    <application
         android:label="ZigOn"
         android:name="${applicationName}"

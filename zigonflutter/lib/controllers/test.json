@@ -1,0 +1,43 @@
+{
+  "status": "success",
+  "slideList": [
+    {
+      "slideName": "video6",
+      "slideURL": "https://assets.mixkit.co/videos/preview/mixkit-blogging-girl-down-the-street-with-his-cell-34487-large.mp4",
+      "slideDuration": "0",
+      "slideTags": "tag1, tag2, tag3",
+      "slideDesc": "These are slides added to zigon for testing purposes, delete after done",
+      "slideLikes": 20,
+      "slideComments": { "count": 12, "commentID": 1 },
+      "audioName": "Song 1",
+      "audio": ".mp4",
+      "audioID": 1,
+      "slideViews": 12,
+      "metadata": {
+        "username": "Harry101_",
+        "userID": 1,
+        "isVerified": true,
+        "profilepicture": "https://mixkit.imgix.net/videos/preview/mixkit-couple-walk-around-a-lake-in-nature-41538-0.jpg"
+      }
+    },
+    {
+      "slideName": "video7",
+      "slideURL": "https://assets.mixkit.co/videos/preview/mixkit-photographer-portraying-a-model-in-his-studio-34507-large.mp4",
+      "slideDuration": "0",
+      "slideTags": "tag3, tag2",
+      "slideDesc": "These are slides added to zigon for testing purposes, delete after done",
+      "slideLikes": 12,
+      "slideComments": { "count": 20, "commentID": 1 },
+      "audioName": "Song 1",
+      "audio": ".mp4",
+      "audioID": 1,
+      "slideViews": 12,
+      "metadata": {
+        "username": "Jaachu_",
+        "userID": 1,
+        "isVerified": false,
+        "profilepicture": "https://mixkit.imgix.net/videos/preview/mixkit-profile-of-a-distressed-young-woman-8736-0.jpg"
+      }
+    }
+  ]
+}

@@ -19,42 +19,48 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
       body: Column(
         children: [
           //Profile Header/Banner
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(48),
-              bottomRight: Radius.circular(48),
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .32,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(48),
-                  bottomRight: Radius.circular(48),
-                ),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/probg.jpg'),
-                  fit: BoxFit.cover,
-                ),
+          Container(
+            color: Colors.white,
+          ),
+          SafeArea(
+            
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(48),
+                bottomRight: Radius.circular(48),
               ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 4.0,
-                  sigmaY: 4.0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * .3,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(48),
+                    bottomRight: Radius.circular(48),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/probg.jpg'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 4.0,
+                    sigmaY: 4.0,
+                  ),
+                  child: Container(
+                    color: Colors.white,
+                    width: AppUtil.screenWidth(context),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        profilePictureWidget('assets/images/prodp.jpg'),
+                        profilePictureWidget('assets/images/prodp2.jpeg'),
                         SizedBox(width: 10),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            userNameWidget('Shawn\nMendez'),
-                            userIDWidget('@sh_Men'),
+                            userNameWidget('Sreehari\nRajeev'),
+                            userIDWidget('@Harry101_'),
                             SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,11 +69,11 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                                 SizedBox(width: 16),
                                 youtubeWidget(),
                                 SizedBox(width: 20),
-                                settingsWidget()
+                                // settingsWidget()
                               ],
                             ),
                             SizedBox(height: 10),
-                            editProfileButton(),
+                            // editProfileButton(),
                           ],
                         )
                       ],
@@ -91,7 +97,7 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '12.5',
+                        '2',
                         style: AppUtil.textStyle2(
                             textSize: 16, weight: FontWeight.w500),
                       ),
@@ -112,7 +118,7 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '100',
+                        '1',
                         style: AppUtil.textStyle2(
                             textSize: 16, weight: FontWeight.w500),
                       ),
@@ -133,7 +139,7 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '25.2k',
+                        '1',
                         style: AppUtil.textStyle2(
                             textSize: 16, weight: FontWeight.w500),
                       ),
@@ -163,12 +169,12 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                     mainAxisSpacing: 5,
                   ),
                   physics: BouncingScrollPhysics(),
-                  itemCount: 7,
+                  itemCount: 16,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/a${index + 1}.jpg'),
+                          image: AssetImage('assets/images/ac1.JPG'),
                           fit: BoxFit.cover,
                         ),
                       ),

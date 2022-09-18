@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "811560687861",
+    "project_id": "zigonflutter",
+    "storage_bucket": "zigonflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811560687861:android:b7ee061c1a149411738dbc",
+        "android_client_info": {
+          "package_name": "com.fuel.zigonflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811560687861-7897ldkoarn9ejloieojfh0qhvi74dbf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm8C-sWpJp-0GxhzpTtSIzae7D2C3tQ_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811560687861-7897ldkoarn9ejloieojfh0qhvi74dbf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

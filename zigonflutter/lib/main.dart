@@ -2,14 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/controllers/cameratestpage.dart';
+import 'package:zigonflutter/controllers/slidetestpage.dart';
 
 import 'ui/views/profile_view.dart';
-import 'ui/views/slides_view.dart';
 import 'ui/views/splash_view.dart';
 import 'ui/views/user_profile_view.dart';
 import 'utility/navigation_utility.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.lazyPut(() => AppController(), fenix: true);
   runApp(MyApp());
 }
 
@@ -18,19 +22,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      defaultTransition: Transition.rightToLeftWithFade,
-      getPages: [
-        GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
-        GetPage(name: PageRouteList.slides, page: () => SlidesView()),
-        GetPage(name: PageRouteList.userProfile, page: () => UserProfileView()),
-        GetPage(name: PageRouteList.profile, page: () => ProfileView()),
-      ],
-    );
+    return GetBuilder<AppController>(builder: (_) {
+      return GetMaterialApp(
+        title: 'Flutter Demo',
+        themeMode: ThemeMode.dark,
+        darkTheme: ThemeData.dark(),
+        // defaultTransition: Transition.rightToLeftWithFade,
+        getPages: [
+          GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
+          GetPage(name: PageRouteList.slides, page: () => TestPage()),
+          GetPage(
+              name: PageRouteList.userProfile, page: () => UserProfileView()),
+          GetPage(name: PageRouteList.profile, page: () => ProfileView()),
+        ],
+      );
+    });
   }
 }
 
