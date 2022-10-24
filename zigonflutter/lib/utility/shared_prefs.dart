@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefHandler {
   static const String USERTOKEN = "USERTOKEN";
+  static const String USERID = "USERID";
+  
 
   static setString(String value, String key) async {
     final prefs = await SharedPreferences.getInstance();

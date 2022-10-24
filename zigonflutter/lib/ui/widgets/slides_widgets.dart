@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
+import '../../utility/button_handler.dart';
+
 class SlidesWidget {
-  static watchAllSlidesButton() {
+  static watchAllSlidesButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        ButtonHandler.onTapHandler(
+            buttonTypes: ButtonTypes.slidesList, context: context);
+      },
       child: Text(
         'Slides',
         style: AppUtil.textStyle1(
@@ -41,10 +46,14 @@ class SlidesWidget {
     );
   }
 
-  static Widget settingsWidget() {
+  static Widget settingsWidget(BuildContext context) {
     return GestureDetector(
       onTap: () {
         //Settings Function
+        ButtonHandler.onTapHandler(
+            buttonTypes: ButtonTypes.setting,
+            subButtonType: SubButtonType.openDialog,
+            context: context);
       },
       child: Column(
         children: [
@@ -73,9 +82,12 @@ class SlidesWidget {
     );
   }
 
-  static watchFollowingSlidesButton() {
+  static watchFollowingSlidesButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        ButtonHandler.onTapHandler(
+            buttonTypes: ButtonTypes.followingSlidesList, context: context);
+      },
       child: Text(
         'Following',
         style: AppUtil.textStyle1(

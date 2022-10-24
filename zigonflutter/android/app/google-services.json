@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "811560687861-osnp6rukml7jfvldptk5c8j549vtk1m5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "5ed87c9078ec7a6c766520c2ad7e265af347372b"
+          }
+        },
+        {
           "client_id": "811560687861-7897ldkoarn9ejloieojfh0qhvi74dbf.apps.googleusercontent.com",
           "client_type": 3
         }

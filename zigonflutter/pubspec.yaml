@@ -47,6 +47,8 @@ dependencies:
   card_swiper: 2.0.4
   camera:
   flutter_icons: ^1.1.0
+  share_plus: ^4.2.0
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:

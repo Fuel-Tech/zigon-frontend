@@ -1,15 +1,15 @@
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-class CameraPage extends StatefulWidget {
+class CameraView extends StatefulWidget {
+  const CameraView({Key? key}) : super(key: key);
+
   @override
-  _CameraPageState createState() => _CameraPageState();
+  _CameraViewState createState() => _CameraViewState();
 }
 
-class _CameraPageState extends State<CameraPage> {
+class _CameraViewState extends State<CameraView> {
   late List<CameraDescription> _cameras;
   late CameraController _controller;
   bool _isReady = false;

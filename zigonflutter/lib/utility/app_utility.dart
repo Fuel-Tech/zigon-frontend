@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 class AppUtil {
   static Color primary = const Color(0xff232323);
-  static Color secondary = const Color(0xffECCE00);
+  static Color secondary = const Color(0xffC8AE01);
   static Gradient buttonGradient = const LinearGradient(
       colors: [Color(0xFFFFDE00), Color(0xFF645701)], stops: [0.1, 0.9]);
   static Color recievedMsgColor = const Color(0xFFFFFFFF);
@@ -19,6 +19,12 @@ class AppUtil {
   static double screenHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
+
+  static String API_KEY = '156c4675-9608-4591-1111-00000';
+  static String APP_VERSION = '1';
+  static String DEVICE = 'TEST01EMU';
+  static String IP = '127.0.0.1';
+  static String DEVICE_TOKEN = 'TEST';
 
   ///Text Style 1 - Raleway
   static TextStyle textStyle1(

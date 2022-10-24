@@ -1,401 +1,387 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:developer';
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
-import 'package:zigonflutter/ui/widgets/slides_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
+import 'package:zigonflutter/utility/button_handler.dart';
 
-class SlidesView extends StatelessWidget {
-  SlidesView({Key? key}) : super(key: key);
-  final SlidesController slidesController = Get.put(SlidesController());
+import '../widgets/slides_widgets.dart';
+
+class SlidesPage extends StatelessWidget {
+  SlidesPage({Key? key}) : super(key: key);
+  final SlidesController slidesController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SlidesController>(
-        init: SlidesController(),
-        builder: (controller) {
-          return Scaffold(
-            backgroundColor: AppUtil.primary,
-            body: Center(
-                child: slidesController.chewieController != null &&
-                        controller.chewieController!.videoPlayerController.value
-                            .isInitialized
-                    ? ListWheelScrollView(
-                        onSelectedItemChanged: (value) {
-                          log('scrolled $value');
-                        },
-                        physics: FixedExtentScrollPhysics(),
-                        overAndUnderCenterOpacity: 0,
-                        itemExtent: MediaQuery.of(context).size.height,
-                        children: List.generate(
-                            1,
-                            (i) => Stack(
-                                  children: [
-                                    Chewie(
-                                        controller:
-                                            slidesController.chewieController!)
-                                  ],
-                                )))
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [CircularProgressIndicator()],
-                      )),
-
-            // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-            // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
-            bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
-            extendBody: true,
-          );
-        });
-  }
-}
-
-videoScrollViewWidget(BuildContext context) {
-  final SlidesController controller = Get.find();
-  return ListWheelScrollView(
-    physics: FixedExtentScrollPhysics(),
-    overAndUnderCenterOpacity: 0,
-    itemExtent: AppUtil.screenHeight(context),
-    children: [],
-  );
-}
-
-scrollViewTest(BuildContext context) {
-  final SlidesController slidesController = Get.find();
-  return ListWheelScrollView(
-    physics: FixedExtentScrollPhysics(),
-    overAndUnderCenterOpacity: 0,
-    itemExtent: MediaQuery.of(context).size.height,
-    children: List.generate(
-        1,
-        (i) => Stack(
-              children: [
-                SizedBox(
-                  width: AppUtil.screenWidth(context),
-                  height: AppUtil.screenHeight(context),
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //       image: AssetImage('assets/images/${data[i]}.jpg'),
-                  //       filterQuality: FilterQuality.low,
-                  //       fit: BoxFit.fitHeight),
-                  // ),
-                  child: VideoPlayer(slidesController.videoPlayerController),
-                ),
-                SlidesWidget.onTopGradient(context),
-                //----------------
-                //Top Tools
-                SafeArea(
-                  child: SizedBox(
-                    width: AppUtil.screenWidth(context),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+    return Scaffold(
+        backgroundColor: AppUtil.primary,
+        bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
+        extendBody: true,
+        body: GestureDetector(
+          onDoubleTap: () {
+            log('Double Tap');
+            ButtonHandler.onTapHandler(
+                buttonTypes: ButtonTypes.like, context: context);
+          },
+          child: Swiper(
+            axisDirection: AxisDirection.down,
+            onIndexChanged: (value) {
+              log("$value  --  Changed Index");
+              slidesController.getLikeCountForVideoByIndex(value);
+              if (value == slidesController.slideList!.slideList.length - 1) {
+                log('Load Next Videos');
+              }
+            },
+            physics: const BouncingScrollPhysics(),
+            loop: false,
+            scrollDirection: Axis.vertical,
+            itemCount: slidesController.slideList!.slideList.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                children: [
+                  VideoWidget(
+                    play: true,
+                    videoUrl: slidesController.slideList!.slideList
+                        .elementAt(index)
+                        .slideURL,
+                  ),
+                  SlidesWidget.onTopGradient(context),
+                  //----------------
+                  //Top Tools
+                  SafeArea(
+                    child: SizedBox(
+                      width: AppUtil.screenWidth(context),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SlidesWidget.watchAllSlidesButton(context),
+                                const SizedBox(width: 10),
+                                SlidesWidget.watchFollowingSlidesButton(
+                                    context),
+                              ],
+                            ),
+                            // SlidesWidget.liveButton(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  //----------------
+                  //Right Tools
+                  SafeArea(
+                    child: Align(
+                      alignment: FractionalOffset.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                          height: 250,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SlidesWidget.watchAllSlidesButton(),
-                              const SizedBox(width: 10),
-                              SlidesWidget.watchFollowingSlidesButton(),
+                              GestureDetector(
+                                onTap: () {
+                                  log('Like Button');
+                                  ButtonHandler.onTapHandler(
+                                      buttonTypes: ButtonTypes.like,
+                                      context: context);
+                                },
+                                child: GetBuilder<SlidesController>(
+                                    builder: (controller) {
+                                  return Column(
+                                    children: [
+                                      slidesController.isLiked
+                                          ? const Icon(Icons.favorite,
+                                              color: Colors.red, size: 35)
+                                          : const Icon(
+                                              Icons.favorite_border_outlined,
+                                              color: Colors.white,
+                                              size: 35),
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        '${slidesController.likeCountForCurrentVideo} ',
+                                        style: AppUtil.textStyle2(
+                                          textSize: 14,
+                                          weight: FontWeight.w400,
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                }),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  log('Comment List');
+                                  ButtonHandler.onTapHandler(
+                                      context: context,
+                                      buttonTypes: ButtonTypes.comment,
+                                      subButtonType: SubButtonType.openDialog);
+                                },
+                                child: Column(
+                                  children: [
+                                    const Icon(Icons.mode_comment_outlined,
+                                        color: Colors.white, size: 35),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      '${slidesController.slideList!.slideList[index].slideComments.count}',
+                                      style: AppUtil.textStyle2(
+                                          textSize: 14,
+                                          weight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  log('Share');
+                                  List shareData = [
+                                    slidesController
+                                        .slideList!.slideList[index].slideURL
+                                  ];
+                                  ButtonHandler.onTapHandler(
+                                      buttonTypes: ButtonTypes.share,
+                                      value: shareData,
+                                      context: context);
+                                },
+                                child: Column(
+                                  children: [
+                                    const Icon(Icons.share_outlined,
+                                        color: Colors.white, size: 35),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      'Share',
+                                      style: AppUtil.textStyle1(
+                                          textSize: 14,
+                                          weight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SlidesWidget.settingsWidget(context),
                             ],
                           ),
-                          SlidesWidget.liveButton(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //----------------
+                  //Bottom Tools
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 55,
+                        bottom: 20,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // const SizedBox(height: 5),
+                          //Name, tag, views, options
+                          GestureDetector(
+                            onTap: () {
+                              ButtonHandler.onTapHandler(
+                                  buttonTypes: ButtonTypes.profile,
+                                  context: context);
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                //Profile picture
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: NetworkImage(
+                                      '${slidesController.slideList!.slideList[index].metadata.profilepicture}'),
+                                ),
+                                Text(
+                                  '${slidesController.slideList!.slideList[index].metadata.username}',
+                                  style: AppUtil.textStyle1(
+                                      weight: FontWeight.w600),
+                                ),
+                                const SizedBox(width: 25),
+                                const Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.grey,
+                                  size: 16,
+                                ),
+                                Text(
+                                  '${slidesController.slideList!.slideList[index].slideViews}',
+                                  style: AppUtil.textStyle2(textSize: 12),
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          //Video Description
+                          FittedBox(
+                            child: SizedBox(
+                              width: AppUtil.screenWidth(context) / 1.5,
+                              child: Text(
+                                '${slidesController.slideList!.slideList[index].slideDesc}',
+                                style: AppUtil.textStyle2(
+                                  textSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const CircleAvatar(
+                                radius: 10,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/disc.png'),
+                              ),
+                              const SizedBox(width: 5),
+                              FittedBox(
+                                child: SizedBox(
+                                  width: AppUtil.screenWidth(context) / 1.5,
+                                  child: Text(
+                                    '${slidesController.slideList!.slideList[index].audioName}',
+                                    style: AppUtil.textStyle2(
+                                      textSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                //----------------
-                //Right Tools
-                SafeArea(
-                  child: Align(
-                    alignment: FractionalOffset.bottomRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: SizedBox(
-                        height: 250,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Icon(Icons.favorite,
-                                    color: Colors.red, size: 35),
-                                SizedBox(height: 3),
-                                Text('',
-                                    style: AppUtil.textStyle2(
-                                        textSize: 14, weight: FontWeight.w400))
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Icon(Icons.comment,
-                                    color: Colors.white, size: 35),
-                                SizedBox(height: 3),
-                                Text(
-                                  '',
-                                  style: AppUtil.textStyle2(
-                                      textSize: 14, weight: FontWeight.w400),
-                                )
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                log('message');
-                              },
-                              child: Column(
-                                children: [
-                                  Icon(Icons.share,
-                                      color: Colors.white, size: 35),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    'Share',
-                                    style: AppUtil.textStyle1(
-                                        textSize: 14, weight: FontWeight.w400),
-                                  )
-                                ],
-                              ),
-                            ),
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage:
-                                  AssetImage('assets/images/disc.png'),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                //----------------
-                //Bottom Tools
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      right: 55,
-                      bottom: 10,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //Profile picture
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              AssetImage('assets/images/prodp2.jpeg'),
-                        ),
-                        SizedBox(height: 5),
-                        //Name, tag, views, options
-                        Row(
-                          children: [
-                            Text(
-                              '@Harry101_',
-                              style:
-                                  AppUtil.textStyle1(weight: FontWeight.w600),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                            Text(
-                              '16',
-                              style: AppUtil.textStyle2(textSize: 12),
-                            ),
-                            SizedBox(width: 10),
-                            SlidesWidget.settingsWidget(),
-                          ],
-                        ),
-                        //Video Description
-                        Text(
-                          'Making a slide is so much more than just danicing. Learning the moves, picking the right audio and putting it all together with the best outfits really makes your contant uniquely yours.',
-                          style: AppUtil.textStyle2(
-                            textSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            )),
-  );
+                ],
+              );
+            },
+          ),
+        ));
+  }
 }
 
-List data = ['a1', 'a2', 'a3', 'a4', 'a5'];
+// class TestPage extends StatefulWidget {
+//   TestPage({Key? key}) : super(key: key);
 
-// Stack(
-//             children: [
-//               SizedBox(
-//                 height: MediaQuery.of(context).size.height,
-//                 // child: VideoPlayer(slidesController.controller),
-//                 child: Image.asset(
-//                   "assets/images/a1.jpg",
-//                   fit: BoxFit.fitHeight,
-//                 ),
-//               ),
-//               onTopGradient(context),
-              // //Top Tools
-              // SafeArea(
-              //   child: SizedBox(
-              //     width: AppUtil.screenWidth(context),
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           Row(
-              //             children: [
-              //               watchAllSlidesButton(),
-              //               const SizedBox(width: 10),
-              //               watchFollowingSlidesButton(),
-              //             ],
-              //           ),
-              //           liveButton(),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // //Right Tools
-              // SafeArea(
-              //   child: Align(
-              //     alignment: FractionalOffset.bottomRight,
-              //     child: Padding(
-              //       padding: EdgeInsets.all(8),
-              //       child: SizedBox(
-              //         height: 250,
-              //         child: Column(
-              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //           children: [
-              //             Column(
-              //               children: [
-              //                 Icon(Icons.favorite, color: Colors.red, size: 35),
-              //                 SizedBox(height: 3),
-              //                 Text('',
-              //                     style: AppUtil.textStyle2(
-              //                         textSize: 14, weight: FontWeight.w400))
-              //               ],
-              //             ),
-              //             Column(
-              //               children: [
-              //                 Icon(Icons.comment,
-              //                     color: Colors.white, size: 35),
-              //                 SizedBox(height: 3),
-              //                 Text(
-              //                   '',
-              //                   style: AppUtil.textStyle2(
-              //                       textSize: 14, weight: FontWeight.w400),
-              //                 )
-              //               ],
-              //             ),
-              //             GestureDetector(
-              //               onTap: () {
-              //                 log('message');
-              //               },
-              //               child: Column(
-              //                 children: [
-              //                   Icon(Icons.share,
-              //                       color: Colors.white, size: 35),
-              //                   SizedBox(height: 3),
-              //                   Text(
-              //                     'Share',
-              //                     style: AppUtil.textStyle1(
-              //                         textSize: 14, weight: FontWeight.w400),
-              //                   )
-              //                 ],
-              //               ),
-              //             ),
-              //             CircleAvatar(
-              //               radius: 25,
-              //               backgroundColor: Colors.transparent,
-              //               backgroundImage:
-              //                   AssetImage('assets/images/disc.png'),
-              //             )
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-//               //User Details Widgets
-//               //Bottom Tools
-          //     SafeArea(
-          //       child: Padding(
-          //         padding: const EdgeInsets.only(
-          //           left: 10,
-          //           right: 55,
-          //           bottom: 10,
-          //         ),
-          //         child: Column(
-          //           mainAxisAlignment: MainAxisAlignment.end,
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             //Profile picture
-          //             CircleAvatar(
-          //               radius: 30,
-          //               backgroundImage:
-          //                   AssetImage('assets/images/prodp2.jpeg'),
-          //             ),
-          //             SizedBox(height: 5),
-          //             //Name, tag, views, options
-          //             Row(
-          //               children: [
-          //                 Text(
-          //                   '@Harry101_',
-          //                   style: AppUtil.textStyle1(weight: FontWeight.w600),
-          //                 ),
-          //                 SizedBox(width: 10),
-          //                 Icon(
-          //                   Icons.remove_red_eye,
-          //                   color: Colors.grey,
-          //                   size: 16,
-          //                 ),
-          //                 Text(
-          //                   '16',
-          //                   style: AppUtil.textStyle2(textSize: 12),
-          //                 ),
-          //                 SizedBox(width: 10),
-          //                 settingsWidget(),
-          //               ],
-          //             ),
-          //             //Video Description
-          //             Text(
-          //               'Making a slide is so much more than just danicing. Learning the moves, picking the right audio and putting it all together with the best outfits really makes your contant uniquely yours.',
-          //               style: AppUtil.textStyle2(
-          //                 textSize: 12,
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+//   @override
+//   State<TestPage> createState() => _TestPageState();
+// }
 
+// class _TestPageState extends State<TestPage> {
+//   @override
+//   Widget build(BuildContext context) {
 
+//   }
+// }
 
-///Gesture Detector Function
-        // onTap: () {
-          //   log('s');
-          //   // slidesController.togglePlay();
-          //   slidesController1.testfn();
-          // },
-          // onVerticalDragEnd: (value) {
-          //   slidesController1.dragDownHandler();
-          // },
-          // onPanUpdate: (details) {
-          //   if (details.delta.dy > 0)
-          //     slidesController1.dragDownHandler();
-          //   else
-          //     slidesController1.dragUphandeler();
-          // },
+class VideoWidget extends StatefulWidget {
+  const VideoWidget({Key? key, required this.videoUrl, required this.play})
+      : super(key: key);
+  final String videoUrl;
+  final bool play;
+  @override
+  State<VideoWidget> createState() => _VideoWidgetState();
+}
+
+class _VideoWidgetState extends State<VideoWidget> {
+  VideoPlayerController? videoPlayerController;
+  late Future<void> _initializeVideoPlayerFuture;
+  final SlidesController playerController = Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+
+    _initializeVideoPlayerFuture =
+        videoPlayerController!.initialize().then((value) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    videoPlayerController!.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    log('${widget.videoUrl}');
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Chewie(
+            controller: ChewieController(
+                videoPlayerController: videoPlayerController!,
+                autoInitialize: true,
+                looping: true,
+                aspectRatio: 10 / 20, // Full screen ratio.
+                autoPlay: true,
+                showControls: false,
+                errorBuilder: (context, errorMessage) {
+                  return Center(
+                    child: Text(errorMessage),
+                  );
+                }),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}
+
+class VideoPlayer extends StatelessWidget {
+  VideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
+  final PlayerController slidesPlayerController = Get.put(PlayerController());
+  final String videoUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<PlayerController>(builder: (controller) {
+      return FutureBuilder(
+        future: slidesPlayerController.initializeVideoPlayerFuture(videoUrl),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Chewie(
+              controller: ChewieController(
+                  videoPlayerController:
+                      slidesPlayerController.slidesPlayerController!,
+                  autoInitialize: true,
+                  looping: true,
+                  aspectRatio: 10 / 20,
+                  autoPlay: true,
+                  showControls: false,
+                  errorBuilder: (context, errorMessage) {
+                    return Center(
+                      child: Text(errorMessage),
+                    );
+                  }),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.amber,
+              ),
+            );
+          }
+        },
+      );
+    });
+  }
+}

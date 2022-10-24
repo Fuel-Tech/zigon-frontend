@@ -1,0 +1,44 @@
+{
+  "value": [
+    {
+      "name": "shirt1",
+      "itemGrp": "men",
+      "itemSubGrp": "shirt"
+    },
+    {
+      "name": "skirt1",
+      "itemGrp": "women",
+      "itemSubGrp": "skirt"
+    },
+    {
+      "name": "shirt2",
+      "itemGrp": "men",
+      "itemSubGrp": "shirt"
+    },
+    {
+      "name": "pants1",
+      "itemGrp": "men",
+      "itemSubGrp": "pants"
+    },
+    {
+      "name": "shirt1",
+      "itemGrp": "kids",
+      "itemSubGrp": "shirt"
+    },
+    {
+      "name": "shirt2",
+      "itemGrp": "women",
+      "itemSubGrp": "skirt"
+    },
+    {
+      "name": "scarf1",
+      "itemGrp": "women",
+      "itemSubGrp": "scarf"
+    },
+    {
+      "name": "shorts1",
+      "itemGrp": "kids",
+      "itemSubGrp": "shorts"
+    }
+  ]
+}

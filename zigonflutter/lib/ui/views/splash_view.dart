@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 
-import '../../utility/navigation_utility.dart';
 // import 'package:zigonflutter/controllers/spalsh_controller.dart';
 
 class SplashScreen extends StatelessWidget {

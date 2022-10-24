@@ -6,13 +6,10 @@ import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/button_handler.dart';
-import 'package:zigonflutter/utility/navigation_utility.dart';
-
-import '../../controllers/app_controller.dart';
 
 class CommonWidgets {
   static Widget bottomFloatingBar(BuildContext context) {
-    final AppController appController = Get.put(AppController());
+    final SlidesController appController = Get.put(SlidesController());
     return Padding(
       padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
       child: ClipRRect(
@@ -22,7 +19,7 @@ class CommonWidgets {
             sigmaX: 4.0,
             sigmaY: 4.0,
           ),
-          child: GetBuilder<AppController>(builder: (controller) {
+          child: GetBuilder<SlidesController>(builder: (controller) {
             return Container(
               width: AppUtil.screenWidth(context) - 20,
               height: 50,
@@ -36,8 +33,8 @@ class CommonWidgets {
                   //Slide Icon
                   GestureDetector(
                     onTap: () {
-                      appController.navBarHandler(NavBarSelectionItem.slide);
-                      Get.toNamed(PageRouteList.slides);
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.slide, context: context);
                     },
                     child: FaIcon(
                       FontAwesomeIcons.film,
@@ -53,7 +50,8 @@ class CommonWidgets {
                   GestureDetector(
                     onTap: () {
                       //Goto Discover Page
-                      appController.navBarHandler(NavBarSelectionItem.discover);
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.discover, context: context);
                     },
                     child: FaIcon(
                       FontAwesomeIcons.earthAsia,
@@ -69,6 +67,8 @@ class CommonWidgets {
                   GestureDetector(
                     onTap: () {
                       //Add Slides Function
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.camera, context: context);
                     },
                     child: Container(
                       height: 50,
@@ -90,8 +90,9 @@ class CommonWidgets {
                   GestureDetector(
                     onTap: () {
                       //Goto Notification Page
-                      appController
-                          .navBarHandler(NavBarSelectionItem.notification);
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.notification,
+                          context: context);
                     },
                     child: FaIcon(
                       FontAwesomeIcons.bell,
@@ -106,8 +107,9 @@ class CommonWidgets {
                   //Profile Icon
                   GestureDetector(
                     onTap: () {
-                      appController.navBarHandler(NavBarSelectionItem.profile);
-                      Get.toNamed(PageRouteList.userProfile);
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.userprofile,
+                          context: context);
                     },
                     child: FaIcon(
                       FontAwesomeIcons.user,
@@ -127,8 +129,8 @@ class CommonWidgets {
     );
   }
 
-  static showDialogBox(BuildContext context, var values,
-      {ButtonTypes? buttonTypes, SubButtonType? subButtonType}) {
+  static showDialogBox(BuildContext context,
+      {ButtonTypes? buttonTypes, var values, SubButtonType? subButtonType}) {
     final SlidesController slidesController = Get.find();
     showDialog(
       context: context,
@@ -164,35 +166,26 @@ class CommonWidgets {
       decoration: BoxDecoration(
         color: AppUtil.primary,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
         ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(
-                  Icons.arrow_back_outlined,
-                  size: 32,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Comments',
+                style: AppUtil.textStyle1(
+                  weight: FontWeight.w500,
+                  textSize: 20,
                 ),
-                Text(
-                  'Comments',
-                  style: AppUtil.textStyle1(
-                    weight: FontWeight.w400,
-                    textSize: 26,
-                  ),
-                ),
-                const Icon(
-                  Icons.send,
-                  size: 32,
-                )
-              ],
+              ),
             ),
-            const SizedBox(height: 10),
+            Divider(),
+            const SizedBox(height: 20),
             slidesController.commentList == null
                 ? const CircularProgressIndicator()
                 : Expanded(

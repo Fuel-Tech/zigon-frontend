@@ -1,79 +1,91 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:ui';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
 class UserProfileView extends StatelessWidget with ProfileWidgets {
-  const UserProfileView({Key? key}) : super(key: key);
-
+  UserProfileView({Key? key}) : super(key: key);
+  final SlidesController slidesController = Get.put(SlidesController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
       backgroundColor: const Color(0xff232323),
-      body: Column(
-        children: [
-          //Profile Header/Banner
-          Container(
-            color: Colors.white,
-          ),
-          SafeArea(
-            
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(48),
-                bottomRight: Radius.circular(48),
-              ),
+      body: GetBuilder<SlidesController>(builder: (controller) {
+        return Column(
+          children: [
+            //Profile Header
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .3,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(48),
-                    bottomRight: Radius.circular(48),
+                  color: AppUtil.secondary,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment(0.8, 1),
+                    colors: <Color>[
+                      Color(0xffFF4E50),
+                      AppUtil.secondary,
+                    ], // Gradient from https://learnui.design/tools/gradient-generator.html
+                    tileMode: TileMode.mirror,
                   ),
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/probg.jpg'),
-                    fit: BoxFit.cover,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(40),
                   ),
                 ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 4.0,
-                    sigmaY: 4.0,
-                  ),
-                  child: Container(
-                    color: Colors.white,
-                    width: AppUtil.screenWidth(context),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        profilePictureWidget('assets/images/prodp2.jpeg'),
-                        SizedBox(width: 10),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            userNameWidget('Sreehari\nRajeev'),
-                            userIDWidget('@Harry101_'),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            CircleAvatar(
+                              radius: 50,
+                            ),
+                            SizedBox(width: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                instagramWidget(),
-                                SizedBox(width: 16),
-                                youtubeWidget(),
-                                SizedBox(width: 20),
-                                // settingsWidget()
+                                Text(
+                                  'FirstName\nLastName',
+                                  style: GoogleFonts.raleway(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  'UserID',
+                                  style: GoogleFonts.raleway(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+
                               ],
                             ),
-                            SizedBox(height: 10),
-                            // editProfileButton(),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(FlutterIcons.facebook_box_mco),
+                            SizedBox(height: 5),
+                            Icon(FlutterIcons.instagram_ant),
+                            SizedBox(height: 5),
+                            Transform.rotate(
+                              angle: pi / 2,
+                              child: Icon(Icons.more_vert_rounded),
+                            ),
                           ],
                         )
                       ],
@@ -82,114 +94,131 @@ class UserProfileView extends StatelessWidget with ProfileWidgets {
                 ),
               ),
             ),
-          ),
-          SizedBox(height: 30),
-          //Profile Stats
-          Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
-            child: SizedBox(
-              width: AppUtil.screenWidth(context),
-              height: 50,
+            //User Stats
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: SizedBox(
+                width: AppUtil.screenWidth(context),
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    userProfileStatsWidget('2', 'Followers'),
+                    VerticalDivider(
+                      color: AppUtil.secondary,
+                      thickness: 2,
+                    ),
+                    userProfileStatsWidget('1', 'Posts'),
+                    VerticalDivider(
+                      color: AppUtil.secondary,
+                      thickness: 2,
+                    ),
+                    userProfileStatsWidget('1', 'Likes'),
+                  ],
+                ),
+              ),
+            ),
+            //List Nav Bar
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '2',
-                        style: AppUtil.textStyle2(
-                            textSize: 16, weight: FontWeight.w500),
-                      ),
-                      Text(
-                        'Followers',
-                        style: AppUtil.textStyle1(
-                            textSize: 14,
-                            weight: FontWeight.w500,
-                            textColor: AppUtil.lightTextColor),
-                      ),
-                    ],
+                  userProfileNavBar(
+                    slidesController,
+                    'Slides',
+                    UserProfileIsSelected.slides,
                   ),
-                  VerticalDivider(
-                    color: AppUtil.secondary,
-                    thickness: 2,
+                  userProfileNavBar(
+                    slidesController,
+                    'Liked',
+                    UserProfileIsSelected.liked,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '1',
-                        style: AppUtil.textStyle2(
-                            textSize: 16, weight: FontWeight.w500),
-                      ),
-                      Text(
-                        'Posts',
-                        style: AppUtil.textStyle1(
-                            textSize: 14,
-                            weight: FontWeight.w500,
-                            textColor: AppUtil.lightTextColor),
-                      ),
-                    ],
+                  userProfileNavBar(
+                    slidesController,
+                    'Saved',
+                    UserProfileIsSelected.saved,
                   ),
-                  VerticalDivider(
-                    color: AppUtil.secondary,
-                    thickness: 2,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '1',
-                        style: AppUtil.textStyle2(
-                            textSize: 16, weight: FontWeight.w500),
-                      ),
-                      Text(
-                        'Likes',
-                        style: AppUtil.textStyle1(
-                            textSize: 14,
-                            weight: FontWeight.w500,
-                            textColor: AppUtil.lightTextColor),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
-          ),
-          SizedBox(height: 30),
-          //Slides List
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-              child: GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                  ),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: 16,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/ac1.JPG'),
-                          fit: BoxFit.cover,
+            //Slides List
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 16,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/ac1.JPG'),
+                              fit: BoxFit.cover),
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Row()
-                        ],
-                      ),
-                    );
-                  }),
+                        child: Column(
+                          children: [Row()],
+                        ),
+                      );
+                    }),
+              ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
+          ],
+        );
+      }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
     );
   }
+}
+
+userProfileNavBar(
+    SlidesController controller, String title, UserProfileIsSelected value) {
+  return GestureDetector(
+    onTap: () {
+      controller.userProfileSelector(value);
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: controller.userProfileIsSelected == value
+            ? AppUtil.secondary
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
+      child: Text(
+        title,
+        style: GoogleFonts.openSans(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+  );
+}
+
+userProfileStatsWidget(String value, String title) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        value,
+        style: AppUtil.textStyle2(textSize: 16, weight: FontWeight.w500),
+      ),
+      Text(
+        title,
+        style: AppUtil.textStyle1(
+            textSize: 14,
+            weight: FontWeight.w500,
+            textColor: AppUtil.lightTextColor),
+      ),
+    ],
+  );
 }
