@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/button_handler.dart';
@@ -11,7 +12,7 @@ class CommonWidgets {
   static Widget bottomFloatingBar(BuildContext context) {
     final SlidesController appController = Get.put(SlidesController());
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+      padding: const EdgeInsets.only(left: 8, right: 8),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(40),
         child: BackdropFilter(
@@ -22,9 +23,9 @@ class CommonWidgets {
           child: GetBuilder<SlidesController>(builder: (controller) {
             return Container(
               width: AppUtil.screenWidth(context) - 20,
-              height: 50,
+              height: 60,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(40),
               ),
               child: Row(
@@ -114,7 +115,7 @@ class CommonWidgets {
                     child: FaIcon(
                       FontAwesomeIcons.user,
                       color: appController.selectedNavBarItem ==
-                              NavBarSelectionItem.profile
+                              NavBarSelectionItem.userprofile
                           ? Colors.white
                           : Colors.grey,
                       size: 20,
@@ -275,6 +276,28 @@ class CommonWidgets {
           ],
         ),
       ),
+    );
+  }
+
+  static AppBar customAppBar({
+    required String title,
+    Color appbarColor = AppUtil.primary,
+    List<Widget>? action,
+  }) {
+    return AppBar(
+      title: Text(
+        title,
+        style: GoogleFonts.raleway(
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
+      elevation: 0,
+      scrolledUnderElevation: 2,
+      shadowColor: Colors.white,
+      backgroundColor: appbarColor,
+      actions: action,
     );
   }
 }

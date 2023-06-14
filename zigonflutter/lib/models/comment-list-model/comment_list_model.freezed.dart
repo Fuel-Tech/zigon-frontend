@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'comment_list_model.dart';
 
@@ -12,31 +12,11 @@ part of 'comment_list_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 CommentListModel _$CommentListModelFromJson(Map<String, dynamic> json) {
   return _CommentListModel.fromJson(json);
 }
-
-/// @nodoc
-class _$CommentListModelTearOff {
-  const _$CommentListModelTearOff();
-
-  _CommentListModel call(
-      {required String status, required List<CommentList> commentList}) {
-    return _CommentListModel(
-      status: status,
-      commentList: commentList,
-    );
-  }
-
-  CommentListModel fromJson(Map<String, Object?> json) {
-    return CommentListModel.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CommentListModel = _$CommentListModelTearOff();
 
 /// @nodoc
 mixin _$CommentListModel {
@@ -53,70 +33,72 @@ mixin _$CommentListModel {
 abstract class $CommentListModelCopyWith<$Res> {
   factory $CommentListModelCopyWith(
           CommentListModel value, $Res Function(CommentListModel) then) =
-      _$CommentListModelCopyWithImpl<$Res>;
+      _$CommentListModelCopyWithImpl<$Res, CommentListModel>;
+  @useResult
   $Res call({String status, List<CommentList> commentList});
 }
 
 /// @nodoc
-class _$CommentListModelCopyWithImpl<$Res>
+class _$CommentListModelCopyWithImpl<$Res, $Val extends CommentListModel>
     implements $CommentListModelCopyWith<$Res> {
   _$CommentListModelCopyWithImpl(this._value, this._then);
 
-  final CommentListModel _value;
   // ignore: unused_field
-  final $Res Function(CommentListModel) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? commentList = freezed,
+    Object? status = null,
+    Object? commentList = null,
   }) {
     return _then(_value.copyWith(
-      status: status == freezed
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      commentList: commentList == freezed
+      commentList: null == commentList
           ? _value.commentList
           : commentList // ignore: cast_nullable_to_non_nullable
               as List<CommentList>,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$CommentListModelCopyWith<$Res>
+abstract class _$$_CommentListModelCopyWith<$Res>
     implements $CommentListModelCopyWith<$Res> {
-  factory _$CommentListModelCopyWith(
-          _CommentListModel value, $Res Function(_CommentListModel) then) =
-      __$CommentListModelCopyWithImpl<$Res>;
+  factory _$$_CommentListModelCopyWith(
+          _$_CommentListModel value, $Res Function(_$_CommentListModel) then) =
+      __$$_CommentListModelCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String status, List<CommentList> commentList});
 }
 
 /// @nodoc
-class __$CommentListModelCopyWithImpl<$Res>
-    extends _$CommentListModelCopyWithImpl<$Res>
-    implements _$CommentListModelCopyWith<$Res> {
-  __$CommentListModelCopyWithImpl(
-      _CommentListModel _value, $Res Function(_CommentListModel) _then)
-      : super(_value, (v) => _then(v as _CommentListModel));
+class __$$_CommentListModelCopyWithImpl<$Res>
+    extends _$CommentListModelCopyWithImpl<$Res, _$_CommentListModel>
+    implements _$$_CommentListModelCopyWith<$Res> {
+  __$$_CommentListModelCopyWithImpl(
+      _$_CommentListModel _value, $Res Function(_$_CommentListModel) _then)
+      : super(_value, _then);
 
-  @override
-  _CommentListModel get _value => super._value as _CommentListModel;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = freezed,
-    Object? commentList = freezed,
+    Object? status = null,
+    Object? commentList = null,
   }) {
-    return _then(_CommentListModel(
-      status: status == freezed
+    return _then(_$_CommentListModel(
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      commentList: commentList == freezed
-          ? _value.commentList
+      commentList: null == commentList
+          ? _value._commentList
           : commentList // ignore: cast_nullable_to_non_nullable
               as List<CommentList>,
     ));
@@ -126,15 +108,22 @@ class __$CommentListModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CommentListModel implements _CommentListModel {
-  const _$_CommentListModel({required this.status, required this.commentList});
+  const _$_CommentListModel(
+      {required this.status, required final List<CommentList> commentList})
+      : _commentList = commentList;
 
   factory _$_CommentListModel.fromJson(Map<String, dynamic> json) =>
       _$$_CommentListModelFromJson(json);
 
   @override
   final String status;
+  final List<CommentList> _commentList;
   @override
-  final List<CommentList> commentList;
+  List<CommentList> get commentList {
+    if (_commentList is EqualUnmodifiableListView) return _commentList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_commentList);
+  }
 
   @override
   String toString() {
@@ -145,33 +134,35 @@ class _$_CommentListModel implements _CommentListModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _CommentListModel &&
-            const DeepCollectionEquality().equals(other.status, status) &&
+            other is _$_CommentListModel &&
+            (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
-                .equals(other.commentList, commentList));
+                .equals(other._commentList, _commentList));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(commentList));
 
   @JsonKey(ignore: true)
   @override
-  _$CommentListModelCopyWith<_CommentListModel> get copyWith =>
-      __$CommentListModelCopyWithImpl<_CommentListModel>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType, status, const DeepCollectionEquality().hash(_commentList));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_CommentListModelCopyWith<_$_CommentListModel> get copyWith =>
+      __$$_CommentListModelCopyWithImpl<_$_CommentListModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CommentListModelToJson(this);
+    return _$$_CommentListModelToJson(
+      this,
+    );
   }
 }
 
 abstract class _CommentListModel implements CommentListModel {
   const factory _CommentListModel(
-      {required String status,
-      required List<CommentList> commentList}) = _$_CommentListModel;
+      {required final String status,
+      required final List<CommentList> commentList}) = _$_CommentListModel;
 
   factory _CommentListModel.fromJson(Map<String, dynamic> json) =
       _$_CommentListModel.fromJson;
@@ -182,42 +173,13 @@ abstract class _CommentListModel implements CommentListModel {
   List<CommentList> get commentList;
   @override
   @JsonKey(ignore: true)
-  _$CommentListModelCopyWith<_CommentListModel> get copyWith =>
+  _$$_CommentListModelCopyWith<_$_CommentListModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 CommentList _$CommentListFromJson(Map<String, dynamic> json) {
   return _CommentList.fromJson(json);
 }
-
-/// @nodoc
-class _$CommentListTearOff {
-  const _$CommentListTearOff();
-
-  _CommentList call(
-      {required String comment,
-      required String commentUser,
-      required String commentUserId,
-      required String commentedTime,
-      required String userPic,
-      required String commentLike}) {
-    return _CommentList(
-      comment: comment,
-      commentUser: commentUser,
-      commentUserId: commentUserId,
-      commentedTime: commentedTime,
-      userPic: userPic,
-      commentLike: commentLike,
-    );
-  }
-
-  CommentList fromJson(Map<String, Object?> json) {
-    return CommentList.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $CommentList = _$CommentListTearOff();
 
 /// @nodoc
 mixin _$CommentList {
@@ -238,7 +200,8 @@ mixin _$CommentList {
 abstract class $CommentListCopyWith<$Res> {
   factory $CommentListCopyWith(
           CommentList value, $Res Function(CommentList) then) =
-      _$CommentListCopyWithImpl<$Res>;
+      _$CommentListCopyWithImpl<$Res, CommentList>;
+  @useResult
   $Res call(
       {String comment,
       String commentUser,
@@ -249,58 +212,62 @@ abstract class $CommentListCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CommentListCopyWithImpl<$Res> implements $CommentListCopyWith<$Res> {
+class _$CommentListCopyWithImpl<$Res, $Val extends CommentList>
+    implements $CommentListCopyWith<$Res> {
   _$CommentListCopyWithImpl(this._value, this._then);
 
-  final CommentList _value;
   // ignore: unused_field
-  final $Res Function(CommentList) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? comment = freezed,
-    Object? commentUser = freezed,
-    Object? commentUserId = freezed,
-    Object? commentedTime = freezed,
-    Object? userPic = freezed,
-    Object? commentLike = freezed,
+    Object? comment = null,
+    Object? commentUser = null,
+    Object? commentUserId = null,
+    Object? commentedTime = null,
+    Object? userPic = null,
+    Object? commentLike = null,
   }) {
     return _then(_value.copyWith(
-      comment: comment == freezed
+      comment: null == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String,
-      commentUser: commentUser == freezed
+      commentUser: null == commentUser
           ? _value.commentUser
           : commentUser // ignore: cast_nullable_to_non_nullable
               as String,
-      commentUserId: commentUserId == freezed
+      commentUserId: null == commentUserId
           ? _value.commentUserId
           : commentUserId // ignore: cast_nullable_to_non_nullable
               as String,
-      commentedTime: commentedTime == freezed
+      commentedTime: null == commentedTime
           ? _value.commentedTime
           : commentedTime // ignore: cast_nullable_to_non_nullable
               as String,
-      userPic: userPic == freezed
+      userPic: null == userPic
           ? _value.userPic
           : userPic // ignore: cast_nullable_to_non_nullable
               as String,
-      commentLike: commentLike == freezed
+      commentLike: null == commentLike
           ? _value.commentLike
           : commentLike // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$CommentListCopyWith<$Res>
+abstract class _$$_CommentListCopyWith<$Res>
     implements $CommentListCopyWith<$Res> {
-  factory _$CommentListCopyWith(
-          _CommentList value, $Res Function(_CommentList) then) =
-      __$CommentListCopyWithImpl<$Res>;
+  factory _$$_CommentListCopyWith(
+          _$_CommentList value, $Res Function(_$_CommentList) then) =
+      __$$_CommentListCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String comment,
       String commentUser,
@@ -311,46 +278,45 @@ abstract class _$CommentListCopyWith<$Res>
 }
 
 /// @nodoc
-class __$CommentListCopyWithImpl<$Res> extends _$CommentListCopyWithImpl<$Res>
-    implements _$CommentListCopyWith<$Res> {
-  __$CommentListCopyWithImpl(
-      _CommentList _value, $Res Function(_CommentList) _then)
-      : super(_value, (v) => _then(v as _CommentList));
+class __$$_CommentListCopyWithImpl<$Res>
+    extends _$CommentListCopyWithImpl<$Res, _$_CommentList>
+    implements _$$_CommentListCopyWith<$Res> {
+  __$$_CommentListCopyWithImpl(
+      _$_CommentList _value, $Res Function(_$_CommentList) _then)
+      : super(_value, _then);
 
-  @override
-  _CommentList get _value => super._value as _CommentList;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? comment = freezed,
-    Object? commentUser = freezed,
-    Object? commentUserId = freezed,
-    Object? commentedTime = freezed,
-    Object? userPic = freezed,
-    Object? commentLike = freezed,
+    Object? comment = null,
+    Object? commentUser = null,
+    Object? commentUserId = null,
+    Object? commentedTime = null,
+    Object? userPic = null,
+    Object? commentLike = null,
   }) {
-    return _then(_CommentList(
-      comment: comment == freezed
+    return _then(_$_CommentList(
+      comment: null == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String,
-      commentUser: commentUser == freezed
+      commentUser: null == commentUser
           ? _value.commentUser
           : commentUser // ignore: cast_nullable_to_non_nullable
               as String,
-      commentUserId: commentUserId == freezed
+      commentUserId: null == commentUserId
           ? _value.commentUserId
           : commentUserId // ignore: cast_nullable_to_non_nullable
               as String,
-      commentedTime: commentedTime == freezed
+      commentedTime: null == commentedTime
           ? _value.commentedTime
           : commentedTime // ignore: cast_nullable_to_non_nullable
               as String,
-      userPic: userPic == freezed
+      userPic: null == userPic
           ? _value.userPic
           : userPic // ignore: cast_nullable_to_non_nullable
               as String,
-      commentLike: commentLike == freezed
+      commentLike: null == commentLike
           ? _value.commentLike
           : commentLike // ignore: cast_nullable_to_non_nullable
               as String,
@@ -394,48 +360,46 @@ class _$_CommentList implements _CommentList {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _CommentList &&
-            const DeepCollectionEquality().equals(other.comment, comment) &&
-            const DeepCollectionEquality()
-                .equals(other.commentUser, commentUser) &&
-            const DeepCollectionEquality()
-                .equals(other.commentUserId, commentUserId) &&
-            const DeepCollectionEquality()
-                .equals(other.commentedTime, commentedTime) &&
-            const DeepCollectionEquality().equals(other.userPic, userPic) &&
-            const DeepCollectionEquality()
-                .equals(other.commentLike, commentLike));
+            other is _$_CommentList &&
+            (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.commentUser, commentUser) ||
+                other.commentUser == commentUser) &&
+            (identical(other.commentUserId, commentUserId) ||
+                other.commentUserId == commentUserId) &&
+            (identical(other.commentedTime, commentedTime) ||
+                other.commentedTime == commentedTime) &&
+            (identical(other.userPic, userPic) || other.userPic == userPic) &&
+            (identical(other.commentLike, commentLike) ||
+                other.commentLike == commentLike));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(comment),
-      const DeepCollectionEquality().hash(commentUser),
-      const DeepCollectionEquality().hash(commentUserId),
-      const DeepCollectionEquality().hash(commentedTime),
-      const DeepCollectionEquality().hash(userPic),
-      const DeepCollectionEquality().hash(commentLike));
 
   @JsonKey(ignore: true)
   @override
-  _$CommentListCopyWith<_CommentList> get copyWith =>
-      __$CommentListCopyWithImpl<_CommentList>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, comment, commentUser,
+      commentUserId, commentedTime, userPic, commentLike);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_CommentListCopyWith<_$_CommentList> get copyWith =>
+      __$$_CommentListCopyWithImpl<_$_CommentList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CommentListToJson(this);
+    return _$$_CommentListToJson(
+      this,
+    );
   }
 }
 
 abstract class _CommentList implements CommentList {
   const factory _CommentList(
-      {required String comment,
-      required String commentUser,
-      required String commentUserId,
-      required String commentedTime,
-      required String userPic,
-      required String commentLike}) = _$_CommentList;
+      {required final String comment,
+      required final String commentUser,
+      required final String commentUserId,
+      required final String commentedTime,
+      required final String userPic,
+      required final String commentLike}) = _$_CommentList;
 
   factory _CommentList.fromJson(Map<String, dynamic> json) =
       _$_CommentList.fromJson;
@@ -454,6 +418,6 @@ abstract class _CommentList implements CommentList {
   String get commentLike;
   @override
   @JsonKey(ignore: true)
-  _$CommentListCopyWith<_CommentList> get copyWith =>
+  _$$_CommentListCopyWith<_$_CommentList> get copyWith =>
       throw _privateConstructorUsedError;
 }

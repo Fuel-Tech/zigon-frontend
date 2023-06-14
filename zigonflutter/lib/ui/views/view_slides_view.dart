@@ -1,21 +1,19 @@
 import 'dart:developer';
 
-import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/button_handler.dart';
-import 'package:zigonflutter/utility/navigation_utility.dart';
 
-import '../../utility/network_utility.dart';
 import '../widgets/slides_widgets.dart';
 
-class SlidesPage extends StatelessWidget {
-  SlidesPage({Key? key}) : super(key: key);
+class ViewSlidesView extends StatelessWidget {
+  ViewSlidesView({Key? key}) : super(key: key);
   final SlidesController slidesController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -24,58 +22,42 @@ class SlidesPage extends StatelessWidget {
         bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
         extendBody: true,
         body: GestureDetector(
-          onTap: () {},
           onDoubleTap: () {
             log('Double Tap');
-            // ButtonHandler.onTapHandler(
-            //     buttonTypes: ButtonTypes.like, context: context);
+            ButtonHandler.onTapHandler(
+                buttonTypes: ButtonTypes.like, context: context);
           },
-          child: Swiper(
-            axisDirection: AxisDirection.down,
-            onIndexChanged: (value) {
-              // log("$value  --  Changed Index");
-              // // slidesController.getLikeCountForVideoByIndex(value);
-              // if (value == slidesController.slideList!.slideList.length - 1) {
-              //   log('Load Next Videos');
-              // }
-            },
-            physics: const BouncingScrollPhysics(),
-            loop: false,
-            scrollDirection: Axis.vertical,
-            itemCount: slidesController.slideList!.msg.length,
-            itemBuilder: (context, index) {
-              return Stack(
+          child: Stack(
                 children: [
-                  VideoWidget(
+                  VideoWidgets(
                     play: true,
-                    videoUrl:
-                        slidesController.slideList!.msg[index].Video.video,
+                    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4',
                   ),
                   SlidesWidget.onTopGradient(context),
                   //----------------
                   //Top Tools
-                  SafeArea(
-                    child: SizedBox(
-                      width: AppUtil.screenWidth(context),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SlidesWidget.watchAllSlidesButton(context),
-                                const SizedBox(width: 10),
-                                SlidesWidget.watchFollowingSlidesButton(
-                                    context),
-                              ],
-                            ),
-                            // SlidesWidget.liveButton(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SafeArea(
+                  //   child: SizedBox(
+                  //     width: AppUtil.screenWidth(context),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(8.0),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           Row(
+                  //             children: [
+                  //               SlidesWidget.watchAllSlidesButton(context),
+                  //               const SizedBox(width: 10),
+                  //               SlidesWidget.watchFollowingSlidesButton(
+                  //                   context),
+                  //             ],
+                  //           ),
+                  //           // SlidesWidget.liveButton(),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   //----------------
                   //Right Tools
                   SafeArea(
@@ -99,13 +81,16 @@ class SlidesPage extends StatelessWidget {
                                     builder: (controller) {
                                   return Column(
                                     children: [
-                                     const Icon(
+                                      false
+                                          ? const Icon(Icons.favorite,
+                                              color: Colors.red, size: 35)
+                                          : const Icon(
                                               Icons.favorite_border_outlined,
                                               color: Colors.white,
                                               size: 35),
                                       const SizedBox(height: 3),
                                       Text(
-                                        '${slidesController.slideList!.msg[index].Video.like_count} ',
+                                        '{slidesController.likeCountForCurrentVideo} ',
                                         style: AppUtil.textStyle2(
                                           textSize: 14,
                                           weight: FontWeight.w400,
@@ -129,7 +114,7 @@ class SlidesPage extends StatelessWidget {
                                         color: Colors.white, size: 35),
                                     const SizedBox(height: 3),
                                     Text(
-                                      '${slidesController.slideList!.msg[index].Video.comment_count}',
+                                      '{slidesController.slideList!.slideList[0].slideComments.count}',
                                       style: AppUtil.textStyle2(
                                           textSize: 14,
                                           weight: FontWeight.w400),
@@ -141,8 +126,8 @@ class SlidesPage extends StatelessWidget {
                                 onTap: () {
                                   log('Share');
                                   List shareData = [
-                                    slidesController
-                                        .slideList!.msg[index].Video.video
+                                    // slidesController
+                                    //     .slideList!.slideList[0].slideURL
                                   ];
                                   ButtonHandler.onTapHandler(
                                       buttonTypes: ButtonTypes.share,
@@ -195,21 +180,13 @@ class SlidesPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 //Profile picture
-                                GestureDetector(
-                                  onTap: () {
-                                    if (index > 0) {
-                                      Get.toNamed(PageRouteList.profile);
-                                    }
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: NetworkImage(IMG_URL +
-                                        slidesController.slideList!.msg[index]
-                                            .User.profile_pic),
-                                  ),
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: NetworkImage(
+                                      '{slidesController.slideList!.slideList[0].metadata.profilepicture}'),
                                 ),
                                 Text(
-                                  '${slidesController.slideList!.msg[index].User.username}',
+                                  '{slidesController.slideList!.slideList[0].metadata.username}',
                                   style: AppUtil.textStyle1(
                                       weight: FontWeight.w600),
                                 ),
@@ -220,7 +197,7 @@ class SlidesPage extends StatelessWidget {
                                   size: 16,
                                 ),
                                 Text(
-                                  '${slidesController.slideList!.msg[0].Video.view}',
+                                  '{slidesController.slideList!.slideList[0].slideViews}',
                                   style: AppUtil.textStyle2(textSize: 12),
                                 ),
                                 const SizedBox(width: 10),
@@ -233,7 +210,7 @@ class SlidesPage extends StatelessWidget {
                             child: SizedBox(
                               width: AppUtil.screenWidth(context) / 1.5,
                               child: Text(
-                                '${slidesController.slideList!.msg[index].Video.description}',
+                                '{slidesController.slideList!.slideList[0].slideDesc}',
                                 style: AppUtil.textStyle2(
                                   textSize: 12,
                                 ),
@@ -255,7 +232,7 @@ class SlidesPage extends StatelessWidget {
                                 child: SizedBox(
                                   width: AppUtil.screenWidth(context) / 1.5,
                                   child: Text(
-                                    '${slidesController.slideList!.msg[index].Sound.name}',
+                                    '{slidesController.slideList!.slideList[0].audioName}',
                                     style: AppUtil.textStyle2(
                                       textSize: 12,
                                     ),
@@ -269,37 +246,23 @@ class SlidesPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-            },
-          ),
+              ),
         ));
   }
 }
 
-// class TestPage extends StatefulWidget {
-//   TestPage({Key? key}) : super(key: key);
 
-//   @override
-//   State<TestPage> createState() => _TestPageState();
-// }
 
-// class _TestPageState extends State<TestPage> {
-//   @override
-//   Widget build(BuildContext context) {
-
-//   }
-// }
-
-class VideoWidget extends StatefulWidget {
-  const VideoWidget({Key? key, required this.videoUrl, required this.play})
+class VideoWidgets extends StatefulWidget {
+  const VideoWidgets({Key? key, required this.videoUrl, required this.play})
       : super(key: key);
   final String videoUrl;
   final bool play;
   @override
-  State<VideoWidget> createState() => _VideoWidgetState();
+  State<VideoWidgets> createState() => _VideoWidgetsState();
 }
 
-class _VideoWidgetState extends State<VideoWidget> {
+class _VideoWidgetsState extends State<VideoWidgets> {
   VideoPlayerController? videoPlayerController;
   late Future<void> _initializeVideoPlayerFuture;
   final SlidesController playerController = Get.find();
@@ -317,9 +280,7 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   @override
   void dispose() {
-    videoPlayerController!.dispose().then((value) {
-      log('videoPlayerDisposed');
-    });
+    videoPlayerController!.dispose();
     super.dispose();
   }
 
@@ -335,6 +296,7 @@ class _VideoWidgetState extends State<VideoWidget> {
                 videoPlayerController: videoPlayerController!,
                 autoInitialize: true,
                 looping: true,
+                aspectRatio: 10 / 20, // Full screen ratio.
                 autoPlay: true,
                 showControls: false,
                 errorBuilder: (context, errorMessage) {

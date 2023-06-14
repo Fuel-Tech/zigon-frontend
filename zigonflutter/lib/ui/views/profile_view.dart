@@ -1,17 +1,20 @@
+// ignore_for_file: prefer_const_constructors
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zigonflutter/controllers/profile_controller.dart';
+import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/ui/widgets/common_widgets.dart';
+import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
+import 'package:zigonflutter/utility/app_utility.dart';
+import 'package:zigonflutter/utility/navigation_utility.dart';
 
-import '../../controllers/slides_controller.dart';
-import '../../utility/app_utility.dart';
-import '../widgets/common_widgets.dart';
-
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatelessWidget with ProfileWidgets {
   ProfileView({Key? key}) : super(key: key);
-  final SlidesController slidesController = Get.put(SlidesController());
+  final ProfileController profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,97 +43,56 @@ class ProfileView extends StatelessWidget {
                     bottom: Radius.circular(40),
                   ),
                 ),
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(bottom: 10),
                 child: SafeArea(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 50,
-                          ),
-                          SizedBox(width: 5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'FirstName\nLastName',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                'UserID',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: AppUtil.secondary,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    padding: EdgeInsets.all(6),
-                                    child: Text(
-                                      'Following',
-                                      style: GoogleFonts.openSans(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage('https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                            ),
+                            SizedBox(width: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Mohammed\nJassim',
+                                  style: GoogleFonts.raleway(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  SizedBox(width: 10),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: AppUtil.primary,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    padding: EdgeInsets.all(6),
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.message, size: 20),
-                                        Text(
-                                          'Message',
-                                          style: GoogleFonts.openSans(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(FlutterIcons.facebook_box_mco),
-                          SizedBox(height: 5),
-                          Icon(FlutterIcons.instagram_ant),
-                          SizedBox(height: 5),
-                          Transform.rotate(
-                            angle: pi / 2,
-                            child: Icon(Icons.more_vert_rounded),
-                          ),
-                        ],
-                      )
-                    ],
+                                ),
+                                Text(
+                                  'Jaachu_',
+                                  style: GoogleFonts.raleway(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.facebook),
+                            SizedBox(height: 5),
+                            Icon(Ionicons.logo_instagram),
+                            SizedBox(height: 5),
+                            Transform.rotate(
+                              angle: pi / 2,
+                              child: Icon(Icons.more_vert_rounded),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -144,22 +106,45 @@ class ProfileView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    profileStatsWidget('2', 'Followers'),
+                    userProfileStatsWidget('0', 'Followers'),
                     VerticalDivider(
                       color: AppUtil.secondary,
                       thickness: 2,
                     ),
-                    profileStatsWidget('1', 'Posts'),
+                    userProfileStatsWidget('4', 'Posts'),
                     VerticalDivider(
                       color: AppUtil.secondary,
                       thickness: 2,
                     ),
-                    profileStatsWidget('1', 'Likes'),
+                    userProfileStatsWidget('12', 'Likes'),
                   ],
                 ),
               ),
             ),
-
+            //List Nav Bar
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  userProfileNavBar(
+                    profileController,
+                    'Slides',
+                    ProfileTabSelected.slides,
+                  ),
+                  userProfileNavBar(
+                    profileController,
+                    'Liked',
+                    ProfileTabSelected.liked,
+                  ),
+                  userProfileNavBar(
+                    profileController,
+                    'Saved',
+                    ProfileTabSelected.saved,
+                  ),
+                ],
+              ),
+            ),
             //Slides List
             Expanded(
               child: Padding(
@@ -167,23 +152,28 @@ class ProfileView extends StatelessWidget {
                 child: GridView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 5,
                       mainAxisSpacing: 5,
                     ),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 16,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: t.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/ac1.JPG'),
-                              fit: BoxFit.cover),
-                        ),
-                        child: Column(
-                          children: [Row()],
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(PageRouteList.viewSlides);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/images/${t[index]}.JPG'),
+                                fit: BoxFit.cover),
+                          ),
+                          child: Column(
+                            children: [Row()],
+                          ),
                         ),
                       );
                     }),
@@ -198,7 +188,32 @@ class ProfileView extends StatelessWidget {
   }
 }
 
-profileStatsWidget(String value, String title) {
+List t = ['t2', 't3', 't4'];
+
+userProfileNavBar(
+    ProfileController controller, String title, ProfileTabSelected value) {
+  return GestureDetector(
+    onTap: () {},
+    child: Container(
+      decoration: BoxDecoration(
+        color: controller.userProfileIsSelected == value
+            ? AppUtil.secondary
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
+      child: Text(
+        title,
+        style: GoogleFonts.openSans(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+  );
+}
+
+userProfileStatsWidget(String value, String title) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

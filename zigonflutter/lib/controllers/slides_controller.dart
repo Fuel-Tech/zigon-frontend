@@ -36,6 +36,7 @@ class SlidesController extends GetxController with TextFieldControllers {
   List forwardCache = []; //Lower Cache
   bool isAndroid = false;
   bool isIOS = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -44,8 +45,6 @@ class SlidesController extends GetxController with TextFieldControllers {
     } else if (Platform.isIOS) {
       isIOS = true;
     }
-    isUserLoggedIn();
-    getVideos();
   }
 
   @override
@@ -59,31 +58,34 @@ class SlidesController extends GetxController with TextFieldControllers {
     chewieController!.dispose();
   }
 
-  //App Initialized Function
-  // initializeApp() async {
-  //   //GetSlides
-  //   //Load Slides to Playlist
-  //   await loadPlaylist(); //Playlist loaded
-  //   //Initialize VideoPlayerController and Play first video from the Playlist
-  //   await initalizeVideoPlayer();
-  //   //Goto Slides Page
-  //   Future.delayed(const Duration(seconds: 3))
-  //       .then((value) => Get.toNamed(PageRouteList.slides));
-  // }
+  ///Splash Check Function
+  initializeApp() async {
+    await isUserLoggedIn();
+    await getVideos();
+    Get.offAndToNamed(PageRouteList.slides);
+  }
 
   //------------------------------------------------------------------------------------------------------------------------------
 
   bool isLoggedIn = false;
 
+  logOut() async {
+    await SharedPrefHandler.clearStorage();
+    log("User Logged Out");
+    Get.toNamed(PageRouteList.splash);
+  }
+
   isUserLoggedIn() async {
     var userToken =
         await SharedPrefHandler.getString(SharedPrefHandler.USERTOKEN);
+    log(userToken.toString());
     if (userToken == null || userToken == "USERTOKEN") {
       log('User Not Logged In');
       isLoggedIn = false;
     } else {
       log('User Logged In');
       isLoggedIn = true;
+      await getUsedDetails();
     }
   }
 
@@ -96,33 +98,67 @@ class SlidesController extends GetxController with TextFieldControllers {
       "email": "${emailFieldController.text}",
       "password":"${passwordFieldController.text}"
     }''';
-    log(body);
+    // var body = {"email": "jassimpv@gmail.com", "password": "123@123"};
+    log(body.toString());
     var response = await NetworkHandler.dioAuth(path, body: body);
+    log(response.toString());
     var json = jsonDecode(response);
-    log(json["msg"]["User"]["id"]);
     userProfileModel = UserProfileModel.fromJson(json);
-    log(userProfileModel.toString());
-    update();
+    await SharedPrefHandler.setString(
+        userProfileModel!.msg.User.auth_token.toString(),
+        SharedPrefHandler.USERTOKEN);
+    await SharedPrefHandler.setString(
+        userProfileModel!.msg.User.id.toString(), SharedPrefHandler.USERID);
+    log('User Auth Token Saved');
+    isLoggedIn = true;
+    Get.offAllNamed(PageRouteList.splash);
   }
+
+  get getUserFirstName => userProfileModel?.msg.User.first_name ?? '';
+  get getUserLastName => userProfileModel?.msg.User.last_name ?? '';
+  get getUserProfileName => userProfileModel?.msg.User.username ?? '';
+  get getUserGender => userProfileModel?.msg.User.gender ?? '';
+  get getUserLikesCount =>
+      userProfileModel?.msg.User.likes_count!.toStringAsFixed(0) ?? '';
+  get getUserFollowersCount =>
+      userProfileModel?.msg.User.followers_count!.toStringAsFixed(0) ?? '';
+  get getUserFollowingCount =>
+      userProfileModel?.msg.User.following_count!.toStringAsFixed(0) ?? '';
+  get getUserVideoCount =>
+      userProfileModel?.msg.User.following_count!.toStringAsFixed(0) ?? '';
 
   ///Load videos from Server
   SlideListModel? slideList;
   getVideos() async {
-    Dio dio = Dio();
-    String postUrl = 'https://mocki.io/v1/0ba63d27-1cfe-4f14-8f00-8ab2d578b892';
-    // try {
-    var response = await dio.get(postUrl);
-    log(response.toString());
-    if (response.statusCode == 200) {
-      slideList = SlideListModel.fromJson(response.data);
-      getLikeCountForVideoByIndex(0);
-      Future.delayed(const Duration(seconds: 3));
-      Get.toNamed(PageRouteList.slides);
-      log(slideList.toString());
+    log('Getting Videoss');
+    String postUrl = 'showRelatedVideos';
+    // String body = '''{
+    //   "user_id": "1",
+    //   "starting_point": "0"
+    // }''';
+
+    var response = await NetworkHandler.dioPost(postUrl);
+    var json = jsonDecode(response.toString());
+    // log(json.toString());
+    if (json["code"] == 200) {
+      slideList = SlideListModel.fromJson(json);
     }
-    // } catch (e) {
-    //   log(e.toString());
-    // }
+  }
+
+  getUsedDetails() async {
+    String? userID =
+        await SharedPrefHandler.getString(SharedPrefHandler.USERID);
+    log(userID ?? "Null");
+    String path = 'showUserDetail';
+    String body = '''{
+      "user_id": "$userID"
+    }''';
+    log(body);
+    var response = await NetworkHandler.dioPost(path, body: body);
+    log(response.toString());
+    var json = jsonDecode(response.toString().replaceFirst('1', ''));
+    userProfileModel = UserProfileModel.fromJson(json);
+    return;
   }
 
   loadNextVideoTemp() async {
@@ -133,7 +169,7 @@ class SlidesController extends GetxController with TextFieldControllers {
       log(response.toString());
       if (response.statusCode == 200) {
         slideList = SlideListModel.fromJson(response.data);
-        getLikeCountForVideoByIndex(0);
+        // getLikeCountForVideoByIndex(0);
         Get.toNamed(PageRouteList.slides);
         log(slideList.toString());
       }
@@ -143,11 +179,11 @@ class SlidesController extends GetxController with TextFieldControllers {
   }
 
   //Likes
-  int likeCountForCurrentVideo = 0;
-  getLikeCountForVideoByIndex(int index) {
-    likeCountForCurrentVideo = slideList!.slideList[index].slideLikes;
-    update();
-  }
+  // int likeCountForCurrentVideo = 0;
+  // getLikeCountForVideoByIndex(int index) {
+  //   likeCountForCurrentVideo = slideList!.slideList[index].slideLikes;
+  //   update();
+  // }
 
   ///Comments
   CommentListModel? commentList;
@@ -166,20 +202,20 @@ class SlidesController extends GetxController with TextFieldControllers {
     } catch (e) {}
   }
 
-  bool userLiked = false;
-  bool isLiked = false;
-  likeButtonHandler(var index) {
-    if (isLiked) {
-      log('Update Liked status to disliked');
-      likeCountForCurrentVideo--;
-      isLiked = false;
-    } else {
-      log('Update Liked status to liked');
-      likeCountForCurrentVideo++;
-      isLiked = true;
-    }
-    update();
-  }
+  // bool userLiked = false;
+  // bool isLiked = false;
+  // likeButtonHandler(var index) {
+  //   if (isLiked) {
+  //     log('Update Liked status to disliked');
+  //     likeCountForCurrentVideo--;
+  //     isLiked = false;
+  //   } else {
+  //     log('Update Liked status to liked');
+  //     likeCountForCurrentVideo++;
+  //     isLiked = true;
+  //   }
+  //   update();
+  // }
 
   ///Initalize VideoplayerController, add video to controller and play.
   Future<void> initalizeVideoPlayer() async {
@@ -299,19 +335,26 @@ class SlidesController extends GetxController with TextFieldControllers {
 
   //USER PROFILE PAGE CONTROLLERS---------------------------------
 
-  UserProfileIsSelected userProfileIsSelected = UserProfileIsSelected.slides;
+  ProfileTabSelected userProfileIsSelected = ProfileTabSelected.slides;
 
-  userProfileSelector(UserProfileIsSelected isSelected) {
+  userProfileSelector(ProfileTabSelected isSelected) {
     userProfileIsSelected = isSelected;
     update();
   }
 }
 
-enum UserProfileIsSelected { slides, liked, saved }
+enum ProfileTabSelected { slides, liked, saved }
 
-enum LoginTypes { google, apple, email, otp, none }
+enum LoginTypes { google, apple, email, otp, none, createAccount }
 
-enum NavBarSelectionItem { slide, discover, addSlide, notification, profile }
+enum NavBarSelectionItem {
+  slide,
+  discover,
+  addSlide,
+  notification,
+  profile,
+  userprofile,
+}
 
 class PlayerController extends GetxController {
   @override
@@ -324,6 +367,17 @@ class PlayerController extends GetxController {
   }
 
   VideoPlayerController? slidesPlayerController;
+
+  Future<void> initializeVideoPlayerFuture2(String videoUrl) async {
+    slidesPlayerController = VideoPlayerController.network(
+        'https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4');
+
+    await slidesPlayerController!.initialize().then((value) => {update()});
+    update();
+    return;
+  }
+
+  VideoPlayerController? slidesPlayerController2;
 }
 
 class TextFieldControllers {
@@ -337,3 +391,5 @@ class TextFieldControllers {
     otpFieldController.clear();
   }
 }
+
+enum ProfileNavBarItem { slides, liked, saved }

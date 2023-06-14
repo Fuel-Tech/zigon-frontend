@@ -5,16 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
-String BASE_URL = 'https://68.178.165.93/mobile/api/';
+String BASE_URL = 'http://35.154.107.142/mobile/api/';
+String IMG_URL = 'http://35.154.107.142/mobile/';
 
 class NetworkHandler {
   static final Dio dio = Dio();
 
-  static dioPost(var path, {String? body}) async {
-    String? userToken =
-        await SharedPrefHandler.getString(SharedPrefHandler.USERTOKEN);
-    String? userID =
-        await SharedPrefHandler.getString(SharedPrefHandler.USERID);
+  static dioPost(var path, {var body, String userID = '', String userToken = ''}) async {
+
 
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
@@ -29,7 +27,7 @@ class NetworkHandler {
     dio.options.headers.addAll(headers);
 
     String postUrl = BASE_URL + path;
-    log('DIO-AUTH - POST URL: $postUrl');
+    log('DIO POST URL: $postUrl');
 
     Response<dynamic> response;
     if (body == null) {
@@ -37,6 +35,8 @@ class NetworkHandler {
     } else {
       response = await dio.post(postUrl, data: body);
     }
+
+    log("Status Code: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       return response.data;
@@ -63,13 +63,17 @@ class NetworkHandler {
     var postURL = BASE_URL + path;
     log('DIO-AUTH - POST URL: $postURL');
 
-    var response = await dio.post(postURL, data: body);
-
-    if (response.statusCode == 200) {
-      log('DIO-AUTH SUCCESS');
-      return response.data;
-    } else {
-      log('DIO-AUTH FAILED\nStatus Code: ${response.statusCode}\nData: ${response.data}');
+    try {
+      var response = await dio.post(postURL, data: body);
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        log('DIO-AUTH SUCCESS');
+        return response.data;
+      } else {
+        log('DIO-AUTH FAILED\nStatus Code: ${response.statusCode}\nData: ${response.data}');
+      }
+    } on Exception catch (e) {
+      log('Exception');
     }
   }
 }

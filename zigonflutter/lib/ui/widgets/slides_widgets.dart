@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
 import '../../utility/button_handler.dart';
@@ -85,8 +86,10 @@ class SlidesWidget {
   static watchFollowingSlidesButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        ButtonHandler.onTapHandler(
-            buttonTypes: ButtonTypes.followingSlidesList, context: context);
+        Get.snackbar('Bad Connectivity', 'Please check your internet connection');
+        
+        // ButtonHandler.onTapHandler(
+        //     buttonTypes: ButtonTypes.followingSlidesList, context: context);
       },
       child: Text(
         'Following',

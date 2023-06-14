@@ -5,16 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
-import '../widgets/common_widgets.dart';
+import '../../widgets/common_widgets.dart';
 
 class DiscoverView extends StatelessWidget {
   DiscoverView({Key? key}) : super(key: key);
-  final SlidesController slidesController = Get.put(SlidesController());
+  final SlidesController slidesController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtil.primary,
-      bottomNavigationBar: CommonWidgets.bottomFloatingBar(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
       body: GetBuilder<SlidesController>(builder: (controller) {
         return SafeArea(
           child: Column(
@@ -54,7 +55,7 @@ class DiscoverView extends StatelessWidget {
                       'Top Picks',
                       style: GoogleFonts.raleway(
                         fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xffCECECE),
                       ),
                     ),
@@ -227,13 +228,13 @@ class DiscoverView extends StatelessWidget {
                       children: [
                         const Icon(
                           Icons.filter_alt_outlined,
-                          size: 16,
+                          size: 18,
                           color: Color(0xffCECECE),
                         ),
                         Text(
                           'Filter',
                           style: GoogleFonts.raleway(
-                            fontSize: 14,
+                            fontSize: 18,
                             color: Color(0xffCECECE),
                           ),
                         )

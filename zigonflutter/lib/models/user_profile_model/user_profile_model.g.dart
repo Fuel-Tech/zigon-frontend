@@ -19,137 +19,146 @@ Map<String, dynamic> _$$_UserProfileModelToJson(_$_UserProfileModel instance) =>
     };
 
 _$_Msg _$$_MsgFromJson(Map<String, dynamic> json) => _$_Msg(
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
-      pushNotification: PushNotification.fromJson(
-          json['pushNotification'] as Map<String, dynamic>),
-      privacySetting: PrivacySetting.fromJson(
-          json['privacySetting'] as Map<String, dynamic>),
+      User: Users.fromJson(json['User'] as Map<String, dynamic>),
+      PushNotification: PushNotifications.fromJson(
+          json['PushNotification'] as Map<String, dynamic>),
+      PrivacySetting: PrivacySettings.fromJson(
+          json['PrivacySetting'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_MsgToJson(_$_Msg instance) => <String, dynamic>{
-      'user': instance.user,
-      'pushNotification': instance.pushNotification,
-      'privacySetting': instance.privacySetting,
+      'User': instance.User,
+      'PushNotification': instance.PushNotification,
+      'PrivacySetting': instance.PrivacySetting,
     };
 
-_$_PrivacySetting _$$_PrivacySettingFromJson(Map<String, dynamic> json) =>
-    _$_PrivacySetting(
+_$_PrivacySettings _$$_PrivacySettingsFromJson(Map<String, dynamic> json) =>
+    _$_PrivacySettings(
       id: json['id'] as String,
-      videosDownload: json['videosDownload'] as String,
-      directMessage: json['directMessage'] as String,
+      videos_download: json['videos_download'] as String,
+      direct_message: json['direct_message'] as String,
       duet: json['duet'] as String,
-      likedVideos: json['likedVideos'] as String,
-      videoComment: json['videoComment'] as String,
+      liked_videos: json['liked_videos'] as String,
+      video_comment: json['video_comment'] as String,
     );
 
-Map<String, dynamic> _$$_PrivacySettingToJson(_$_PrivacySetting instance) =>
+Map<String, dynamic> _$$_PrivacySettingsToJson(_$_PrivacySettings instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'videosDownload': instance.videosDownload,
-      'directMessage': instance.directMessage,
+      'videos_download': instance.videos_download,
+      'direct_message': instance.direct_message,
       'duet': instance.duet,
-      'likedVideos': instance.likedVideos,
-      'videoComment': instance.videoComment,
+      'liked_videos': instance.liked_videos,
+      'video_comment': instance.video_comment,
     };
 
-_$_PushNotification _$$_PushNotificationFromJson(Map<String, dynamic> json) =>
-    _$_PushNotification(
+_$_PushNotifications _$$_PushNotificationsFromJson(Map<String, dynamic> json) =>
+    _$_PushNotifications(
       id: json['id'] as String,
       likes: json['likes'] as String,
       comments: json['comments'] as String,
-      newFollowers: json['newFollowers'] as String,
+      new_followers: json['new_followers'] as String,
       mentions: json['mentions'] as String,
-      directMessages: json['directMessages'] as String,
-      videoUpdates: json['videoUpdates'] as String,
+      direct_messages: json['direct_messages'] as String,
+      video_updates: json['video_updates'] as String,
     );
 
-Map<String, dynamic> _$$_PushNotificationToJson(_$_PushNotification instance) =>
+Map<String, dynamic> _$$_PushNotificationsToJson(
+        _$_PushNotifications instance) =>
     <String, dynamic>{
       'id': instance.id,
       'likes': instance.likes,
       'comments': instance.comments,
-      'newFollowers': instance.newFollowers,
+      'new_followers': instance.new_followers,
       'mentions': instance.mentions,
-      'directMessages': instance.directMessages,
-      'videoUpdates': instance.videoUpdates,
+      'direct_messages': instance.direct_messages,
+      'video_updates': instance.video_updates,
     };
 
-_$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
+_$_Users _$$_UsersFromJson(Map<String, dynamic> json) => _$_Users(
       id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      first_name: json['first_name'] as String,
+      last_name: json['last_name'] as String,
       gender: json['gender'] as String,
       bio: json['bio'] as String,
       website: json['website'] as String,
       dob: json['dob'] as String,
-      socialId: json['socialId'] as String,
+      social_id: json['social_id'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
       password: json['password'] as String,
-      profilePic: json['profilePic'] as String,
-      profilePicSmall: json['profilePicSmall'] as String,
+      profile_pic: json['profile_pic'] as String,
+      profile_pic_small: json['profile_pic_small'] as String,
       role: json['role'] as String,
       username: json['username'] as String,
       social: json['social'] as String,
-      deviceToken: json['deviceToken'] as String,
+      device_token: json['device_token'] as String,
       token: json['token'] as String,
       active: json['active'] as String,
       lat: json['lat'] as String,
       long: json['long'] as String,
       online: json['online'] as String,
       verified: json['verified'] as String,
-      authToken: json['authToken'] as String,
+      auth_token: json['auth_token'] as String,
       version: json['version'] as String,
       device: json['device'] as String,
       ip: json['ip'] as String,
       city: json['city'] as String,
       country: json['country'] as String,
-      cityId: json['cityId'] as String,
-      stateId: json['stateId'] as String,
-      countryId: json['countryId'] as String,
+      city_id: json['city_id'] as String,
+      state_id: json['state_id'] as String,
+      country_id: json['country_id'] as String,
       wallet: json['wallet'] as String,
       paypal: json['paypal'] as String,
-      resetWalletDatetime: json['resetWalletDatetime'] as String,
-      fbId: json['fbId'] as String,
+      reset_wallet_datetime: json['reset_wallet_datetime'] as String,
+      fb_id: json['fb_id'] as String,
       created: DateTime.parse(json['created'] as String),
+      followers_count: (json['followers_count'] as num?)?.toDouble(),
+      following_count: (json['following_count'] as num?)?.toDouble(),
+      likes_count: (json['likes_count'] as num?)?.toDouble(),
+      video_count: (json['video_count'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
+Map<String, dynamic> _$$_UsersToJson(_$_Users instance) => <String, dynamic>{
       'id': instance.id,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'first_name': instance.first_name,
+      'last_name': instance.last_name,
       'gender': instance.gender,
       'bio': instance.bio,
       'website': instance.website,
       'dob': instance.dob,
-      'socialId': instance.socialId,
+      'social_id': instance.social_id,
       'email': instance.email,
       'phone': instance.phone,
       'password': instance.password,
-      'profilePic': instance.profilePic,
-      'profilePicSmall': instance.profilePicSmall,
+      'profile_pic': instance.profile_pic,
+      'profile_pic_small': instance.profile_pic_small,
       'role': instance.role,
       'username': instance.username,
       'social': instance.social,
-      'deviceToken': instance.deviceToken,
+      'device_token': instance.device_token,
       'token': instance.token,
       'active': instance.active,
       'lat': instance.lat,
       'long': instance.long,
       'online': instance.online,
       'verified': instance.verified,
-      'authToken': instance.authToken,
+      'auth_token': instance.auth_token,
       'version': instance.version,
       'device': instance.device,
       'ip': instance.ip,
       'city': instance.city,
       'country': instance.country,
-      'cityId': instance.cityId,
-      'stateId': instance.stateId,
-      'countryId': instance.countryId,
+      'city_id': instance.city_id,
+      'state_id': instance.state_id,
+      'country_id': instance.country_id,
       'wallet': instance.wallet,
       'paypal': instance.paypal,
-      'resetWalletDatetime': instance.resetWalletDatetime,
-      'fbId': instance.fbId,
+      'reset_wallet_datetime': instance.reset_wallet_datetime,
+      'fb_id': instance.fb_id,
       'created': instance.created.toIso8601String(),
+      'followers_count': instance.followers_count,
+      'following_count': instance.following_count,
+      'likes_count': instance.likes_count,
+      'video_count': instance.video_count,
     };

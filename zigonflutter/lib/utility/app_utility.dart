@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AppUtil {
-  static Color primary = const Color(0xff232323);
+  static const Color primary = Color(0xff232323);
   static Color secondary = const Color(0xffC8AE01);
   static Gradient buttonGradient = const LinearGradient(
       colors: [Color(0xFFFFDE00), Color(0xFF645701)], stops: [0.1, 0.9]);
@@ -26,6 +26,8 @@ class AppUtil {
   static String IP = '127.0.0.1';
   static String DEVICE_TOKEN = 'TEST';
 
+  static bool isLoggedIn = false;
+
   ///Text Style 1 - Raleway
   static TextStyle textStyle1(
       {double textSize = 16.0,
@@ -47,11 +49,14 @@ class AppUtil {
   ///Gets Current Date
   static DateTime today = DateTime.now();
 
-  ///Date Format - dd MM yyyy
+  ///Date Format: 14 August 2022
   static DateFormat formatter1 = DateFormat('dd MMM yyyy');
 
-  ///Date Format - yyyy-MM-dd
+  ///Date Format: yyyy-MM-dd
   static DateFormat formatter2 = DateFormat('yyyy-MM-dd');
+
+  ///Date Format: 08:00 am
+  static DateFormat timeFormat = DateFormat('hh:mm');
 
   ///Gets Current Date in the format dd MMM yyyy
   static String getFormattedDate() {
