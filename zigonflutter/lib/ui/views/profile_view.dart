@@ -17,173 +17,178 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
   final ProfileController profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
-      backgroundColor: const Color(0xff232323),
-      body: GetBuilder<SlidesController>(builder: (controller) {
-        return Column(
-          children: [
-            //Profile Header
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppUtil.secondary,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment(0.8, 1),
-                    colors: <Color>[
-                      Color(0xffFF4E50),
-                      AppUtil.secondary,
-                    ], // Gradient from https://learnui.design/tools/gradient-generator.html
-                    tileMode: TileMode.mirror,
-                  ),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(40),
-                  ),
-                ),
-                padding: EdgeInsets.only(bottom: 10),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage('https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
-                            ),
-                            SizedBox(width: 5),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Mohammed\nJassim',
-                                  style: GoogleFonts.raleway(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: const Color(0xff232323),
+        body: SafeArea(
+          child: GetBuilder<SlidesController>(builder: (controller) {
+            return Column(
+              children: [
+                //Profile Header
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                                'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                          ),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Mohammed\nJassim',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
                                 ),
+                              ),
+                              Text(
+                                '@Jaachu_',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.facebook),
+                                  SizedBox(width: 10),
+                                  Icon(Ionicons.logo_instagram),
+                                  SizedBox(width: 10),
+                                  Icon(Icons.more_vert_rounded),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppUtil.primary,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.white),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 8),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.message,
+                                  size: 16,
+                                ),
+                                SizedBox(width: 5),
                                 Text(
-                                  'Jaachu_',
-                                  style: GoogleFonts.raleway(
+                                  'Message',
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Icon(Icons.facebook),
-                            SizedBox(height: 5),
-                            Icon(Ionicons.logo_instagram),
-                            SizedBox(height: 5),
-                            Transform.rotate(
-                              angle: pi / 2,
-                              child: Icon(Icons.more_vert_rounded),
+                          ),
+                          SizedBox(height: 15),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppUtil.primary,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.white),
                             ),
-                          ],
-                        )
-                      ],
-                    ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 8),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.message,
+                                  size: 16,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Message',
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
-              ),
-            ),
-            //User Stats
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: SizedBox(
-                width: AppUtil.screenWidth(context),
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    userProfileStatsWidget('0', 'Followers'),
-                    VerticalDivider(
-                      color: AppUtil.secondary,
-                      thickness: 2,
-                    ),
-                    userProfileStatsWidget('4', 'Posts'),
-                    VerticalDivider(
-                      color: AppUtil.secondary,
-                      thickness: 2,
-                    ),
-                    userProfileStatsWidget('12', 'Likes'),
+                SizedBox(height: 12),
+                //User Stats
+                SizedBox(
+                  width: AppUtil.screenWidth(context),
+                  height: 45,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      userProfileStatsWidget('0', 'Followers'),
+                      VerticalDivider(
+                        color: AppUtil.secondary,
+                        thickness: 2,
+                      ),
+                      userProfileStatsWidget('4', 'Posts'),
+                      VerticalDivider(
+                        color: AppUtil.secondary,
+                        thickness: 2,
+                      ),
+                      userProfileStatsWidget('12', 'Likes'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 30),
+                TabBar(
+                  tabs: [
+                    Text('Slides'),
+                    Text('Liked'),
+                    Text('Favouite'),
                   ],
+                  indicatorColor: AppUtil.secondary,
                 ),
-              ),
-            ),
-            //List Nav Bar
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  userProfileNavBar(
-                    profileController,
-                    'Slides',
-                    ProfileTabSelected.slides,
-                  ),
-                  userProfileNavBar(
-                    profileController,
-                    'Liked',
-                    ProfileTabSelected.liked,
-                  ),
-                  userProfileNavBar(
-                    profileController,
-                    'Saved',
-                    ProfileTabSelected.saved,
-                  ),
-                ],
-              ),
-            ),
-            //Slides List
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                    ),
-                    physics: BouncingScrollPhysics(),
-                    itemCount: t.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(PageRouteList.viewSlides);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/${t[index]}.JPG'),
-                                fit: BoxFit.cover),
-                          ),
-                          child: Column(
-                            children: [Row()],
-                          ),
-                        ),
-                      );
-                    }),
-              ),
-            ),
-          ],
-        );
-      }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+                TabBarView(
+                  children: [
+                    Container(),
+                    // GridView.builder(
+                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //       crossAxisCount: 3),
+                    //       itemCount: 3,
+                    //       shrinkWrap: true,
+                    //   itemBuilder: (context, index) {
+                    //     return Container(
+                    //       color: Colors.red,
+                    //     );
+                    //   },
+                    // ),
+                    Container(),
+                    Container(),
+                  ],
+                )
+              ],
+            );
+          }),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+      ),
     );
   }
 }
@@ -231,3 +236,62 @@ userProfileStatsWidget(String value, String title) {
     ],
   );
 }
+
+//List Nav Bar
+// Padding(
+//   padding: const EdgeInsets.only(bottom: 30),
+//   child: Row(
+//     mainAxisAlignment: MainAxisAlignment.spaceAround,
+//     children: [
+//       userProfileNavBar(
+//         profileController,
+//         'Slides',
+//         ProfileTabSelected.slides,
+//       ),
+//       userProfileNavBar(
+//         profileController,
+//         'Liked',
+//         ProfileTabSelected.liked,
+//       ),
+//       userProfileNavBar(
+//         profileController,
+//         'Saved',
+//         ProfileTabSelected.saved,
+//       ),
+//     ],
+//   ),
+// ),
+//Slides List
+// Expanded(
+//   child: Padding(
+//     padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+//     child: GridView.builder(
+//         shrinkWrap: true,
+//         padding: EdgeInsets.zero,
+//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 3,
+//           crossAxisSpacing: 5,
+//           mainAxisSpacing: 5,
+//         ),
+//         physics: BouncingScrollPhysics(),
+//         itemCount: t.length,
+//         itemBuilder: (context, index) {
+//           return GestureDetector(
+//             onTap: () {
+//               Get.toNamed(PageRouteList.viewSlides);
+//             },
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 image: DecorationImage(
+//                     image: AssetImage(
+//                         'assets/images/${t[index]}.JPG'),
+//                     fit: BoxFit.cover),
+//               ),
+//               child: Column(
+//                 children: [Row()],
+//               ),
+//             ),
+//           );
+//         }),
+//   ),
+// ),
