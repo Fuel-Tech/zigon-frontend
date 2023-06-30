@@ -1,44 +1,55 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
+import '../models/comment-list-model/comment_list_model.dart';
 import '../models/slide-list-model/slide_list_model.dart';
+import '../utility/navigation_utility.dart';
 import '../utility/network_utility.dart';
 
 class SlideScreenController extends GetxController with WidgetsBindingObserver {
   SlideListModel? slideListModel;
   RxList<String> videoList = RxList<String>();
   int startingPoint = 1;
+  RxBool isVideoLoading = false.obs;
 
-  setVideoData(SlideListModel data) {
+  setVideoData(SlideListModel? data) {
     try {
-      if (slideListModel == null) {
-        slideListModel = data;
-      } else {
-        slideListModel = SlideListModel(
-          code: slideListModel!.code,
-          msg: [...slideListModel!.msg, ...data.msg],
-        );
+      if (data != null) {
+        if (slideListModel == null) {
+          slideListModel = data;
+        } else {
+          slideListModel = SlideListModel(
+            code: slideListModel!.code,
+            msg: [...slideListModel!.msg, ...data.msg],
+          );
+        }
+        List<String> temp = [];
+        log(slideListModel!.msg.length.toString());
+        for (int i = 0; i < slideListModel!.msg.length; i++) {
+          log(slideListModel!.msg[i].Video.video);
+          temp.add(slideListModel!.msg[i].Video.video);
+        }
+        videoList.addAll(temp);
       }
-      List<String> temp = [];
-      log(slideListModel!.msg.length.toString());
-      for (int i = 0; i < slideListModel!.msg.length; i++) {
-        log(slideListModel!.msg[i].Video.video);
-        temp.add(slideListModel!.msg[i].Video.video);
-      }
-      videoList.addAll(temp);
     } catch (e) {
       log("Error while setting videos: $e");
     }
   }
 
   Future<void> fetchMoreVideos() async {
-    String userID =
-        await SharedPrefHandler.getString(SharedPrefHandler.USERID) ?? '0';
+    isLoading.value = true;
+    String userID = await SharedPrefHandler.getInstance()
+            .getString(SharedPrefHandler.USERID) ??
+        '0';
     startingPoint = startingPoint + 1;
     log("Getting video for slides_view");
     String endpoint = 'showRelatedVideos';
@@ -49,13 +60,86 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
       "limit":3
     }''';
     var response = await NetworkHandler.dioPost(endpoint, body: body);
-
-    var json = jsonDecode(response);
-    var newSlideListModel = SlideListModel.fromJson(json);
-    setVideoData(newSlideListModel);
+    if (response['code'] == 200) {
+      var json = jsonDecode(response);
+      var newSlideListModel = SlideListModel.fromJson(json);
+      setVideoData(newSlideListModel);
+      isLoading.value = false;
+    }
     // slideListModel = SlideListModel.fromJson(json);
     // setVideoData(slideListModel!);
     return;
+  }
+
+  // COMMENTS
+  CommentListModel? commentList;
+  getComments() async {
+    Dio dio = Dio();
+    String postUrl = 'https://mocki.io/v1/ba663eae-94c4-4176-a73c-9e167ef48697';
+    try {
+      var response = await dio.get(postUrl);
+      log(response.toString());
+      if (response.statusCode == 200) {
+        commentList = CommentListModel.fromJson(response.data);
+        Get.toNamed(PageRouteList.slides);
+        // log(commentList.toString());
+        update();
+      }
+    } catch (e) {}
+  }
+
+  // USER LOGIN HANDLER
+  TextEditingController emailFieldController = TextEditingController();
+  TextEditingController passwordFieldController = TextEditingController();
+  RxBool isLoading = false.obs;
+  userLogin() async {
+    isLoading.value = true;
+    log("loggin in");
+    String path = 'login';
+    String body = '''{
+      "email": "${emailFieldController.text}",
+      "password":"${passwordFieldController.text}"
+    }''';
+    // var body = {"email": "jassimpv@gmail.com", "password": "123@123"};
+    log(body.toString());
+    try {
+      var response = await NetworkHandler.dioAuth(path, body: body);
+      log(response.toString());
+      var json = jsonDecode(response);
+      if (json["code"] == 200) {
+        await SharedPrefHandler.getInstance().setString(
+            json["msg"]["User"]["auth_token"].toString(),
+            SharedPrefHandler.USERTOKEN);
+        await SharedPrefHandler.getInstance().setString(
+            json["msg"]["User"]["id"].toString(), SharedPrefHandler.USERID);
+        log('User Auth Token Saved');
+        AppUtil.isLoggedIn = true;
+        Get.offAllNamed(PageRouteList.splash);
+      } else if (json["code"] == 201) {
+        Get.snackbar(
+          "Invalid Login",
+          "Incorrect login details",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        log(json.toString());
+        Get.snackbar(
+          "Unable to login",
+          "Please try again later",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } on Exception catch (e) {
+      log("LOGIN ERROR CATCHED:: $e");
+    }
+    isLoading.value = false;
+  }
+
+  LoginTypes loginType = LoginTypes.none;
+
+  loginTypeSelector(LoginTypes selectedType) {
+    loginType = selectedType;
+    update();
   }
 
   //VIDEO PLAYER HANDLERS
@@ -76,10 +160,19 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
     activeVideoController?.play();
   }
 
+  bool isAndroid = false;
+  bool isIOS = false;
+
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+
+    if (Platform.isAndroid) {
+      isAndroid = true;
+    } else if (Platform.isIOS) {
+      isIOS = true;
+    }
   }
 
   @override
@@ -97,3 +190,5 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
     }
   }
 }
+
+enum LoginTypes { google, apple, email, otp, none, createAccount }

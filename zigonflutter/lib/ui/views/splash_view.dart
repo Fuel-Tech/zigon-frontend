@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
@@ -17,7 +19,8 @@ class SplashScreen extends StatelessWidget {
   Future<void> splashCheck() async {
     //Check User Logged In
     await splashScreenController.initilizeapp();
-    slideScreenController.setVideoData(splashScreenController.slideListModel!);
+    slideScreenController.setVideoData(splashScreenController.slideListModel);
+    log("DOWNLOADED DATA");
     Get.off(() => VideoSwiper());
   }
 

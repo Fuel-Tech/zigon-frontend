@@ -9,6 +9,10 @@ import 'package:permission_handler/permission_handler.dart';
 class FFmpegServices {
   final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
 
+  cancelTasks() {
+    _flutterFFmpeg.cancel();
+  }
+
   //Video Filter Service//
   videoFilterService(String inputPath, String outputPath,
       {String channelmixer =

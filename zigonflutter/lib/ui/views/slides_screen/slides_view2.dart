@@ -19,83 +19,89 @@ class VideoSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: CommonWidgets.bottomFloatingBar(context),
         extendBody: true,
         body: GetBuilder<SlideScreenController>(builder: (ctrl) {
           return Obx(
-            () => Swiper(
-              itemCount: videoSwiperController.videoList.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (videoSwiperController.currentIndex.value == index) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CachedVideoPlayer(
-                        videoUrl: videoSwiperController.videoList[index],
-                        onInitialized: (controller) => videoSwiperController
-                            .updateIndex(index, controller),
-                      ),
-                      SlidesWidget.onTopGradient(context),
-                      SafeArea(
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: AppUtil.screenWidth(context),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SlidesWidget.watchAllSlidesButton(
-                                          context),
-                                      const SizedBox(width: 10),
-                                      SlidesWidget.watchFollowingSlidesButton(
-                                          context),
-                                    ],
+            () => ctrl.isVideoLoading.isTrue
+                ? const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  )
+                : Swiper(
+                    itemCount: videoSwiperController.videoList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (videoSwiperController.currentIndex.value == index) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CachedVideoPlayer(
+                              videoUrl: videoSwiperController.videoList[index],
+                              onInitialized: (controller) =>
+                                  videoSwiperController.updateIndex(
+                                      index, controller),
+                            ),
+                            SlidesWidget.onTopGradient(context),
+                            SafeArea(
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: SizedBox(
+                                  width: AppUtil.screenWidth(context),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SlidesWidget.watchAllSlidesButton(
+                                                context),
+                                            const SizedBox(width: 10),
+                                            // SlidesWidget.watchFollowingSlidesButton(
+                                            //     context),
+                                          ],
+                                        ),
+                                        // SlidesWidget.liveButton(),
+                                      ],
+                                    ),
                                   ),
-                                  // SlidesWidget.liveButton(),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 70),
-                        child: RightToolBar(
-                          index: index,
-                          slideScreenController: videoSwiperController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 70),
-                        child: BottomToolbar(
-                          index: index,
-                          slideScreenControler: videoSwiperController,
-                        ),
-                      )
-                    ],
-                  );
-                } else {
-                  return Container(); // Empty container for better performance
-                }
-              },
-              onIndexChanged: (index) {
-                videoSwiperController.stopActiveVideo();
-                videoSwiperController.updateIndex(index, null);
-                if (index == videoSwiperController.videoList.length - 1) {
-                  log("Last Video");
-                  videoSwiperController.fetchMoreVideos();
-                }
-              },
-              loop: false,
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              axisDirection: AxisDirection.down,
-            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 70),
+                              child: RightToolBar(
+                                index: index,
+                                slideScreenController: videoSwiperController,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 70),
+                              child: BottomToolbar(
+                                index: index,
+                                slideScreenControler: videoSwiperController,
+                              ),
+                            )
+                          ],
+                        );
+                      } else {
+                        return Container(); // Empty container for better performance
+                      }
+                    },
+                    onIndexChanged: (index) {
+                      videoSwiperController.stopActiveVideo();
+                      videoSwiperController.updateIndex(index, null);
+                      if (index == videoSwiperController.videoList.length - 1) {
+                        log("Last Video");
+                        videoSwiperController.fetchMoreVideos();
+                      }
+                    },
+                    loop: false,
+                    scrollDirection: Axis.vertical,
+                    physics: const BouncingScrollPhysics(),
+                    axisDirection: AxisDirection.down,
+                  ),
           );
         }));
   }
@@ -126,9 +132,10 @@ class RightToolBar extends StatelessWidget {
                         buttonTypes: ButtonTypes.like, context: context);
                   },
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(Icons.favorite_border_outlined,
-                          color: Colors.white, size: 35),
+                          color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
                         '${slideScreenController.slideListModel!.msg[index].Video.like_count} ',
@@ -149,9 +156,10 @@ class RightToolBar extends StatelessWidget {
                         subButtonType: SubButtonType.openDialog);
                   },
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(Icons.mode_comment_outlined,
-                          color: Colors.white, size: 35),
+                          color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
                         '${slideScreenController.slideListModel!.msg[index].Video.comment_count}',
@@ -174,9 +182,10 @@ class RightToolBar extends StatelessWidget {
                         context: context);
                   },
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(Icons.share_outlined,
-                          color: Colors.white, size: 35),
+                          color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
                         'Share',

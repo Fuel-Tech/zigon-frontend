@@ -3,24 +3,32 @@ import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefHandler {
+  late SharedPreferences _preferences;
+  static late SharedPrefHandler _sharedPref;
+
   static const String USERTOKEN = "USERTOKEN";
   static const String USERID = "USERID";
-  
 
-  static setString(String value, String key) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
+  Future<void> instanceInit() async {
+    _preferences = await SharedPreferences.getInstance();
+    _sharedPref = this;
+  }
+
+  static SharedPrefHandler getInstance() {
+    return _sharedPref;
+  }
+
+  Future<void> setString(String value, String key) async {
+    await _preferences.setString(key, value);
     log("$value is stored in key - $key");
   }
 
-  static Future<String?> getString(var key) async {
-    final prefs = await SharedPreferences.getInstance();
-    String? value = prefs.getString(key);
+  getString(var key) {
+    String? value = _preferences.getString(key);
     return value;
   }
 
-  static clearStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+  clearStorage() async {
+    await _preferences.clear();
   }
 }

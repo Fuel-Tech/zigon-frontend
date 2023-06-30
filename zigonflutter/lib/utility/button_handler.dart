@@ -4,9 +4,15 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/controllers/slide_screen_controller.dart';
+import 'package:zigonflutter/ui/views/discover_view/discover_view.dart';
+import 'package:zigonflutter/ui/views/notifications_view/notifications_view.dart';
+import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
+import 'package:zigonflutter/ui/views/slides_screen/slides_view2.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
+import '../ui/views/video_upload_screens/camera_page.dart';
 import '../ui/widgets/common_widgets.dart';
 import 'navigation_utility.dart';
 
@@ -16,41 +22,43 @@ class ButtonHandler {
       SubButtonType? subButtonType,
       var value,
       required BuildContext context}) {
-    final SlidesController buttonController = Get.find();
+    final AppController buttonController = Get.find();
+    // LOGIN NOT REQUIRED FUNCTIONS
     if (buttonTypes == ButtonTypes.slide ||
         buttonTypes == ButtonTypes.share ||
         buttonTypes == ButtonTypes.slidesList ||
         buttonTypes == ButtonTypes.setting) {
       if (buttonTypes == ButtonTypes.slide) {
         buttonController.navBarHandler(NavBarSelectionItem.slide);
-        Get.toNamed(PageRouteList.slides);
+        Get.to(() => VideoSwiper());
       } else if (buttonTypes == ButtonTypes.share) {
         var shareUrl = value;
         Share.share('Check out this video from ZigOn - $shareUrl');
       } else if (buttonTypes == ButtonTypes.slidesList) {
       } else if (buttonTypes == ButtonTypes.setting) {}
-    } else {
-      if (buttonController.isLoggedIn) {
+    }
+    // LOGIN REQUIRED FUNCTIONS
+    else {
+      if (AppUtil.isLoggedIn) {
         if (buttonTypes == ButtonTypes.camera) {
-          Get.toNamed(PageRouteList.camera);
+          Get.to(() => CameraPage());
         } else if (buttonTypes == ButtonTypes.discover) {
           buttonController.navBarHandler(NavBarSelectionItem.discover);
-          Get.toNamed(PageRouteList.discover);
+          Get.to(() => DiscoverView());
         } else if (buttonTypes == ButtonTypes.notification) {
           buttonController.navBarHandler(NavBarSelectionItem.notification);
-          Get.toNamed(PageRouteList.notification);
+          Get.to(() => NotificationsView());
         } else if (buttonTypes == ButtonTypes.userprofile) {
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
-          Get.toNamed(PageRouteList.userProfile);
+          Get.to(() => ProfileView());
         } else if (buttonTypes == ButtonTypes.like) {
           // buttonController.likeButtonHandler(0);
         } else if (buttonTypes == ButtonTypes.comment) {
-          buttonController.getComments();
+          Get.find<SlideScreenController>().getComments();
           showModalBottomSheet(
             context: context,
             builder: (context) {
-              return CommonWidgets.commentDialogWidget(
-                  context, buttonController);
+              return CommonWidgets.commentDialogWidget(context);
             },
           );
         } else if (buttonTypes == ButtonTypes.followingSlidesList) {
@@ -69,12 +77,12 @@ loginBottomSheet(BuildContext context) {
   showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Color.fromARGB(255, 228, 228, 228),
+      backgroundColor: const Color.fromARGB(255, 228, 228, 228),
       builder: (context) {
         return Padding(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: GetBuilder<SlidesController>(builder: (controller) {
+          child: GetBuilder<SlideScreenController>(builder: (controller) {
             return Container(
               height: AppUtil.screenHeight(context) / 2.4,
               decoration: const BoxDecoration(
@@ -102,7 +110,7 @@ loginBottomSheet(BuildContext context) {
       });
 }
 
-defaultLoginState(BuildContext context, SlidesController controller) {
+defaultLoginState(BuildContext context, SlideScreenController controller) {
   return Column(
     children: [
       //Login With Google or Apple
@@ -242,7 +250,7 @@ defaultLoginState(BuildContext context, SlidesController controller) {
   );
 }
 
-otpLoginState(BuildContext context, SlidesController controller) {
+otpLoginState(BuildContext context, SlideScreenController controller) {
   return ListView(
     children: [
       Row(
@@ -360,129 +368,135 @@ otpLoginState(BuildContext context, SlidesController controller) {
   );
 }
 
-emailLoginState(BuildContext context, SlidesController controller) {
-  return Form(
-    child: ListView(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                onPressed: () {
-                  controller.loginTypeSelector(LoginTypes.none);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: Colors.black,
-                  size: 24,
-                )),
-            Text(
-              'Login with email',
-              style: GoogleFonts.raleway(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.transparent,
-                )),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            elevation: 4,
-            child: TextFormField(
-              controller: controller.emailFieldController,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: 'Email',
-                hintStyle: TextStyle(color: Colors.grey.shade500),
-                filled: true,
-                fillColor: Colors.white,
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            elevation: 4,
-            child: TextFormField(
-              controller: controller.passwordFieldController,
-              obscureText: true,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: 'Password',
-                hintStyle: TextStyle(color: Colors.grey.shade500),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 30),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 60),
-          child: GestureDetector(
-            onTap: () async {
-              await controller.userLogin();
-            },
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: AppUtil.secondary,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade600,
-                      offset: Offset(0, 4),
-                      blurRadius: 6.0,
-                    )
-                  ]),
-              alignment: Alignment.center,
-              child: Text(
-                'Login',
-                style: GoogleFonts.quicksand(
-                  fontWeight: FontWeight.w700,
+emailLoginState(BuildContext context, SlideScreenController controller) {
+  return Obx(
+    () => Form(
+      child: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    controller.loginTypeSelector(LoginTypes.none);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.black,
+                    size: 24,
+                  )),
+              Text(
+                'Login with email',
+                style: GoogleFonts.raleway(
                   fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.transparent,
+                  )),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              elevation: 4,
+              child: TextFormField(
+                controller: controller.emailFieldController,
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: 'Email',
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: AppUtil.secondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: 20),
-      ],
+          const SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              elevation: 4,
+              child: TextFormField(
+                controller: controller.passwordFieldController,
+                obscureText: true,
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: 'Password',
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: AppUtil.secondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 90),
+            child: GestureDetector(
+              onTap: () async {
+                await controller.userLogin();
+              },
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                    color: AppUtil.secondary,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade600,
+                        offset: Offset(0, 4),
+                        blurRadius: 6.0,
+                      )
+                    ]),
+                alignment: Alignment.center,
+                child: controller.isLoading.isTrue
+                    ? const CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      )
+                    : Text(
+                        'Login',
+                        style: GoogleFonts.quicksand(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+      ),
     ),
   );
 }
 
-createAccountState(SlidesController controller, BuildContext context) {
+createAccountState(SlideScreenController controller, BuildContext context) {
   return Column(
     children: [
       Row(

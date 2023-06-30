@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/button_handler.dart';
 
 class CommonWidgets {
   static Widget bottomFloatingBar(BuildContext context) {
-    final SlidesController appController = Get.put(SlidesController());
+    final AppController appController = Get.put(AppController());
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: ClipRRect(
@@ -20,7 +21,7 @@ class CommonWidgets {
             sigmaX: 4.0,
             sigmaY: 4.0,
           ),
-          child: GetBuilder<SlidesController>(builder: (controller) {
+          child: GetBuilder<AppController>(builder: (controller) {
             return Container(
               width: AppUtil.screenWidth(context) - 20,
               height: 60,
@@ -132,17 +133,16 @@ class CommonWidgets {
 
   static showDialogBox(BuildContext context,
       {ButtonTypes? buttonTypes, var values, SubButtonType? subButtonType}) {
-    final SlidesController slidesController = Get.find();
     showDialog(
       context: context,
-      builder: (_) => GetBuilder<SlidesController>(builder: (controller) {
+      builder: (_) => GetBuilder<AppController>(builder: (controller) {
         return SimpleDialog(
           backgroundColor: Colors.transparent,
           alignment: Alignment.bottomCenter,
           insetPadding:
               const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
           contentPadding: EdgeInsets.zero,
-          children: [commentDialogWidget(context, slidesController)],
+          children: [commentDialogWidget(context)],
         );
       }),
     );
@@ -159,8 +159,8 @@ class CommonWidgets {
         });
   }
 
-  static commentDialogWidget(
-      BuildContext context, SlidesController slidesController) {
+  static commentDialogWidget(BuildContext context) {
+    final SlideScreenController slideScreenController = Get.find();
     return Container(
       width: AppUtil.screenWidth(context),
       height: AppUtil.screenHeight(context) / 1.5,
@@ -187,12 +187,12 @@ class CommonWidgets {
             ),
             Divider(),
             const SizedBox(height: 20),
-            slidesController.commentList == null
+            slideScreenController.commentList == null
                 ? const CircularProgressIndicator()
                 : Expanded(
                     child: ListView.builder(
                       itemCount:
-                          slidesController.commentList!.commentList.length,
+                          slideScreenController.commentList!.commentList.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -205,7 +205,7 @@ class CommonWidgets {
                                     backgroundColor: Colors.amber,
                                     radius: 24,
                                     backgroundImage: NetworkImage(
-                                        '${slidesController.commentList!.commentList[index].userPic}'),
+                                        '${slideScreenController.commentList!.commentList[index].userPic}'),
                                   ),
                                   const SizedBox(width: 10),
                                   Column(
@@ -214,13 +214,13 @@ class CommonWidgets {
                                       Row(
                                         children: [
                                           Text(
-                                            '${slidesController.commentList!.commentList[index].commentUser}',
+                                            '${slideScreenController.commentList!.commentList[index].commentUser}',
                                             style: AppUtil.textStyle2(
                                                 weight: FontWeight.w600),
                                           ),
                                           const SizedBox(width: 5),
                                           Text(
-                                            '${slidesController.commentList!.commentList[index].comment}',
+                                            '${slideScreenController.commentList!.commentList[index].comment}',
                                             style: AppUtil.textStyle2(
                                                 weight: FontWeight.w400),
                                           ),
@@ -232,7 +232,7 @@ class CommonWidgets {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '${slidesController.commentList!.commentList[index].commentedTime}',
+                                            '${slideScreenController.commentList!.commentList[index].commentedTime}',
                                             style: AppUtil.textStyle2(
                                               textColor: Colors.grey,
                                               textSize: 12,
@@ -241,7 +241,7 @@ class CommonWidgets {
                                           ),
                                           SizedBox(width: 20),
                                           Text(
-                                            '${slidesController.commentList!.commentList[index].commentLike} likes',
+                                            '${slideScreenController.commentList!.commentList[index].commentLike} likes',
                                             style: AppUtil.textStyle2(
                                               textColor: Colors.grey,
                                               textSize: 12,

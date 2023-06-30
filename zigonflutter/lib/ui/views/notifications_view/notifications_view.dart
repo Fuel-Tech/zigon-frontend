@@ -20,7 +20,7 @@ class NotificationsView extends StatelessWidget {
       backgroundColor: AppUtil.primary,
       extendBodyBehindAppBar: true,
       appBar: CommonWidgets.customAppBar(title: 'Notifications'),
-      body: GetBuilder<SlidesController>(builder: (controller) {
+      body: GetBuilder<NotificationController>(builder: (controller) {
         return Column(
           children: [
             Expanded(
@@ -51,11 +51,13 @@ class NotificationsView extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        AppUtil.formatter1.format(notificationController.now),
+                                        AppUtil.formatter1
+                                            .format(notificationController.now),
                                         style: GoogleFonts.raleway(),
                                       ),
                                       Text(
-                                        AppUtil.timeFormat.format(notificationController.now),
+                                        AppUtil.timeFormat
+                                            .format(notificationController.now),
                                         style: GoogleFonts.raleway(),
                                       ),
                                     ],

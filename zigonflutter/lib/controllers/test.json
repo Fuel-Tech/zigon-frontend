@@ -1,43 +1,56 @@
 {
-  "status": "success",
-  "slideList": [
+  "data": [
     {
-      "slideName": "video6",
-      "slideURL": "https://assets.mixkit.co/videos/preview/mixkit-blogging-girl-down-the-street-with-his-cell-34487-large.mp4",
-      "slideDuration": "0",
-      "slideTags": "tag1, tag2, tag3",
-      "slideDesc": "These are slides added to zigon for testing purposes, delete after done",
-      "slideLikes": 20,
-      "slideComments": { "count": 12, "commentID": 1 },
-      "audioName": "Song 1",
-      "audio": ".mp4",
-      "audioID": 1,
-      "slideViews": 12,
-      "metadata": {
-        "username": "Harry101_",
-        "userID": 1,
-        "isVerified": true,
-        "profilepicture": "https://mixkit.imgix.net/videos/preview/mixkit-couple-walk-around-a-lake-in-nature-41538-0.jpg"
-      }
+      "id": 1,
+      "gif": "https://im4.ezgif.com/tmp/ezgif-4-448d4ea6d6.gif",
+      "img":
+          "https://images.pexels.com/photos/1661496/pexels-photo-1661496.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "profilePic":
+          "https://images.pexels.com/photos/1722198/pexels-photo-1722198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "userName": "Harry R",
+      "likes": 10,
+      "views": 2000,
+      "comments": 3,
+      "isFollowing": true
     },
     {
-      "slideName": "video7",
-      "slideURL": "https://assets.mixkit.co/videos/preview/mixkit-photographer-portraying-a-model-in-his-studio-34507-large.mp4",
-      "slideDuration": "0",
-      "slideTags": "tag3, tag2",
-      "slideDesc": "These are slides added to zigon for testing purposes, delete after done",
-      "slideLikes": 12,
-      "slideComments": { "count": 20, "commentID": 1 },
-      "audioName": "Song 1",
-      "audio": ".mp4",
-      "audioID": 1,
-      "slideViews": 12,
-      "metadata": {
-        "username": "Jaachu_",
-        "userID": 1,
-        "isVerified": false,
-        "profilepicture": "https://mixkit.imgix.net/videos/preview/mixkit-profile-of-a-distressed-young-woman-8736-0.jpg"
-      }
+      "id": 2,
+      "gif": "https://im4.ezgif.com/tmp/ezgif-4-448d4ea6d6.gif",
+      "img":
+          "https://images.pexels.com/photos/1933587/pexels-photo-1933587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "profilePic":
+          "https://images.pexels.com/photos/3767392/pexels-photo-3767392.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "userName": "Sam J",
+      "likes": 10,
+      "views": 2000,
+      "comments": 3,
+      "isFollowing": true
+    },
+    {
+      "id": 3,
+      "gif": "https://im4.ezgif.com/tmp/ezgif-4-448d4ea6d6.gif",
+      "img":
+          "https://images.pexels.com/photos/2918010/pexels-photo-2918010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "profilePic":
+          "https://images.pexels.com/photos/1170261/pexels-photo-1170261.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "userName": "Alex",
+      "likes": 10,
+      "views": 2000,
+      "comments": 3,
+      "isFollowing": true
+    },
+    {
+      "id": 4,
+      "gif": "https://im4.ezgif.com/tmp/ezgif-4-448d4ea6d6.gif",
+      "img":
+          "https://images.pexels.com/photos/2009968/pexels-photo-2009968.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "profilePic":
+          "https://images.pexels.com/photos/1722198/pexels-photo-1722198.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "userName": "Harry R",
+      "likes": 10,
+      "views": 2000,
+      "comments": 3,
+      "isFollowing": true
     }
   ]
 }

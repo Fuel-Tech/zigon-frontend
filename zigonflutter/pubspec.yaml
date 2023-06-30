@@ -56,6 +56,7 @@ dependencies:
   flutter_ffmpeg: ^0.4.2
   path_provider: ^2.0.14
   flutter_cache_manager: ^3.3.0
+  textfield_tags: ^2.0.2
 
 dev_dependencies:
   flutter_test:

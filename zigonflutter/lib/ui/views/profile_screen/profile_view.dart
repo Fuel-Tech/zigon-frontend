@@ -1,20 +1,24 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/ui/views/user_settings_screen.dart/user_settings_view.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
-import 'package:zigonflutter/utility/navigation_utility.dart';
+import 'package:zigonflutter/utility/network_utility.dart';
 
 class ProfileView extends StatelessWidget with ProfileWidgets {
   ProfileView({Key? key}) : super(key: key);
   final ProfileController profileController = Get.put(ProfileController());
+  final List<String> thumbs = [
+    'https://images.pexels.com/photos/3889742/pexels-photo-3889742.jpeg',
+    'https://images.pexels.com/photos/4871012/pexels-photo-4871012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/2499699/pexels-photo-2499699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+  ];
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -22,7 +26,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
       child: Scaffold(
         backgroundColor: const Color(0xff232323),
         body: SafeArea(
-          child: GetBuilder<SlidesController>(builder: (controller) {
+          child: GetBuilder<ProfileController>(builder: (ctrl) {
             return Column(
               children: [
                 //Profile Header
@@ -36,8 +40,9 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                         children: [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: NetworkImage(
-                                'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'),
+                            backgroundImage: NetworkImage(IMG_URL +
+                                (ctrl.userProfileModel?.msg.User.profile_pic ??
+                                    '')),
                           ),
                           SizedBox(width: 8),
                           Column(
@@ -61,7 +66,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Icon(Icons.facebook),
                                   SizedBox(width: 10),
                                   Icon(Ionicons.logo_instagram),
@@ -74,58 +79,68 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                         ],
                       ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppUtil.primary,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.white),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 8),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.message,
-                                  size: 16,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Message',
-                                  style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 12,
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppUtil.secondary,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.white),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 8),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add_box_rounded,
+                                    size: 16,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Follow',
+                                    style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 15),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppUtil.primary,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.white),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 8),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.message,
-                                  size: 16,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Message',
-                                  style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 12,
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() => UserSettingsView());
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppUtil.primary,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.white),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 8),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.message,
+                                    size: 16,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Message',
+                                    style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -157,36 +172,71 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                 ),
                 SizedBox(height: 30),
                 TabBar(
-                  tabs: [
+                  tabs: const [
                     Text('Slides'),
                     Text('Liked'),
                     Text('Favouite'),
                   ],
                   indicatorColor: AppUtil.secondary,
+                  indicatorWeight: 4,
                 ),
-                TabBarView(
-                  children: [
-                    Container(),
-                    // GridView.builder(
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //       crossAxisCount: 3),
-                    //       itemCount: 3,
-                    //       shrinkWrap: true,
-                    //   itemBuilder: (context, index) {
-                    //     return Container(
-                    //       color: Colors.red,
-                    //     );
-                    //   },
-                    // ),
-                    Container(),
-                    Container(),
-                  ],
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 9 / 16,
+                        ),
+                        itemCount: thumbs.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return slideGridWidgets(
+                            thumbUrl: thumbs[index],
+                            likes: '2k',
+                            comments: '12',
+                            views: '32k',
+                          );
+                        },
+                      ),
+                      GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 9 / 16,
+                        ),
+                        itemCount: thumbs.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return slideGridWidgets(
+                            thumbUrl: thumbs[index],
+                            likes: '2k',
+                            comments: '12',
+                            views: '32k',
+                          );
+                        },
+                      ),
+                      GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, childAspectRatio: 9 / 16),
+                        itemCount: thumbs.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return slideGridWidgets(
+                            thumbUrl: thumbs[index],
+                            likes: '2k',
+                            comments: '12',
+                            views: '32k',
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 )
               ],
             );
           }),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: CommonWidgets.bottomFloatingBar(context),
       ),
     );
@@ -194,6 +244,55 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
 }
 
 List t = ['t2', 't3', 't4'];
+
+slideGridWidgets({
+  String thumbUrl = '',
+  String likes = '0',
+  String comments = '0',
+  String views = '0',
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage(
+          thumbUrl,
+        ),
+        fit: BoxFit.cover,
+        // colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+
+        filterQuality: FilterQuality.low,
+      ),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.remove_red_eye),
+              Text('$views'),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(Icons.message_rounded),
+              Text('$comments'),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(Icons.favorite),
+              Text('$likes'),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
 userProfileNavBar(
     ProfileController controller, String title, ProfileTabSelected value) {

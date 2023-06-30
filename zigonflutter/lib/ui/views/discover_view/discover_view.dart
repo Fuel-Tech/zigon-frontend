@@ -5,18 +5,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
+import '../../../controllers/discover_controller.dart';
 import '../../widgets/common_widgets.dart';
 
 class DiscoverView extends StatelessWidget {
   DiscoverView({Key? key}) : super(key: key);
-  final SlidesController slidesController = Get.find();
+  final DiscoverController discoverController = Get.put(DiscoverController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtil.primary,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CommonWidgets.bottomFloatingBar(context),
-      body: GetBuilder<SlidesController>(builder: (controller) {
+      body: GetBuilder<DiscoverController>(builder: (controller) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,

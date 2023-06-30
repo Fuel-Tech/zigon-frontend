@@ -70,14 +70,14 @@ class SlidesController extends GetxController with TextFieldControllers {
   bool isLoggedIn = false;
 
   logOut() async {
-    await SharedPrefHandler.clearStorage();
+    await SharedPrefHandler.getInstance().clearStorage();
     log("User Logged Out");
     Get.toNamed(PageRouteList.splash);
   }
 
   isUserLoggedIn() async {
-    var userToken =
-        await SharedPrefHandler.getString(SharedPrefHandler.USERTOKEN);
+    var userToken = await SharedPrefHandler.getInstance()
+        .getString(SharedPrefHandler.USERTOKEN);
     log(userToken.toString());
     if (userToken == null || userToken == "USERTOKEN") {
       log('User Not Logged In');
@@ -104,10 +104,10 @@ class SlidesController extends GetxController with TextFieldControllers {
     log(response.toString());
     var json = jsonDecode(response);
     userProfileModel = UserProfileModel.fromJson(json);
-    await SharedPrefHandler.setString(
+    await SharedPrefHandler.getInstance().setString(
         userProfileModel!.msg.User.auth_token.toString(),
         SharedPrefHandler.USERTOKEN);
-    await SharedPrefHandler.setString(
+    await SharedPrefHandler.getInstance().setString(
         userProfileModel!.msg.User.id.toString(), SharedPrefHandler.USERID);
     log('User Auth Token Saved');
     isLoggedIn = true;
@@ -147,7 +147,7 @@ class SlidesController extends GetxController with TextFieldControllers {
 
   getUsedDetails() async {
     String? userID =
-        await SharedPrefHandler.getString(SharedPrefHandler.USERID);
+        await SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     log(userID ?? "Null");
     String path = 'showUserDetail';
     String body = '''{
@@ -186,21 +186,6 @@ class SlidesController extends GetxController with TextFieldControllers {
   // }
 
   ///Comments
-  CommentListModel? commentList;
-  getComments() async {
-    Dio dio = Dio();
-    String postUrl = 'https://mocki.io/v1/ba663eae-94c4-4176-a73c-9e167ef48697';
-    try {
-      var response = await dio.get(postUrl);
-      log(response.toString());
-      if (response.statusCode == 200) {
-        commentList = CommentListModel.fromJson(response.data);
-        Get.toNamed(PageRouteList.slides);
-        // log(commentList.toString());
-        update();
-      }
-    } catch (e) {}
-  }
 
   // bool userLiked = false;
   // bool isLiked = false;
@@ -291,13 +276,6 @@ class SlidesController extends GetxController with TextFieldControllers {
   }
   // -------------------------------------------
 
-  var selectedNavBarItem = NavBarSelectionItem.slide;
-
-  navBarHandler(var value) {
-    selectedNavBarItem = value;
-    update();
-  }
-
   //----------------------------------------------------
 
   bool isTest = false;
@@ -312,18 +290,6 @@ class SlidesController extends GetxController with TextFieldControllers {
   }
 
   //LOGIN SHEET HANDLER----------------------------------------------------
-  LoginTypes loginType = LoginTypes.none;
-
-  loginTypeSelector(LoginTypes selectedType) {
-    loginType = selectedType;
-    update();
-    // if (selectedType == LoginTypes.email) {
-    //   loginType = LoginTypes.email;
-    // } else if (selectedType == LoginTypes.otp) {
-    //   loginType = LoginTypes.email;
-    // } else if (selectedType == LoginTypes.google) {
-    // } else if (selectedType == LoginTypes.apple) {}
-  }
 
   // loginWithEmail(String email, String password) async {
   //   log('Logging in with Email');
@@ -344,8 +310,6 @@ class SlidesController extends GetxController with TextFieldControllers {
 }
 
 enum ProfileTabSelected { slides, liked, saved }
-
-enum LoginTypes { google, apple, email, otp, none, createAccount }
 
 enum NavBarSelectionItem {
   slide,

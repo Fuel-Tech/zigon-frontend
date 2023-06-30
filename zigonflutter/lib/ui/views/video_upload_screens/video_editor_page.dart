@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
@@ -8,7 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:zigonflutter/ui/views/video_upload_screens/upload_final_screen.dart';
 
+import '../../../utility/app_utility.dart';
 import 'camera_page.dart';
 import 'ffmpeg_services.dart';
 import 'filter_services.dart';
@@ -80,6 +83,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
     return WillPopScope(
       onWillPop: () async {
         setState(() {
+          _fFmpegServices.cancelTasks();
           _controller.dispose();
           thumbnailList.clear();
           Navigator.pushReplacement(context, MaterialPageRoute(
@@ -92,7 +96,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
       },
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: AppUtil.primary,
           body: Column(
             children: [
               //Top Bar
@@ -280,6 +284,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
     String opPath = "${tempDir.path}/tempeditfile.mp4";
     Uint8List? thumbPic;
     try {
+      log("Saving Video");
       if (endTime != 0.0) {
         log("Trimming Video --------------------");
         opPath = await _fFmpegServices.trimVideo(widget.videoFile.path,
@@ -306,28 +311,19 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
         log("$opPath");
       }
 
-      thumbPic = await _fFmpegServices.getVideoThumbnail(
-          thumbnailName: 'uploadthumb', videoPath: opPath, timeMs: 1500);
-
-      log("Saving Video");
+      // thumbPic = await _fFmpegServices.getVideoThumbnail(
+      //     thumbnailName: 'uploadthumb', videoPath: opPath, timeMs: 1500);
+      Get.to(() => UploadFinalScreen(), arguments: {
+        "file": File(opPath),
+        "thumb": thumbnailList[0],
+      });
+      log("Saved Video");
     } catch (e) {
       log("TRYCATCH - $e");
       return;
     }
 
     // Navigate to preview screen with the edited video file
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return UploadVideoWidget(
-            thumbnail: thumbPic!,
-            videoPath: File(opPath),
-            aspectRatio: _controller.value.aspectRatio,
-          );
-        },
-      ),
-    );
   }
 
   String selectFilter(int _) {

@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "811560687861",
-    "project_id": "zigonflutter",
-    "storage_bucket": "zigonflutter.appspot.com"
+    "project_number": "531541602163",
+    "project_id": "zigonfirebase",
+    "storage_bucket": "zigonfirebase.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:811560687861:android:b7ee061c1a149411738dbc",
+        "mobilesdk_app_id": "1:531541602163:android:cac83e910a50dd85535f06",
         "android_client_info": {
           "package_name": "com.fuel.zigonflutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "811560687861-osnp6rukml7jfvldptk5c8j549vtk1m5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fuel.zigonflutter",
-            "certificate_hash": "5ed87c9078ec7a6c766520c2ad7e265af347372b"
-          }
-        },
-        {
-          "client_id": "811560687861-7897ldkoarn9ejloieojfh0qhvi74dbf.apps.googleusercontent.com",
+          "client_id": "531541602163-0us8or6f74ks2urcvmuhr9ad778dl1b7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDm8C-sWpJp-0GxhzpTtSIzae7D2C3tQ_k"
+          "current_key": "AIzaSyDo7EpaeWmMRsunl24sOejFcyG-e1E6hbY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "811560687861-7897ldkoarn9ejloieojfh0qhvi74dbf.apps.googleusercontent.com",
+              "client_id": "531541602163-0us8or6f74ks2urcvmuhr9ad778dl1b7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
