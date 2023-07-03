@@ -15,7 +15,7 @@ import '../models/slide-list-model/slide_list_model.dart';
 import '../utility/navigation_utility.dart';
 import '../utility/network_utility.dart';
 
-class SlideScreenController extends GetxController with WidgetsBindingObserver {
+class SlideScreenController extends GetxController {
   SlideListModel? slideListModel;
   RxList<String> videoList = RxList<String>();
   int startingPoint = 1;
@@ -57,7 +57,7 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
       "user_id":${int.tryParse(userID)},
       "starting_point":$startingPoint,
       "device_id":1,
-      "limit":3
+      "limit":4
     }''';
     var response = await NetworkHandler.dioPost(endpoint, body: body);
     if (response['code'] == 200) {
@@ -65,6 +65,8 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
       var newSlideListModel = SlideListModel.fromJson(json);
       setVideoData(newSlideListModel);
       isLoading.value = false;
+    } else if (response['code'] == 201) {
+      log("NO MORE VIDEOS TO SHOW!!!");
     }
     // slideListModel = SlideListModel.fromJson(json);
     // setVideoData(slideListModel!);
@@ -153,11 +155,21 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
   }
 
   void stopActiveVideo() {
+    log("VIDEO STATUS: STOPPED");
     activeVideoController?.pause();
   }
 
   void playActiveVideo() {
+    log("VIDEO STATUS: PLAYING");
     activeVideoController?.play();
+  }
+
+  void handleRouteChange(String route) {
+    if (route == PageRouteList.slides) {
+      playActiveVideo();
+    } else {
+      stopActiveVideo();
+    }
   }
 
   bool isAndroid = false;
@@ -166,8 +178,17 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
-
+    log("SLIDE CTRL INITALIZED!!!");
+    Get.routing.current;
+    log("INIT ROUTING ${Get.routing.current}");
+    Get.routing.obs.listen((routing) {
+      log("CURRENT ROUTE ${routing.current}");
+      if (routing.current == PageRouteList.slides) {
+        playActiveVideo();
+      } else {
+        stopActiveVideo();
+      }
+    });
     if (Platform.isAndroid) {
       isAndroid = true;
     } else if (Platform.isIOS) {
@@ -177,18 +198,17 @@ class SlideScreenController extends GetxController with WidgetsBindingObserver {
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      playActiveVideo();
-    } else if (state == AppLifecycleState.paused) {
-      stopActiveVideo();
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     playActiveVideo();
+  //   } else if (state == AppLifecycleState.paused) {
+  //     stopActiveVideo();
+  //   }
+  // }
 }
 
 enum LoginTypes { google, apple, email, otp, none, createAccount }

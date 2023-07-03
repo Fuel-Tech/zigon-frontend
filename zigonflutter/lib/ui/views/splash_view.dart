@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:zigonflutter/controllers/splash_screen_controller.dart';
+import 'package:zigonflutter/utility/navigation_utility.dart';
 
 import 'slides_screen/slides_view2.dart';
 
@@ -11,17 +12,17 @@ import 'slides_screen/slides_view2.dart';
 
 class SplashScreen extends StatelessWidget {
   SplashScreen({Key? key}) : super(key: key);
-  final SlideScreenController slideScreenController =
-      Get.put(SlideScreenController());
+
   final SplashScreenController splashScreenController =
       Get.put(SplashScreenController());
 
   Future<void> splashCheck() async {
     //Check User Logged In
     await splashScreenController.initilizeapp();
-    slideScreenController.setVideoData(splashScreenController.slideListModel);
+    Get.find<SlideScreenController>()
+        .setVideoData(splashScreenController.slideListModel);
     log("DOWNLOADED DATA");
-    Get.off(() => VideoSwiper());
+    Get.offNamed(PageRouteList.slides);
   }
 
   @override

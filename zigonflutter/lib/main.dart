@@ -30,7 +30,7 @@ Future<void> main() async {
   _requestPermissions();
   HttpOverrides.global = MyHttpOverrides();
   Get.lazyPut(() => AppController(), fenix: true);
-  Get.lazyPut(() => SlideScreenController(), fenix: true);
+  Get.put(SlideScreenController(), permanent: true);
   runApp(MyApp());
 }
 
@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
       title: 'ZigOn',
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
+      initialRoute: '/',
       // defaultTransition: Transition.rightToLeftWithFade,
       getPages: [
         GetPage(name: PageRouteList.splash, page: () => SplashScreen()),

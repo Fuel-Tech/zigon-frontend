@@ -30,7 +30,8 @@ class ButtonHandler {
         buttonTypes == ButtonTypes.setting) {
       if (buttonTypes == ButtonTypes.slide) {
         buttonController.navBarHandler(NavBarSelectionItem.slide);
-        Get.to(() => VideoSwiper());
+        Get.toNamed(PageRouteList.slides);
+        Get.find<SlideScreenController>().playActiveVideo();
       } else if (buttonTypes == ButtonTypes.share) {
         var shareUrl = value;
         Share.share('Check out this video from ZigOn - $shareUrl');
@@ -41,14 +42,22 @@ class ButtonHandler {
     else {
       if (AppUtil.isLoggedIn) {
         if (buttonTypes == ButtonTypes.camera) {
-          Get.to(() => CameraPage());
+          Get.find<SlideScreenController>().stopActiveVideo();
+
+          Get.toNamed(PageRouteList.camera);
         } else if (buttonTypes == ButtonTypes.discover) {
+          Get.find<SlideScreenController>().stopActiveVideo();
+
           buttonController.navBarHandler(NavBarSelectionItem.discover);
-          Get.to(() => DiscoverView());
+          Get.toNamed(PageRouteList.discover);
         } else if (buttonTypes == ButtonTypes.notification) {
+          Get.find<SlideScreenController>().stopActiveVideo();
+
           buttonController.navBarHandler(NavBarSelectionItem.notification);
-          Get.to(() => NotificationsView());
+          Get.toNamed(PageRouteList.notification);
         } else if (buttonTypes == ButtonTypes.userprofile) {
+          Get.find<SlideScreenController>().stopActiveVideo();
+
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
           Get.to(() => ProfileView());
         } else if (buttonTypes == ButtonTypes.like) {
