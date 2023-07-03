@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/models/user_profile_model/user_profile_model.dart';
@@ -13,13 +16,14 @@ class ProfileController extends GetxController {
 
   ///FETCHED USER DETAILS
   Future<void> getUserDetails() async {
-    String path = "showUserDetails";
+    String path = "showUserDetail";
     String body = '''{
-      "user_id: $userID
+      "user_id": "$userID"
     }''';
 
     var response = await NetworkHandler.dioPost(path, body: body);
-
+    response = jsonDecode(response);
+    log(response.toString());
     if (response["code"] == 200) {
       userProfileModel = UserProfileModel.fromJson(response);
       isLoading.value = false;

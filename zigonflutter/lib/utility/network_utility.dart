@@ -27,6 +27,7 @@ class NetworkHandler {
 
     String postUrl = BASE_URL + path;
     log('DIO POST URL: $postUrl');
+    log('DIO POST BODY: $body');
 
     Response<dynamic> response;
     if (body == null) {

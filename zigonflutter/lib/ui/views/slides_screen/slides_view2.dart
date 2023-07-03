@@ -14,7 +14,6 @@ import 'video_player.dart';
 
 class VideoSwiper extends StatelessWidget {
   VideoSwiper({super.key});
-  final SlideScreenController videoSwiperController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,17 +28,16 @@ class VideoSwiper extends StatelessWidget {
                     child: CircularProgressIndicator.adaptive(),
                   )
                 : Swiper(
-                    itemCount: videoSwiperController.videoList.length,
+                    itemCount: ctrl.videoList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (videoSwiperController.currentIndex.value == index) {
+                      if (ctrl.currentIndex.value == index) {
                         return Stack(
                           alignment: Alignment.center,
                           children: [
                             CachedVideoPlayer(
-                              videoUrl: videoSwiperController.videoList[index],
+                              videoUrl: ctrl.videoList[index],
                               onInitialized: (controller) =>
-                                  videoSwiperController.updateIndex(
-                                      index, controller),
+                                  ctrl.updateIndex(index, controller),
                             ),
                             SlidesWidget.onTopGradient(context),
                             SafeArea(
@@ -73,14 +71,14 @@ class VideoSwiper extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 70),
                               child: RightToolBar(
                                 index: index,
-                                slideScreenController: videoSwiperController,
+                                slideScreenController: ctrl,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 70),
                               child: BottomToolbar(
                                 index: index,
-                                slideScreenControler: videoSwiperController,
+                                slideScreenControler: ctrl,
                               ),
                             )
                           ],
@@ -90,11 +88,11 @@ class VideoSwiper extends StatelessWidget {
                       }
                     },
                     onIndexChanged: (index) {
-                      videoSwiperController.stopActiveVideo();
-                      videoSwiperController.updateIndex(index, null);
-                      if (index == videoSwiperController.videoList.length - 1) {
+                      ctrl.stopActiveVideo();
+                      ctrl.updateIndex(index, null);
+                      if (index == ctrl.videoList.length - 1) {
                         log("Last Video");
-                        videoSwiperController.fetchMoreVideos();
+                        ctrl.fetchMoreVideos();
                       }
                     },
                     loop: false,
