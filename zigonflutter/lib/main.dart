@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
       initialRoute: '/',
-      // defaultTransition: Transition.rightToLeftWithFade,
+      defaultTransition: Transition.rightToLeftWithFade,
       getPages: [
         GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
         GetPage(name: PageRouteList.slides, page: () => VideoSwiper()),
