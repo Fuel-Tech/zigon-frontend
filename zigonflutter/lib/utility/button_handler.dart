@@ -84,39 +84,43 @@ class ButtonHandler {
 loginBottomSheet(BuildContext context) {
   //Pop Login Dialog Box
   showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: const Color.fromARGB(255, 228, 228, 228),
-      builder: (context) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: GetBuilder<SlideScreenController>(builder: (controller) {
-            return Container(
-              height: AppUtil.screenHeight(context) / 2.4,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
+    context: context,
+    isScrollControlled: false,
+    backgroundColor: const Color.fromARGB(255, 228, 228, 228),
+    builder: (context) {
+      return Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: GetBuilder<SlideScreenController>(builder: (controller) {
+          return Wrap(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 20, bottom: 20),
+                  child: controller.loginType == LoginTypes.none
+                      ? defaultLoginState(context, controller)
+                      : controller.loginType == LoginTypes.email
+                          ? emailLoginState(context, controller)
+                          : controller.loginType == LoginTypes.otp
+                              ? otpLoginState(context, controller)
+                              : controller.loginType == LoginTypes.createAccount
+                                  ? createAccountState(controller, context)
+                                  : defaultLoginState(context, controller),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 20),
-                child: controller.loginType == LoginTypes.none
-                    ? defaultLoginState(context, controller)
-                    : controller.loginType == LoginTypes.email
-                        ? emailLoginState(context, controller)
-                        : controller.loginType == LoginTypes.otp
-                            ? otpLoginState(context, controller)
-                            : controller.loginType == LoginTypes.createAccount
-                                ? createAccountState(controller, context)
-                                : defaultLoginState(context, controller),
-              ),
-            );
-          }),
-        );
-      });
+            ],
+          );
+        }),
+      );
+    },
+  );
 }
 
 defaultLoginState(BuildContext context, SlideScreenController controller) {
@@ -380,7 +384,7 @@ otpLoginState(BuildContext context, SlideScreenController controller) {
 emailLoginState(BuildContext context, SlideScreenController controller) {
   return Obx(
     () => Form(
-      child: ListView(
+      child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
