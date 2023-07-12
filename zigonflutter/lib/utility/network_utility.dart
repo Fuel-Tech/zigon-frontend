@@ -12,7 +12,11 @@ class NetworkHandler {
 
   static dioPost(var path, {var body, String userToken = ''}) async {
     String userID =
-        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID) ??
+            '0';
+    
+    log("ssssad");
+
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
       "User-Id": userID,
@@ -23,6 +27,7 @@ class NetworkHandler {
       "device-token": AppUtil.DEVICE_TOKEN,
       "content-type": "application/json"
     };
+
     dio.options.headers.addAll(headers);
 
     String postUrl = BASE_URL + path;
