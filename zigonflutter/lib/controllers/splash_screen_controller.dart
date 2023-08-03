@@ -12,8 +12,8 @@ class SplashScreenController extends GetxController {
   SlideListModel? slideListModel;
 
   initilizeapp() async {
-    int videoStatus = await showRelatedVideos();
     int loggedInStatus = await isUserLoggedIn();
+    int videoStatus = await showRelatedVideos();
     log("INITIAL CHECK COMPLETE :: $videoStatus : $loggedInStatus");
   }
 
@@ -21,6 +21,7 @@ class SplashScreenController extends GetxController {
     String userID = await SharedPrefHandler.getInstance()
             .getString(SharedPrefHandler.USERID) ??
         '0';
+    log(userID);
     log("Getting video for slides_view");
     String endpoint = 'showRelatedVideos';
     String body = '''{
@@ -31,9 +32,10 @@ class SplashScreenController extends GetxController {
     }''';
     var response = await NetworkHandler.dioPost(endpoint, body: body);
     var json = jsonDecode(response);
-    print(json.toString());
     if (json["code"] == 200) {
       slideListModel = SlideListModel.fromJson(json);
+      log("SUCCESS 200");
+
       return 0;
     } else if (json["code"] == 201) {
       slideListModel = null;
