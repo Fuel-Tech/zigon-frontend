@@ -35,8 +35,8 @@ class SlideScreenController extends GetxController {
         List<String> temp = [];
         log(slideListModel!.msg.length.toString());
         for (int i = 0; i < slideListModel!.msg.length; i++) {
-          log(slideListModel!.msg[i].Video.video);
-          temp.add(slideListModel!.msg[i].Video.video);
+          log(slideListModel!.msg[i].video.video);
+          temp.add(slideListModel!.msg[i].video.video);
         }
         videoList.addAll(temp);
       }
@@ -73,21 +73,61 @@ class SlideScreenController extends GetxController {
     return;
   }
 
+  RxBool commentLoader = false.obs;
   // COMMENTS
   CommentListModel? commentList;
   getComments() async {
+    commentLoader.value = true;
     Dio dio = Dio();
     String postUrl = 'https://mocki.io/v1/ba663eae-94c4-4176-a73c-9e167ef48697';
-    try {
-      var response = await dio.get(postUrl);
-      log(response.toString());
-      if (response.statusCode == 200) {
-        commentList = CommentListModel.fromJson(response.data);
-        Get.toNamed(PageRouteList.slides);
-        // log(commentList.toString());
-        update();
-      }
-    } catch (e) {}
+
+    var response = await dio.get(postUrl);
+    log(response.toString());
+    if (response.statusCode == 200) {
+      commentList = CommentListModel.fromJson(response.data);
+      Get.toNamed(PageRouteList.slides);
+      // log(commentList.toString());
+      update();
+    } else {
+      Get.snackbar("Try Again",
+          "Unable to fetch comments, check your network and try agian🫡",
+          colorText: Colors.black, backgroundColor: Colors.white);
+    }
+
+    commentLoader.value = false;
+  }
+
+  TextEditingController commentFieldController = TextEditingController();
+
+  RxBool addingComment = false.obs;
+  Future<void> addComment(String videoId, String comment) async {
+    addingComment.value = true;
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "postCommentOnVideo";
+    String body = '''{
+      "video_id": $videoId,
+      "user_id": $userID,
+      "comment": $comment
+    }''';
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    log(response.toString());
+    var json = jsonDecode(response);
+    if (json['code'] == 200) {
+      log(json.toString());
+      getComments();
+      update();
+    } else {
+      Get.snackbar(
+        "Try Again",
+        "Unable to comment, check your network and try again🫡",
+        backgroundColor: Colors.white,
+        colorText: Colors.black,
+      );
+    }
+    commentFieldController.clear();
+    addingComment.value = false;
   }
 
   // USER LOGIN HANDLER
@@ -135,6 +175,11 @@ class SlideScreenController extends GetxController {
       log("LOGIN ERROR CATCHED:: $e");
     }
     isLoading.value = false;
+  }
+
+  RxBool isLiked = false.obs;
+  toggleLike() {
+    isLiked.value = !isLiked.value;
   }
 
   LoginTypes loginType = LoginTypes.none;

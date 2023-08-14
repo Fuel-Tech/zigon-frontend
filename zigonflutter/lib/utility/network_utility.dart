@@ -14,13 +14,14 @@ class NetworkHandler {
     String userID =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID) ??
             '0';
-    
-    log("ssssad");
+    String token =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERTOKEN) ??
+            '0';
 
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
       "User-Id": userID,
-      "Auth-Token": userToken,
+      "Auth-Token": token,
       "device": AppUtil.DEVICE,
       "version": AppUtil.APP_VERSION,
       "ip": AppUtil.IP,

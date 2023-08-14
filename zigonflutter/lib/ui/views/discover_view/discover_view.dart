@@ -66,7 +66,7 @@ class DiscoverView extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: NetworkImage(video.Video.video),
+                              image: NetworkImage(video.video.video),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -105,7 +105,7 @@ class DiscoverView extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          video.User.username,
+                                          video.user.username,
                                           style: GoogleFonts.raleway(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -124,7 +124,7 @@ class DiscoverView extends StatelessWidget {
                                                   size: 16,
                                                 ),
                                                 Text(
-                                                  '${video.Video.view}k',
+                                                  '${video.video.view}k',
                                                   style: GoogleFonts.quicksand(
                                                       fontSize: 12),
                                                 )
@@ -381,7 +381,7 @@ class DiscoverView extends StatelessWidget {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage(discoverController
-                                      .set2!.msg[index].Video.thum),
+                                      .set2!.msg[index].video.thum),
                                   fit: BoxFit.cover,
                                   filterQuality: FilterQuality.high,
                                 ),
@@ -410,7 +410,7 @@ class DiscoverView extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: NetworkImage(
-                                                      "$IMG_URL${discoverController.set2!.msg[index].User.profile_pic_small}"),
+                                                      "$IMG_URL${discoverController.set2!.msg[index].user.profile_pic_small}"),
                                                   fit: BoxFit.cover),
                                               shape: BoxShape.circle),
                                         ),
@@ -509,7 +509,8 @@ class DiscoverView extends StatelessWidget {
                         );
                       }),
                 ),
-              )
+              ),
+              SizedBox(height: 20),
             ],
           ),
         );

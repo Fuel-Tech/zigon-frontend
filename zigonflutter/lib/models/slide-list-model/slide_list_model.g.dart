@@ -21,26 +21,18 @@ Map<String, dynamic> _$$_SlideListModelToJson(_$_SlideListModel instance) =>
     };
 
 _$_Msg _$$_MsgFromJson(Map<String, dynamic> json) => _$_Msg(
-      Video: Videos.fromJson(json['Video'] as Map<String, dynamic>),
-      User: Users.fromJson(json['User'] as Map<String, dynamic>),
-      Sound: Sounds.fromJson(json['Sound'] as Map<String, dynamic>),
-      video_comment: json['video_comment'] as List<dynamic>,
-      video_favourite: json['video_favourite'] as List<dynamic>,
-      video_like: json['video_like'] as List<dynamic>,
-      video_watch: json['video_watch'] as List<dynamic>,
+      video: Video.fromJson(json['Video'] as Map<String, dynamic>),
+      user: User.fromJson(json['User'] as Map<String, dynamic>),
+      sound: Sound.fromJson(json['Sound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_MsgToJson(_$_Msg instance) => <String, dynamic>{
-      'Video': instance.Video,
-      'User': instance.User,
-      'Sound': instance.Sound,
-      'video_comment': instance.video_comment,
-      'video_favourite': instance.video_favourite,
-      'video_like': instance.video_like,
-      'video_watch': instance.video_watch,
+      'Video': instance.video,
+      'User': instance.user,
+      'Sound': instance.sound,
     };
 
-_$_Sounds _$$_SoundsFromJson(Map<String, dynamic> json) => _$_Sounds(
+_$_Sound _$$_SoundFromJson(Map<String, dynamic> json) => _$_Sound(
       id: json['id'] as String?,
       audio: json['audio'] as String?,
       duration: json['duration'] as String?,
@@ -55,7 +47,7 @@ _$_Sounds _$$_SoundsFromJson(Map<String, dynamic> json) => _$_Sounds(
           : DateTime.parse(json['created'] as String),
     );
 
-Map<String, dynamic> _$$_SoundsToJson(_$_Sounds instance) => <String, dynamic>{
+Map<String, dynamic> _$$_SoundToJson(_$_Sound instance) => <String, dynamic>{
       'id': instance.id,
       'audio': instance.audio,
       'duration': instance.duration,
@@ -68,48 +60,52 @@ Map<String, dynamic> _$$_SoundsToJson(_$_Sounds instance) => <String, dynamic>{
       'created': instance.created?.toIso8601String(),
     };
 
-_$_Users _$$_UsersFromJson(Map<String, dynamic> json) => _$_Users(
+_$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       id: json['id'] as String,
-      first_name: json['first_name'] as String,
-      last_name: json['last_name'] as String,
-      gender: json['gender'] as String,
-      bio: json['bio'] as String,
-      website: json['website'] as String,
+      first_name: json['first_name'] as String?,
+      last_name: json['last_name'] as String?,
+      gender: json['gender'] as String?,
+      bio: json['bio'] as String?,
+      website: json['website'] as String?,
       dob: json['dob'] as String,
-      social_id: json['social_id'] as String,
+      social_id: json['social_id'] as String?,
       email: json['email'] as String,
-      phone: json['phone'] as String,
+      phone: json['phone'] as String?,
       password: json['password'] as String,
-      profile_pic: json['profile_pic'] as String,
-      profile_pic_small: json['profile_pic_small'] as String,
+      profile_pic: json['profile_pic'] as String?,
+      profile_pic_small: json['profile_pic_small'] as String?,
       role: json['role'] as String,
       username: json['username'] as String,
-      social: json['social'] as String,
-      device_token: json['device_token'] as String,
-      token: json['token'] as String,
+      social: json['social'] as String?,
+      device_token: json['device_token'] as String?,
+      token: json['token'] as String?,
       active: json['active'] as String,
-      lat: json['lat'] as String,
-      long: json['long'] as String,
+      lat: json['lat'] as String?,
+      long: json['long'] as String?,
       online: json['online'] as String,
       verified: json['verified'] as String,
-      authToken: json['authToken'] as String,
-      version: json['version'] as String,
-      device: json['device'] as String,
-      ip: json['ip'] as String,
-      city: json['city'] as String,
-      country: json['country'] as String,
+      auth_token: json['auth_token'] as String,
+      version: json['version'] as String?,
+      device: json['device'] as String?,
+      ip: json['ip'] as String?,
+      city: json['city'] as String?,
+      country: json['country'] as String?,
       city_id: json['city_id'] as String,
       state_id: json['state_id'] as String,
       country_id: json['country_id'] as String,
       wallet: json['wallet'] as String,
-      paypal: json['paypal'] as String,
+      paypal: json['paypal'] as String?,
       reset_wallet_datetime: json['reset_wallet_datetime'] as String,
-      fb_id: json['fb_id'] as String,
+      fbId: json['fbId'] as String?,
       created: DateTime.parse(json['created'] as String),
+      pushNotification: PushNotification.fromJson(
+          json['PushNotification'] as Map<String, dynamic>),
+      privacySetting: PrivacySetting.fromJson(
+          json['PrivacySetting'] as Map<String, dynamic>),
       button: json['button'] as String,
     );
 
-Map<String, dynamic> _$$_UsersToJson(_$_Users instance) => <String, dynamic>{
+Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'id': instance.id,
       'first_name': instance.first_name,
       'last_name': instance.last_name,
@@ -133,7 +129,7 @@ Map<String, dynamic> _$$_UsersToJson(_$_Users instance) => <String, dynamic>{
       'long': instance.long,
       'online': instance.online,
       'verified': instance.verified,
-      'authToken': instance.authToken,
+      'auth_token': instance.auth_token,
       'version': instance.version,
       'device': instance.device,
       'ip': instance.ip,
@@ -145,12 +141,56 @@ Map<String, dynamic> _$$_UsersToJson(_$_Users instance) => <String, dynamic>{
       'wallet': instance.wallet,
       'paypal': instance.paypal,
       'reset_wallet_datetime': instance.reset_wallet_datetime,
-      'fb_id': instance.fb_id,
+      'fbId': instance.fbId,
       'created': instance.created.toIso8601String(),
+      'PushNotification': instance.pushNotification,
+      'PrivacySetting': instance.privacySetting,
       'button': instance.button,
     };
 
-_$_Videos _$$_VideosFromJson(Map<String, dynamic> json) => _$_Videos(
+_$_PrivacySetting _$$_PrivacySettingFromJson(Map<String, dynamic> json) =>
+    _$_PrivacySetting(
+      id: json['id'] as String,
+      videos_download: json['videos_download'] as String,
+      direct_message: json['direct_message'] as String,
+      duet: json['duet'] as String,
+      liked_videos: json['liked_videos'] as String,
+      video_comment: json['video_comment'] as String,
+    );
+
+Map<String, dynamic> _$$_PrivacySettingToJson(_$_PrivacySetting instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'videos_download': instance.videos_download,
+      'direct_message': instance.direct_message,
+      'duet': instance.duet,
+      'liked_videos': instance.liked_videos,
+      'video_comment': instance.video_comment,
+    };
+
+_$_PushNotification _$$_PushNotificationFromJson(Map<String, dynamic> json) =>
+    _$_PushNotification(
+      id: json['id'] as String,
+      likes: json['likes'] as String,
+      comments: json['comments'] as String,
+      new_followers: json['new_followers'] as String,
+      mentions: json['mentions'] as String,
+      direct_messages: json['direct_messages'] as String,
+      video_updates: json['video_updates'] as String,
+    );
+
+Map<String, dynamic> _$$_PushNotificationToJson(_$_PushNotification instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'likes': instance.likes,
+      'comments': instance.comments,
+      'new_followers': instance.new_followers,
+      'mentions': instance.mentions,
+      'direct_messages': instance.direct_messages,
+      'video_updates': instance.video_updates,
+    };
+
+_$_Video _$$_VideoFromJson(Map<String, dynamic> json) => _$_Video(
       id: json['id'] as String,
       user_id: json['user_id'] as String,
       description: json['description'] as String,
@@ -175,7 +215,7 @@ _$_Videos _$$_VideosFromJson(Map<String, dynamic> json) => _$_Videos(
       like_count: json['like_count'] as int,
     );
 
-Map<String, dynamic> _$$_VideosToJson(_$_Videos instance) => <String, dynamic>{
+Map<String, dynamic> _$$_VideoToJson(_$_Video instance) => <String, dynamic>{
       'id': instance.id,
       'user_id': instance.user_id,
       'description': instance.description,

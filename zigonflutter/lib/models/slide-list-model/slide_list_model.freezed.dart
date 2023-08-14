@@ -181,13 +181,12 @@ Msg _$MsgFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Msg {
-  Videos get Video => throw _privateConstructorUsedError;
-  Users get User => throw _privateConstructorUsedError;
-  Sounds get Sound => throw _privateConstructorUsedError;
-  List<dynamic> get video_comment => throw _privateConstructorUsedError;
-  List<dynamic> get video_favourite => throw _privateConstructorUsedError;
-  List<dynamic> get video_like => throw _privateConstructorUsedError;
-  List<dynamic> get video_watch => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Video')
+  Video get video => throw _privateConstructorUsedError;
+  @JsonKey(name: 'User')
+  User get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Sound')
+  Sound get sound => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -200,17 +199,13 @@ abstract class $MsgCopyWith<$Res> {
       _$MsgCopyWithImpl<$Res, Msg>;
   @useResult
   $Res call(
-      {Videos Video,
-      Users User,
-      Sounds Sound,
-      List<dynamic> video_comment,
-      List<dynamic> video_favourite,
-      List<dynamic> video_like,
-      List<dynamic> video_watch});
+      {@JsonKey(name: 'Video') Video video,
+      @JsonKey(name: 'User') User user,
+      @JsonKey(name: 'Sound') Sound sound});
 
-  $VideosCopyWith<$Res> get Video;
-  $UsersCopyWith<$Res> get User;
-  $SoundsCopyWith<$Res> get Sound;
+  $VideoCopyWith<$Res> get video;
+  $UserCopyWith<$Res> get user;
+  $SoundCopyWith<$Res> get sound;
 }
 
 /// @nodoc
@@ -225,67 +220,47 @@ class _$MsgCopyWithImpl<$Res, $Val extends Msg> implements $MsgCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? Video = null,
-    Object? User = null,
-    Object? Sound = null,
-    Object? video_comment = null,
-    Object? video_favourite = null,
-    Object? video_like = null,
-    Object? video_watch = null,
+    Object? video = null,
+    Object? user = null,
+    Object? sound = null,
   }) {
     return _then(_value.copyWith(
-      Video: null == Video
-          ? _value.Video
-          : Video // ignore: cast_nullable_to_non_nullable
-              as Videos,
-      User: null == User
-          ? _value.User
-          : User // ignore: cast_nullable_to_non_nullable
-              as Users,
-      Sound: null == Sound
-          ? _value.Sound
-          : Sound // ignore: cast_nullable_to_non_nullable
-              as Sounds,
-      video_comment: null == video_comment
-          ? _value.video_comment
-          : video_comment // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_favourite: null == video_favourite
-          ? _value.video_favourite
-          : video_favourite // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_like: null == video_like
-          ? _value.video_like
-          : video_like // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_watch: null == video_watch
-          ? _value.video_watch
-          : video_watch // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+      video: null == video
+          ? _value.video
+          : video // ignore: cast_nullable_to_non_nullable
+              as Video,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
+      sound: null == sound
+          ? _value.sound
+          : sound // ignore: cast_nullable_to_non_nullable
+              as Sound,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $VideosCopyWith<$Res> get Video {
-    return $VideosCopyWith<$Res>(_value.Video, (value) {
-      return _then(_value.copyWith(Video: value) as $Val);
+  $VideoCopyWith<$Res> get video {
+    return $VideoCopyWith<$Res>(_value.video, (value) {
+      return _then(_value.copyWith(video: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UsersCopyWith<$Res> get User {
-    return $UsersCopyWith<$Res>(_value.User, (value) {
-      return _then(_value.copyWith(User: value) as $Val);
+  $UserCopyWith<$Res> get user {
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $SoundsCopyWith<$Res> get Sound {
-    return $SoundsCopyWith<$Res>(_value.Sound, (value) {
-      return _then(_value.copyWith(Sound: value) as $Val);
+  $SoundCopyWith<$Res> get sound {
+    return $SoundCopyWith<$Res>(_value.sound, (value) {
+      return _then(_value.copyWith(sound: value) as $Val);
     });
   }
 }
@@ -297,20 +272,16 @@ abstract class _$$_MsgCopyWith<$Res> implements $MsgCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {Videos Video,
-      Users User,
-      Sounds Sound,
-      List<dynamic> video_comment,
-      List<dynamic> video_favourite,
-      List<dynamic> video_like,
-      List<dynamic> video_watch});
+      {@JsonKey(name: 'Video') Video video,
+      @JsonKey(name: 'User') User user,
+      @JsonKey(name: 'Sound') Sound sound});
 
   @override
-  $VideosCopyWith<$Res> get Video;
+  $VideoCopyWith<$Res> get video;
   @override
-  $UsersCopyWith<$Res> get User;
+  $UserCopyWith<$Res> get user;
   @override
-  $SoundsCopyWith<$Res> get Sound;
+  $SoundCopyWith<$Res> get sound;
 }
 
 /// @nodoc
@@ -322,43 +293,23 @@ class __$$_MsgCopyWithImpl<$Res> extends _$MsgCopyWithImpl<$Res, _$_Msg>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? Video = null,
-    Object? User = null,
-    Object? Sound = null,
-    Object? video_comment = null,
-    Object? video_favourite = null,
-    Object? video_like = null,
-    Object? video_watch = null,
+    Object? video = null,
+    Object? user = null,
+    Object? sound = null,
   }) {
     return _then(_$_Msg(
-      Video: null == Video
-          ? _value.Video
-          : Video // ignore: cast_nullable_to_non_nullable
-              as Videos,
-      User: null == User
-          ? _value.User
-          : User // ignore: cast_nullable_to_non_nullable
-              as Users,
-      Sound: null == Sound
-          ? _value.Sound
-          : Sound // ignore: cast_nullable_to_non_nullable
-              as Sounds,
-      video_comment: null == video_comment
-          ? _value._video_comment
-          : video_comment // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_favourite: null == video_favourite
-          ? _value._video_favourite
-          : video_favourite // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_like: null == video_like
-          ? _value._video_like
-          : video_like // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
-      video_watch: null == video_watch
-          ? _value._video_watch
-          : video_watch // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+      video: null == video
+          ? _value.video
+          : video // ignore: cast_nullable_to_non_nullable
+              as Video,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
+      sound: null == sound
+          ? _value.sound
+          : sound // ignore: cast_nullable_to_non_nullable
+              as Sound,
     ));
   }
 }
@@ -367,61 +318,25 @@ class __$$_MsgCopyWithImpl<$Res> extends _$MsgCopyWithImpl<$Res, _$_Msg>
 @JsonSerializable()
 class _$_Msg implements _Msg {
   const _$_Msg(
-      {required this.Video,
-      required this.User,
-      required this.Sound,
-      required final List<dynamic> video_comment,
-      required final List<dynamic> video_favourite,
-      required final List<dynamic> video_like,
-      required final List<dynamic> video_watch})
-      : _video_comment = video_comment,
-        _video_favourite = video_favourite,
-        _video_like = video_like,
-        _video_watch = video_watch;
+      {@JsonKey(name: 'Video') required this.video,
+      @JsonKey(name: 'User') required this.user,
+      @JsonKey(name: 'Sound') required this.sound});
 
   factory _$_Msg.fromJson(Map<String, dynamic> json) => _$$_MsgFromJson(json);
 
   @override
-  final Videos Video;
+  @JsonKey(name: 'Video')
+  final Video video;
   @override
-  final Users User;
+  @JsonKey(name: 'User')
+  final User user;
   @override
-  final Sounds Sound;
-  final List<dynamic> _video_comment;
-  @override
-  List<dynamic> get video_comment {
-    if (_video_comment is EqualUnmodifiableListView) return _video_comment;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_video_comment);
-  }
-
-  final List<dynamic> _video_favourite;
-  @override
-  List<dynamic> get video_favourite {
-    if (_video_favourite is EqualUnmodifiableListView) return _video_favourite;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_video_favourite);
-  }
-
-  final List<dynamic> _video_like;
-  @override
-  List<dynamic> get video_like {
-    if (_video_like is EqualUnmodifiableListView) return _video_like;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_video_like);
-  }
-
-  final List<dynamic> _video_watch;
-  @override
-  List<dynamic> get video_watch {
-    if (_video_watch is EqualUnmodifiableListView) return _video_watch;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_video_watch);
-  }
+  @JsonKey(name: 'Sound')
+  final Sound sound;
 
   @override
   String toString() {
-    return 'Msg(Video: $Video, User: $User, Sound: $Sound, video_comment: $video_comment, video_favourite: $video_favourite, video_like: $video_like, video_watch: $video_watch)';
+    return 'Msg(video: $video, user: $user, sound: $sound)';
   }
 
   @override
@@ -429,30 +344,14 @@ class _$_Msg implements _Msg {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Msg &&
-            (identical(other.Video, Video) || other.Video == Video) &&
-            (identical(other.User, User) || other.User == User) &&
-            (identical(other.Sound, Sound) || other.Sound == Sound) &&
-            const DeepCollectionEquality()
-                .equals(other._video_comment, _video_comment) &&
-            const DeepCollectionEquality()
-                .equals(other._video_favourite, _video_favourite) &&
-            const DeepCollectionEquality()
-                .equals(other._video_like, _video_like) &&
-            const DeepCollectionEquality()
-                .equals(other._video_watch, _video_watch));
+            (identical(other.video, video) || other.video == video) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.sound, sound) || other.sound == sound));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      Video,
-      User,
-      Sound,
-      const DeepCollectionEquality().hash(_video_comment),
-      const DeepCollectionEquality().hash(_video_favourite),
-      const DeepCollectionEquality().hash(_video_like),
-      const DeepCollectionEquality().hash(_video_watch));
+  int get hashCode => Object.hash(runtimeType, video, user, sound);
 
   @JsonKey(ignore: true)
   @override
@@ -470,41 +369,32 @@ class _$_Msg implements _Msg {
 
 abstract class _Msg implements Msg {
   const factory _Msg(
-      {required final Videos Video,
-      required final Users User,
-      required final Sounds Sound,
-      required final List<dynamic> video_comment,
-      required final List<dynamic> video_favourite,
-      required final List<dynamic> video_like,
-      required final List<dynamic> video_watch}) = _$_Msg;
+      {@JsonKey(name: 'Video') required final Video video,
+      @JsonKey(name: 'User') required final User user,
+      @JsonKey(name: 'Sound') required final Sound sound}) = _$_Msg;
 
   factory _Msg.fromJson(Map<String, dynamic> json) = _$_Msg.fromJson;
 
   @override
-  Videos get Video;
+  @JsonKey(name: 'Video')
+  Video get video;
   @override
-  Users get User;
+  @JsonKey(name: 'User')
+  User get user;
   @override
-  Sounds get Sound;
-  @override
-  List<dynamic> get video_comment;
-  @override
-  List<dynamic> get video_favourite;
-  @override
-  List<dynamic> get video_like;
-  @override
-  List<dynamic> get video_watch;
+  @JsonKey(name: 'Sound')
+  Sound get sound;
   @override
   @JsonKey(ignore: true)
   _$$_MsgCopyWith<_$_Msg> get copyWith => throw _privateConstructorUsedError;
 }
 
-Sounds _$SoundsFromJson(Map<String, dynamic> json) {
-  return _Sounds.fromJson(json);
+Sound _$SoundFromJson(Map<String, dynamic> json) {
+  return _Sound.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Sounds {
+mixin _$Sound {
   String? get id => throw _privateConstructorUsedError;
   String? get audio => throw _privateConstructorUsedError;
   String? get duration => throw _privateConstructorUsedError;
@@ -518,13 +408,13 @@ mixin _$Sounds {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $SoundsCopyWith<Sounds> get copyWith => throw _privateConstructorUsedError;
+  $SoundCopyWith<Sound> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SoundsCopyWith<$Res> {
-  factory $SoundsCopyWith(Sounds value, $Res Function(Sounds) then) =
-      _$SoundsCopyWithImpl<$Res, Sounds>;
+abstract class $SoundCopyWith<$Res> {
+  factory $SoundCopyWith(Sound value, $Res Function(Sound) then) =
+      _$SoundCopyWithImpl<$Res, Sound>;
   @useResult
   $Res call(
       {String? id,
@@ -540,9 +430,9 @@ abstract class $SoundsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SoundsCopyWithImpl<$Res, $Val extends Sounds>
-    implements $SoundsCopyWith<$Res> {
-  _$SoundsCopyWithImpl(this._value, this._then);
+class _$SoundCopyWithImpl<$Res, $Val extends Sound>
+    implements $SoundCopyWith<$Res> {
+  _$SoundCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -609,9 +499,9 @@ class _$SoundsCopyWithImpl<$Res, $Val extends Sounds>
 }
 
 /// @nodoc
-abstract class _$$_SoundsCopyWith<$Res> implements $SoundsCopyWith<$Res> {
-  factory _$$_SoundsCopyWith(_$_Sounds value, $Res Function(_$_Sounds) then) =
-      __$$_SoundsCopyWithImpl<$Res>;
+abstract class _$$_SoundCopyWith<$Res> implements $SoundCopyWith<$Res> {
+  factory _$$_SoundCopyWith(_$_Sound value, $Res Function(_$_Sound) then) =
+      __$$_SoundCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -628,10 +518,9 @@ abstract class _$$_SoundsCopyWith<$Res> implements $SoundsCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_SoundsCopyWithImpl<$Res>
-    extends _$SoundsCopyWithImpl<$Res, _$_Sounds>
-    implements _$$_SoundsCopyWith<$Res> {
-  __$$_SoundsCopyWithImpl(_$_Sounds _value, $Res Function(_$_Sounds) _then)
+class __$$_SoundCopyWithImpl<$Res> extends _$SoundCopyWithImpl<$Res, _$_Sound>
+    implements _$$_SoundCopyWith<$Res> {
+  __$$_SoundCopyWithImpl(_$_Sound _value, $Res Function(_$_Sound) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -648,7 +537,7 @@ class __$$_SoundsCopyWithImpl<$Res>
     Object? publish = freezed,
     Object? created = freezed,
   }) {
-    return _then(_$_Sounds(
+    return _then(_$_Sound(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -695,8 +584,8 @@ class __$$_SoundsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Sounds implements _Sounds {
-  const _$_Sounds(
+class _$_Sound implements _Sound {
+  const _$_Sound(
       {this.id,
       this.audio,
       this.duration,
@@ -708,8 +597,8 @@ class _$_Sounds implements _Sounds {
       this.publish,
       this.created});
 
-  factory _$_Sounds.fromJson(Map<String, dynamic> json) =>
-      _$$_SoundsFromJson(json);
+  factory _$_Sound.fromJson(Map<String, dynamic> json) =>
+      _$$_SoundFromJson(json);
 
   @override
   final String? id;
@@ -734,14 +623,14 @@ class _$_Sounds implements _Sounds {
 
   @override
   String toString() {
-    return 'Sounds(id: $id, audio: $audio, duration: $duration, name: $name, description: $description, thum: $thum, sound_section_id: $sound_section_id, uploaded_by: $uploaded_by, publish: $publish, created: $created)';
+    return 'Sound(id: $id, audio: $audio, duration: $duration, name: $name, description: $description, thum: $thum, sound_section_id: $sound_section_id, uploaded_by: $uploaded_by, publish: $publish, created: $created)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Sounds &&
+            other is _$_Sound &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.audio, audio) || other.audio == audio) &&
             (identical(other.duration, duration) ||
@@ -766,19 +655,19 @@ class _$_Sounds implements _Sounds {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SoundsCopyWith<_$_Sounds> get copyWith =>
-      __$$_SoundsCopyWithImpl<_$_Sounds>(this, _$identity);
+  _$$_SoundCopyWith<_$_Sound> get copyWith =>
+      __$$_SoundCopyWithImpl<_$_Sound>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SoundsToJson(
+    return _$$_SoundToJson(
       this,
     );
   }
 }
 
-abstract class _Sounds implements Sounds {
-  const factory _Sounds(
+abstract class _Sound implements Sound {
+  const factory _Sound(
       {final String? id,
       final String? audio,
       final String? duration,
@@ -788,9 +677,9 @@ abstract class _Sounds implements Sounds {
       final String? sound_section_id,
       final String? uploaded_by,
       final String? publish,
-      final DateTime? created}) = _$_Sounds;
+      final DateTime? created}) = _$_Sound;
 
-  factory _Sounds.fromJson(Map<String, dynamic> json) = _$_Sounds.fromJson;
+  factory _Sound.fromJson(Map<String, dynamic> json) = _$_Sound.fromJson;
 
   @override
   String? get id;
@@ -814,110 +703,119 @@ abstract class _Sounds implements Sounds {
   DateTime? get created;
   @override
   @JsonKey(ignore: true)
-  _$$_SoundsCopyWith<_$_Sounds> get copyWith =>
+  _$$_SoundCopyWith<_$_Sound> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-Users _$UsersFromJson(Map<String, dynamic> json) {
-  return _Users.fromJson(json);
+User _$UserFromJson(Map<String, dynamic> json) {
+  return _User.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Users {
+mixin _$User {
   String get id => throw _privateConstructorUsedError;
-  String get first_name => throw _privateConstructorUsedError;
-  String get last_name => throw _privateConstructorUsedError;
-  String get gender => throw _privateConstructorUsedError;
-  String get bio => throw _privateConstructorUsedError;
-  String get website => throw _privateConstructorUsedError;
+  String? get first_name => throw _privateConstructorUsedError;
+  String? get last_name => throw _privateConstructorUsedError;
+  String? get gender => throw _privateConstructorUsedError;
+  String? get bio => throw _privateConstructorUsedError;
+  String? get website => throw _privateConstructorUsedError;
   String get dob => throw _privateConstructorUsedError;
-  String get social_id => throw _privateConstructorUsedError;
+  String? get social_id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get phone => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  String get profile_pic => throw _privateConstructorUsedError;
-  String get profile_pic_small => throw _privateConstructorUsedError;
+  String? get profile_pic => throw _privateConstructorUsedError;
+  String? get profile_pic_small => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String get social => throw _privateConstructorUsedError;
-  String get device_token => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
+  String? get social => throw _privateConstructorUsedError;
+  String? get device_token => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
   String get active => throw _privateConstructorUsedError;
-  String get lat => throw _privateConstructorUsedError;
-  String get long => throw _privateConstructorUsedError;
+  String? get lat => throw _privateConstructorUsedError;
+  String? get long => throw _privateConstructorUsedError;
   String get online => throw _privateConstructorUsedError;
   String get verified => throw _privateConstructorUsedError;
-  String get authToken => throw _privateConstructorUsedError;
-  String get version => throw _privateConstructorUsedError;
-  String get device => throw _privateConstructorUsedError;
-  String get ip => throw _privateConstructorUsedError;
-  String get city => throw _privateConstructorUsedError;
-  String get country => throw _privateConstructorUsedError;
+  String get auth_token => throw _privateConstructorUsedError;
+  String? get version => throw _privateConstructorUsedError;
+  String? get device => throw _privateConstructorUsedError;
+  String? get ip => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
   String get city_id => throw _privateConstructorUsedError;
   String get state_id => throw _privateConstructorUsedError;
   String get country_id => throw _privateConstructorUsedError;
   String get wallet => throw _privateConstructorUsedError;
-  String get paypal => throw _privateConstructorUsedError;
+  String? get paypal => throw _privateConstructorUsedError;
   String get reset_wallet_datetime => throw _privateConstructorUsedError;
-  String get fb_id => throw _privateConstructorUsedError;
+  String? get fbId => throw _privateConstructorUsedError;
   DateTime get created => throw _privateConstructorUsedError;
+  @JsonKey(name: 'PushNotification')
+  PushNotification get pushNotification => throw _privateConstructorUsedError;
+  @JsonKey(name: 'PrivacySetting')
+  PrivacySetting get privacySetting => throw _privateConstructorUsedError;
   String get button => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UsersCopyWith<Users> get copyWith => throw _privateConstructorUsedError;
+  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UsersCopyWith<$Res> {
-  factory $UsersCopyWith(Users value, $Res Function(Users) then) =
-      _$UsersCopyWithImpl<$Res, Users>;
+abstract class $UserCopyWith<$Res> {
+  factory $UserCopyWith(User value, $Res Function(User) then) =
+      _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
       {String id,
-      String first_name,
-      String last_name,
-      String gender,
-      String bio,
-      String website,
+      String? first_name,
+      String? last_name,
+      String? gender,
+      String? bio,
+      String? website,
       String dob,
-      String social_id,
+      String? social_id,
       String email,
-      String phone,
+      String? phone,
       String password,
-      String profile_pic,
-      String profile_pic_small,
+      String? profile_pic,
+      String? profile_pic_small,
       String role,
       String username,
-      String social,
-      String device_token,
-      String token,
+      String? social,
+      String? device_token,
+      String? token,
       String active,
-      String lat,
-      String long,
+      String? lat,
+      String? long,
       String online,
       String verified,
-      String authToken,
-      String version,
-      String device,
-      String ip,
-      String city,
-      String country,
+      String auth_token,
+      String? version,
+      String? device,
+      String? ip,
+      String? city,
+      String? country,
       String city_id,
       String state_id,
       String country_id,
       String wallet,
-      String paypal,
+      String? paypal,
       String reset_wallet_datetime,
-      String fb_id,
+      String? fbId,
       DateTime created,
+      @JsonKey(name: 'PushNotification') PushNotification pushNotification,
+      @JsonKey(name: 'PrivacySetting') PrivacySetting privacySetting,
       String button});
+
+  $PushNotificationCopyWith<$Res> get pushNotification;
+  $PrivacySettingCopyWith<$Res> get privacySetting;
 }
 
 /// @nodoc
-class _$UsersCopyWithImpl<$Res, $Val extends Users>
-    implements $UsersCopyWith<$Res> {
-  _$UsersCopyWithImpl(this._value, this._then);
+class _$UserCopyWithImpl<$Res, $Val extends User>
+    implements $UserCopyWith<$Res> {
+  _$UserCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -928,42 +826,44 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
   @override
   $Res call({
     Object? id = null,
-    Object? first_name = null,
-    Object? last_name = null,
-    Object? gender = null,
-    Object? bio = null,
-    Object? website = null,
+    Object? first_name = freezed,
+    Object? last_name = freezed,
+    Object? gender = freezed,
+    Object? bio = freezed,
+    Object? website = freezed,
     Object? dob = null,
-    Object? social_id = null,
+    Object? social_id = freezed,
     Object? email = null,
-    Object? phone = null,
+    Object? phone = freezed,
     Object? password = null,
-    Object? profile_pic = null,
-    Object? profile_pic_small = null,
+    Object? profile_pic = freezed,
+    Object? profile_pic_small = freezed,
     Object? role = null,
     Object? username = null,
-    Object? social = null,
-    Object? device_token = null,
-    Object? token = null,
+    Object? social = freezed,
+    Object? device_token = freezed,
+    Object? token = freezed,
     Object? active = null,
-    Object? lat = null,
-    Object? long = null,
+    Object? lat = freezed,
+    Object? long = freezed,
     Object? online = null,
     Object? verified = null,
-    Object? authToken = null,
-    Object? version = null,
-    Object? device = null,
-    Object? ip = null,
-    Object? city = null,
-    Object? country = null,
+    Object? auth_token = null,
+    Object? version = freezed,
+    Object? device = freezed,
+    Object? ip = freezed,
+    Object? city = freezed,
+    Object? country = freezed,
     Object? city_id = null,
     Object? state_id = null,
     Object? country_id = null,
     Object? wallet = null,
-    Object? paypal = null,
+    Object? paypal = freezed,
     Object? reset_wallet_datetime = null,
-    Object? fb_id = null,
+    Object? fbId = freezed,
     Object? created = null,
+    Object? pushNotification = null,
+    Object? privacySetting = null,
     Object? button = null,
   }) {
     return _then(_value.copyWith(
@@ -971,54 +871,54 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      first_name: null == first_name
+      first_name: freezed == first_name
           ? _value.first_name
           : first_name // ignore: cast_nullable_to_non_nullable
-              as String,
-      last_name: null == last_name
+              as String?,
+      last_name: freezed == last_name
           ? _value.last_name
           : last_name // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
+              as String?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as String,
-      bio: null == bio
+              as String?,
+      bio: freezed == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
-              as String,
-      website: null == website
+              as String?,
+      website: freezed == website
           ? _value.website
           : website // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       dob: null == dob
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String,
-      social_id: null == social_id
+      social_id: freezed == social_id
           ? _value.social_id
           : social_id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      phone: null == phone
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      profile_pic: null == profile_pic
+      profile_pic: freezed == profile_pic
           ? _value.profile_pic
           : profile_pic // ignore: cast_nullable_to_non_nullable
-              as String,
-      profile_pic_small: null == profile_pic_small
+              as String?,
+      profile_pic_small: freezed == profile_pic_small
           ? _value.profile_pic_small
           : profile_pic_small // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -1027,30 +927,30 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      social: null == social
+      social: freezed == social
           ? _value.social
           : social // ignore: cast_nullable_to_non_nullable
-              as String,
-      device_token: null == device_token
+              as String?,
+      device_token: freezed == device_token
           ? _value.device_token
           : device_token // ignore: cast_nullable_to_non_nullable
-              as String,
-      token: null == token
+              as String?,
+      token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       active: null == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
               as String,
-      lat: null == lat
+      lat: freezed == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
-              as String,
-      long: null == long
+              as String?,
+      long: freezed == long
           ? _value.long
           : long // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       online: null == online
           ? _value.online
           : online // ignore: cast_nullable_to_non_nullable
@@ -1059,30 +959,30 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.verified
           : verified // ignore: cast_nullable_to_non_nullable
               as String,
-      authToken: null == authToken
-          ? _value.authToken
-          : authToken // ignore: cast_nullable_to_non_nullable
+      auth_token: null == auth_token
+          ? _value.auth_token
+          : auth_token // ignore: cast_nullable_to_non_nullable
               as String,
-      version: null == version
+      version: freezed == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
-              as String,
-      device: null == device
+              as String?,
+      device: freezed == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
-              as String,
-      ip: null == ip
+              as String?,
+      ip: freezed == ip
           ? _value.ip
           : ip // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
+              as String?,
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
+              as String?,
+      country: freezed == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       city_id: null == city_id
           ? _value.city_id
           : city_id // ignore: cast_nullable_to_non_nullable
@@ -1099,178 +999,211 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as String,
-      paypal: null == paypal
+      paypal: freezed == paypal
           ? _value.paypal
           : paypal // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       reset_wallet_datetime: null == reset_wallet_datetime
           ? _value.reset_wallet_datetime
           : reset_wallet_datetime // ignore: cast_nullable_to_non_nullable
               as String,
-      fb_id: null == fb_id
-          ? _value.fb_id
-          : fb_id // ignore: cast_nullable_to_non_nullable
-              as String,
+      fbId: freezed == fbId
+          ? _value.fbId
+          : fbId // ignore: cast_nullable_to_non_nullable
+              as String?,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      pushNotification: null == pushNotification
+          ? _value.pushNotification
+          : pushNotification // ignore: cast_nullable_to_non_nullable
+              as PushNotification,
+      privacySetting: null == privacySetting
+          ? _value.privacySetting
+          : privacySetting // ignore: cast_nullable_to_non_nullable
+              as PrivacySetting,
       button: null == button
           ? _value.button
           : button // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PushNotificationCopyWith<$Res> get pushNotification {
+    return $PushNotificationCopyWith<$Res>(_value.pushNotification, (value) {
+      return _then(_value.copyWith(pushNotification: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PrivacySettingCopyWith<$Res> get privacySetting {
+    return $PrivacySettingCopyWith<$Res>(_value.privacySetting, (value) {
+      return _then(_value.copyWith(privacySetting: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$_UsersCopyWith<$Res> implements $UsersCopyWith<$Res> {
-  factory _$$_UsersCopyWith(_$_Users value, $Res Function(_$_Users) then) =
-      __$$_UsersCopyWithImpl<$Res>;
+abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
+      __$$_UserCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String id,
-      String first_name,
-      String last_name,
-      String gender,
-      String bio,
-      String website,
+      String? first_name,
+      String? last_name,
+      String? gender,
+      String? bio,
+      String? website,
       String dob,
-      String social_id,
+      String? social_id,
       String email,
-      String phone,
+      String? phone,
       String password,
-      String profile_pic,
-      String profile_pic_small,
+      String? profile_pic,
+      String? profile_pic_small,
       String role,
       String username,
-      String social,
-      String device_token,
-      String token,
+      String? social,
+      String? device_token,
+      String? token,
       String active,
-      String lat,
-      String long,
+      String? lat,
+      String? long,
       String online,
       String verified,
-      String authToken,
-      String version,
-      String device,
-      String ip,
-      String city,
-      String country,
+      String auth_token,
+      String? version,
+      String? device,
+      String? ip,
+      String? city,
+      String? country,
       String city_id,
       String state_id,
       String country_id,
       String wallet,
-      String paypal,
+      String? paypal,
       String reset_wallet_datetime,
-      String fb_id,
+      String? fbId,
       DateTime created,
+      @JsonKey(name: 'PushNotification') PushNotification pushNotification,
+      @JsonKey(name: 'PrivacySetting') PrivacySetting privacySetting,
       String button});
+
+  @override
+  $PushNotificationCopyWith<$Res> get pushNotification;
+  @override
+  $PrivacySettingCopyWith<$Res> get privacySetting;
 }
 
 /// @nodoc
-class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
-    implements _$$_UsersCopyWith<$Res> {
-  __$$_UsersCopyWithImpl(_$_Users _value, $Res Function(_$_Users) _then)
+class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
+    implements _$$_UserCopyWith<$Res> {
+  __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? first_name = null,
-    Object? last_name = null,
-    Object? gender = null,
-    Object? bio = null,
-    Object? website = null,
+    Object? first_name = freezed,
+    Object? last_name = freezed,
+    Object? gender = freezed,
+    Object? bio = freezed,
+    Object? website = freezed,
     Object? dob = null,
-    Object? social_id = null,
+    Object? social_id = freezed,
     Object? email = null,
-    Object? phone = null,
+    Object? phone = freezed,
     Object? password = null,
-    Object? profile_pic = null,
-    Object? profile_pic_small = null,
+    Object? profile_pic = freezed,
+    Object? profile_pic_small = freezed,
     Object? role = null,
     Object? username = null,
-    Object? social = null,
-    Object? device_token = null,
-    Object? token = null,
+    Object? social = freezed,
+    Object? device_token = freezed,
+    Object? token = freezed,
     Object? active = null,
-    Object? lat = null,
-    Object? long = null,
+    Object? lat = freezed,
+    Object? long = freezed,
     Object? online = null,
     Object? verified = null,
-    Object? authToken = null,
-    Object? version = null,
-    Object? device = null,
-    Object? ip = null,
-    Object? city = null,
-    Object? country = null,
+    Object? auth_token = null,
+    Object? version = freezed,
+    Object? device = freezed,
+    Object? ip = freezed,
+    Object? city = freezed,
+    Object? country = freezed,
     Object? city_id = null,
     Object? state_id = null,
     Object? country_id = null,
     Object? wallet = null,
-    Object? paypal = null,
+    Object? paypal = freezed,
     Object? reset_wallet_datetime = null,
-    Object? fb_id = null,
+    Object? fbId = freezed,
     Object? created = null,
+    Object? pushNotification = null,
+    Object? privacySetting = null,
     Object? button = null,
   }) {
-    return _then(_$_Users(
+    return _then(_$_User(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      first_name: null == first_name
+      first_name: freezed == first_name
           ? _value.first_name
           : first_name // ignore: cast_nullable_to_non_nullable
-              as String,
-      last_name: null == last_name
+              as String?,
+      last_name: freezed == last_name
           ? _value.last_name
           : last_name // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
+              as String?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as String,
-      bio: null == bio
+              as String?,
+      bio: freezed == bio
           ? _value.bio
           : bio // ignore: cast_nullable_to_non_nullable
-              as String,
-      website: null == website
+              as String?,
+      website: freezed == website
           ? _value.website
           : website // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       dob: null == dob
           ? _value.dob
           : dob // ignore: cast_nullable_to_non_nullable
               as String,
-      social_id: null == social_id
+      social_id: freezed == social_id
           ? _value.social_id
           : social_id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      phone: null == phone
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      profile_pic: null == profile_pic
+      profile_pic: freezed == profile_pic
           ? _value.profile_pic
           : profile_pic // ignore: cast_nullable_to_non_nullable
-              as String,
-      profile_pic_small: null == profile_pic_small
+              as String?,
+      profile_pic_small: freezed == profile_pic_small
           ? _value.profile_pic_small
           : profile_pic_small // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -1279,30 +1212,30 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      social: null == social
+      social: freezed == social
           ? _value.social
           : social // ignore: cast_nullable_to_non_nullable
-              as String,
-      device_token: null == device_token
+              as String?,
+      device_token: freezed == device_token
           ? _value.device_token
           : device_token // ignore: cast_nullable_to_non_nullable
-              as String,
-      token: null == token
+              as String?,
+      token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       active: null == active
           ? _value.active
           : active // ignore: cast_nullable_to_non_nullable
               as String,
-      lat: null == lat
+      lat: freezed == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
-              as String,
-      long: null == long
+              as String?,
+      long: freezed == long
           ? _value.long
           : long // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       online: null == online
           ? _value.online
           : online // ignore: cast_nullable_to_non_nullable
@@ -1311,30 +1244,30 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
           ? _value.verified
           : verified // ignore: cast_nullable_to_non_nullable
               as String,
-      authToken: null == authToken
-          ? _value.authToken
-          : authToken // ignore: cast_nullable_to_non_nullable
+      auth_token: null == auth_token
+          ? _value.auth_token
+          : auth_token // ignore: cast_nullable_to_non_nullable
               as String,
-      version: null == version
+      version: freezed == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
-              as String,
-      device: null == device
+              as String?,
+      device: freezed == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
-              as String,
-      ip: null == ip
+              as String?,
+      ip: freezed == ip
           ? _value.ip
           : ip // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
+              as String?,
+      city: freezed == city
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      country: null == country
+              as String?,
+      country: freezed == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       city_id: null == city_id
           ? _value.city_id
           : city_id // ignore: cast_nullable_to_non_nullable
@@ -1351,22 +1284,30 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as String,
-      paypal: null == paypal
+      paypal: freezed == paypal
           ? _value.paypal
           : paypal // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       reset_wallet_datetime: null == reset_wallet_datetime
           ? _value.reset_wallet_datetime
           : reset_wallet_datetime // ignore: cast_nullable_to_non_nullable
               as String,
-      fb_id: null == fb_id
-          ? _value.fb_id
-          : fb_id // ignore: cast_nullable_to_non_nullable
-              as String,
+      fbId: freezed == fbId
+          ? _value.fbId
+          : fbId // ignore: cast_nullable_to_non_nullable
+              as String?,
       created: null == created
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      pushNotification: null == pushNotification
+          ? _value.pushNotification
+          : pushNotification // ignore: cast_nullable_to_non_nullable
+              as PushNotification,
+      privacySetting: null == privacySetting
+          ? _value.privacySetting
+          : privacySetting // ignore: cast_nullable_to_non_nullable
+              as PrivacySetting,
       button: null == button
           ? _value.button
           : button // ignore: cast_nullable_to_non_nullable
@@ -1377,108 +1318,109 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Users implements _Users {
-  const _$_Users(
+class _$_User implements _User {
+  const _$_User(
       {required this.id,
-      required this.first_name,
-      required this.last_name,
-      required this.gender,
-      required this.bio,
-      required this.website,
+      this.first_name,
+      this.last_name,
+      this.gender,
+      this.bio,
+      this.website,
       required this.dob,
-      required this.social_id,
+      this.social_id,
       required this.email,
-      required this.phone,
+      this.phone,
       required this.password,
-      required this.profile_pic,
-      required this.profile_pic_small,
+      this.profile_pic,
+      this.profile_pic_small,
       required this.role,
       required this.username,
-      required this.social,
-      required this.device_token,
-      required this.token,
+      this.social,
+      this.device_token,
+      this.token,
       required this.active,
-      required this.lat,
-      required this.long,
+      this.lat,
+      this.long,
       required this.online,
       required this.verified,
-      required this.authToken,
-      required this.version,
-      required this.device,
-      required this.ip,
-      required this.city,
-      required this.country,
+      required this.auth_token,
+      this.version,
+      this.device,
+      this.ip,
+      this.city,
+      this.country,
       required this.city_id,
       required this.state_id,
       required this.country_id,
       required this.wallet,
-      required this.paypal,
+      this.paypal,
       required this.reset_wallet_datetime,
-      required this.fb_id,
+      this.fbId,
       required this.created,
+      @JsonKey(name: 'PushNotification') required this.pushNotification,
+      @JsonKey(name: 'PrivacySetting') required this.privacySetting,
       required this.button});
 
-  factory _$_Users.fromJson(Map<String, dynamic> json) =>
-      _$$_UsersFromJson(json);
+  factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
   @override
   final String id;
   @override
-  final String first_name;
+  final String? first_name;
   @override
-  final String last_name;
+  final String? last_name;
   @override
-  final String gender;
+  final String? gender;
   @override
-  final String bio;
+  final String? bio;
   @override
-  final String website;
+  final String? website;
   @override
   final String dob;
   @override
-  final String social_id;
+  final String? social_id;
   @override
   final String email;
   @override
-  final String phone;
+  final String? phone;
   @override
   final String password;
   @override
-  final String profile_pic;
+  final String? profile_pic;
   @override
-  final String profile_pic_small;
+  final String? profile_pic_small;
   @override
   final String role;
   @override
   final String username;
   @override
-  final String social;
+  final String? social;
   @override
-  final String device_token;
+  final String? device_token;
   @override
-  final String token;
+  final String? token;
   @override
   final String active;
   @override
-  final String lat;
+  final String? lat;
   @override
-  final String long;
+  final String? long;
   @override
   final String online;
   @override
   final String verified;
   @override
-  final String authToken;
+  final String auth_token;
   @override
-  final String version;
+  final String? version;
   @override
-  final String device;
+  final String? device;
   @override
-  final String ip;
+  final String? ip;
   @override
-  final String city;
+  final String? city;
   @override
-  final String country;
+  final String? country;
   @override
   final String city_id;
   @override
@@ -1488,26 +1430,32 @@ class _$_Users implements _Users {
   @override
   final String wallet;
   @override
-  final String paypal;
+  final String? paypal;
   @override
   final String reset_wallet_datetime;
   @override
-  final String fb_id;
+  final String? fbId;
   @override
   final DateTime created;
+  @override
+  @JsonKey(name: 'PushNotification')
+  final PushNotification pushNotification;
+  @override
+  @JsonKey(name: 'PrivacySetting')
+  final PrivacySetting privacySetting;
   @override
   final String button;
 
   @override
   String toString() {
-    return 'Users(id: $id, first_name: $first_name, last_name: $last_name, gender: $gender, bio: $bio, website: $website, dob: $dob, social_id: $social_id, email: $email, phone: $phone, password: $password, profile_pic: $profile_pic, profile_pic_small: $profile_pic_small, role: $role, username: $username, social: $social, device_token: $device_token, token: $token, active: $active, lat: $lat, long: $long, online: $online, verified: $verified, authToken: $authToken, version: $version, device: $device, ip: $ip, city: $city, country: $country, city_id: $city_id, state_id: $state_id, country_id: $country_id, wallet: $wallet, paypal: $paypal, reset_wallet_datetime: $reset_wallet_datetime, fb_id: $fb_id, created: $created, button: $button)';
+    return 'User(id: $id, first_name: $first_name, last_name: $last_name, gender: $gender, bio: $bio, website: $website, dob: $dob, social_id: $social_id, email: $email, phone: $phone, password: $password, profile_pic: $profile_pic, profile_pic_small: $profile_pic_small, role: $role, username: $username, social: $social, device_token: $device_token, token: $token, active: $active, lat: $lat, long: $long, online: $online, verified: $verified, auth_token: $auth_token, version: $version, device: $device, ip: $ip, city: $city, country: $country, city_id: $city_id, state_id: $state_id, country_id: $country_id, wallet: $wallet, paypal: $paypal, reset_wallet_datetime: $reset_wallet_datetime, fbId: $fbId, created: $created, pushNotification: $pushNotification, privacySetting: $privacySetting, button: $button)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Users &&
+            other is _$_User &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.first_name, first_name) ||
                 other.first_name == first_name) &&
@@ -1540,8 +1488,8 @@ class _$_Users implements _Users {
             (identical(other.online, online) || other.online == online) &&
             (identical(other.verified, verified) ||
                 other.verified == verified) &&
-            (identical(other.authToken, authToken) ||
-                other.authToken == authToken) &&
+            (identical(other.auth_token, auth_token) ||
+                other.auth_token == auth_token) &&
             (identical(other.version, version) || other.version == version) &&
             (identical(other.device, device) || other.device == device) &&
             (identical(other.ip, ip) || other.ip == ip) &&
@@ -1556,8 +1504,12 @@ class _$_Users implements _Users {
             (identical(other.paypal, paypal) || other.paypal == paypal) &&
             (identical(other.reset_wallet_datetime, reset_wallet_datetime) ||
                 other.reset_wallet_datetime == reset_wallet_datetime) &&
-            (identical(other.fb_id, fb_id) || other.fb_id == fb_id) &&
+            (identical(other.fbId, fbId) || other.fbId == fbId) &&
             (identical(other.created, created) || other.created == created) &&
+            (identical(other.pushNotification, pushNotification) ||
+                other.pushNotification == pushNotification) &&
+            (identical(other.privacySetting, privacySetting) ||
+                other.privacySetting == privacySetting) &&
             (identical(other.button, button) || other.button == button));
   }
 
@@ -1588,7 +1540,7 @@ class _$_Users implements _Users {
         long,
         online,
         verified,
-        authToken,
+        auth_token,
         version,
         device,
         ip,
@@ -1600,126 +1552,132 @@ class _$_Users implements _Users {
         wallet,
         paypal,
         reset_wallet_datetime,
-        fb_id,
+        fbId,
         created,
+        pushNotification,
+        privacySetting,
         button
       ]);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UsersCopyWith<_$_Users> get copyWith =>
-      __$$_UsersCopyWithImpl<_$_Users>(this, _$identity);
+  _$$_UserCopyWith<_$_User> get copyWith =>
+      __$$_UserCopyWithImpl<_$_User>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UsersToJson(
+    return _$$_UserToJson(
       this,
     );
   }
 }
 
-abstract class _Users implements Users {
-  const factory _Users(
+abstract class _User implements User {
+  const factory _User(
       {required final String id,
-      required final String first_name,
-      required final String last_name,
-      required final String gender,
-      required final String bio,
-      required final String website,
+      final String? first_name,
+      final String? last_name,
+      final String? gender,
+      final String? bio,
+      final String? website,
       required final String dob,
-      required final String social_id,
+      final String? social_id,
       required final String email,
-      required final String phone,
+      final String? phone,
       required final String password,
-      required final String profile_pic,
-      required final String profile_pic_small,
+      final String? profile_pic,
+      final String? profile_pic_small,
       required final String role,
       required final String username,
-      required final String social,
-      required final String device_token,
-      required final String token,
+      final String? social,
+      final String? device_token,
+      final String? token,
       required final String active,
-      required final String lat,
-      required final String long,
+      final String? lat,
+      final String? long,
       required final String online,
       required final String verified,
-      required final String authToken,
-      required final String version,
-      required final String device,
-      required final String ip,
-      required final String city,
-      required final String country,
+      required final String auth_token,
+      final String? version,
+      final String? device,
+      final String? ip,
+      final String? city,
+      final String? country,
       required final String city_id,
       required final String state_id,
       required final String country_id,
       required final String wallet,
-      required final String paypal,
+      final String? paypal,
       required final String reset_wallet_datetime,
-      required final String fb_id,
+      final String? fbId,
       required final DateTime created,
-      required final String button}) = _$_Users;
+      @JsonKey(name: 'PushNotification')
+          required final PushNotification pushNotification,
+      @JsonKey(name: 'PrivacySetting')
+          required final PrivacySetting privacySetting,
+      required final String button}) = _$_User;
 
-  factory _Users.fromJson(Map<String, dynamic> json) = _$_Users.fromJson;
+  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
   @override
   String get id;
   @override
-  String get first_name;
+  String? get first_name;
   @override
-  String get last_name;
+  String? get last_name;
   @override
-  String get gender;
+  String? get gender;
   @override
-  String get bio;
+  String? get bio;
   @override
-  String get website;
+  String? get website;
   @override
   String get dob;
   @override
-  String get social_id;
+  String? get social_id;
   @override
   String get email;
   @override
-  String get phone;
+  String? get phone;
   @override
   String get password;
   @override
-  String get profile_pic;
+  String? get profile_pic;
   @override
-  String get profile_pic_small;
+  String? get profile_pic_small;
   @override
   String get role;
   @override
   String get username;
   @override
-  String get social;
+  String? get social;
   @override
-  String get device_token;
+  String? get device_token;
   @override
-  String get token;
+  String? get token;
   @override
   String get active;
   @override
-  String get lat;
+  String? get lat;
   @override
-  String get long;
+  String? get long;
   @override
   String get online;
   @override
   String get verified;
   @override
-  String get authToken;
+  String get auth_token;
   @override
-  String get version;
+  String? get version;
   @override
-  String get device;
+  String? get device;
   @override
-  String get ip;
+  String? get ip;
   @override
-  String get city;
+  String? get city;
   @override
-  String get country;
+  String? get country;
   @override
   String get city_id;
   @override
@@ -1729,27 +1687,543 @@ abstract class _Users implements Users {
   @override
   String get wallet;
   @override
-  String get paypal;
+  String? get paypal;
   @override
   String get reset_wallet_datetime;
   @override
-  String get fb_id;
+  String? get fbId;
   @override
   DateTime get created;
+  @override
+  @JsonKey(name: 'PushNotification')
+  PushNotification get pushNotification;
+  @override
+  @JsonKey(name: 'PrivacySetting')
+  PrivacySetting get privacySetting;
   @override
   String get button;
   @override
   @JsonKey(ignore: true)
-  _$$_UsersCopyWith<_$_Users> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
 }
 
-Videos _$VideosFromJson(Map<String, dynamic> json) {
-  return _Videos.fromJson(json);
+PrivacySetting _$PrivacySettingFromJson(Map<String, dynamic> json) {
+  return _PrivacySetting.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Videos {
+mixin _$PrivacySetting {
+  String get id => throw _privateConstructorUsedError;
+  String get videos_download => throw _privateConstructorUsedError;
+  String get direct_message => throw _privateConstructorUsedError;
+  String get duet => throw _privateConstructorUsedError;
+  String get liked_videos => throw _privateConstructorUsedError;
+  String get video_comment => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PrivacySettingCopyWith<PrivacySetting> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PrivacySettingCopyWith<$Res> {
+  factory $PrivacySettingCopyWith(
+          PrivacySetting value, $Res Function(PrivacySetting) then) =
+      _$PrivacySettingCopyWithImpl<$Res, PrivacySetting>;
+  @useResult
+  $Res call(
+      {String id,
+      String videos_download,
+      String direct_message,
+      String duet,
+      String liked_videos,
+      String video_comment});
+}
+
+/// @nodoc
+class _$PrivacySettingCopyWithImpl<$Res, $Val extends PrivacySetting>
+    implements $PrivacySettingCopyWith<$Res> {
+  _$PrivacySettingCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? videos_download = null,
+    Object? direct_message = null,
+    Object? duet = null,
+    Object? liked_videos = null,
+    Object? video_comment = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      videos_download: null == videos_download
+          ? _value.videos_download
+          : videos_download // ignore: cast_nullable_to_non_nullable
+              as String,
+      direct_message: null == direct_message
+          ? _value.direct_message
+          : direct_message // ignore: cast_nullable_to_non_nullable
+              as String,
+      duet: null == duet
+          ? _value.duet
+          : duet // ignore: cast_nullable_to_non_nullable
+              as String,
+      liked_videos: null == liked_videos
+          ? _value.liked_videos
+          : liked_videos // ignore: cast_nullable_to_non_nullable
+              as String,
+      video_comment: null == video_comment
+          ? _value.video_comment
+          : video_comment // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_PrivacySettingCopyWith<$Res>
+    implements $PrivacySettingCopyWith<$Res> {
+  factory _$$_PrivacySettingCopyWith(
+          _$_PrivacySetting value, $Res Function(_$_PrivacySetting) then) =
+      __$$_PrivacySettingCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String videos_download,
+      String direct_message,
+      String duet,
+      String liked_videos,
+      String video_comment});
+}
+
+/// @nodoc
+class __$$_PrivacySettingCopyWithImpl<$Res>
+    extends _$PrivacySettingCopyWithImpl<$Res, _$_PrivacySetting>
+    implements _$$_PrivacySettingCopyWith<$Res> {
+  __$$_PrivacySettingCopyWithImpl(
+      _$_PrivacySetting _value, $Res Function(_$_PrivacySetting) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? videos_download = null,
+    Object? direct_message = null,
+    Object? duet = null,
+    Object? liked_videos = null,
+    Object? video_comment = null,
+  }) {
+    return _then(_$_PrivacySetting(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      videos_download: null == videos_download
+          ? _value.videos_download
+          : videos_download // ignore: cast_nullable_to_non_nullable
+              as String,
+      direct_message: null == direct_message
+          ? _value.direct_message
+          : direct_message // ignore: cast_nullable_to_non_nullable
+              as String,
+      duet: null == duet
+          ? _value.duet
+          : duet // ignore: cast_nullable_to_non_nullable
+              as String,
+      liked_videos: null == liked_videos
+          ? _value.liked_videos
+          : liked_videos // ignore: cast_nullable_to_non_nullable
+              as String,
+      video_comment: null == video_comment
+          ? _value.video_comment
+          : video_comment // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_PrivacySetting implements _PrivacySetting {
+  const _$_PrivacySetting(
+      {required this.id,
+      required this.videos_download,
+      required this.direct_message,
+      required this.duet,
+      required this.liked_videos,
+      required this.video_comment});
+
+  factory _$_PrivacySetting.fromJson(Map<String, dynamic> json) =>
+      _$$_PrivacySettingFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String videos_download;
+  @override
+  final String direct_message;
+  @override
+  final String duet;
+  @override
+  final String liked_videos;
+  @override
+  final String video_comment;
+
+  @override
+  String toString() {
+    return 'PrivacySetting(id: $id, videos_download: $videos_download, direct_message: $direct_message, duet: $duet, liked_videos: $liked_videos, video_comment: $video_comment)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_PrivacySetting &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.videos_download, videos_download) ||
+                other.videos_download == videos_download) &&
+            (identical(other.direct_message, direct_message) ||
+                other.direct_message == direct_message) &&
+            (identical(other.duet, duet) || other.duet == duet) &&
+            (identical(other.liked_videos, liked_videos) ||
+                other.liked_videos == liked_videos) &&
+            (identical(other.video_comment, video_comment) ||
+                other.video_comment == video_comment));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, videos_download,
+      direct_message, duet, liked_videos, video_comment);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_PrivacySettingCopyWith<_$_PrivacySetting> get copyWith =>
+      __$$_PrivacySettingCopyWithImpl<_$_PrivacySetting>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_PrivacySettingToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PrivacySetting implements PrivacySetting {
+  const factory _PrivacySetting(
+      {required final String id,
+      required final String videos_download,
+      required final String direct_message,
+      required final String duet,
+      required final String liked_videos,
+      required final String video_comment}) = _$_PrivacySetting;
+
+  factory _PrivacySetting.fromJson(Map<String, dynamic> json) =
+      _$_PrivacySetting.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get videos_download;
+  @override
+  String get direct_message;
+  @override
+  String get duet;
+  @override
+  String get liked_videos;
+  @override
+  String get video_comment;
+  @override
+  @JsonKey(ignore: true)
+  _$$_PrivacySettingCopyWith<_$_PrivacySetting> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+PushNotification _$PushNotificationFromJson(Map<String, dynamic> json) {
+  return _PushNotification.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PushNotification {
+  String get id => throw _privateConstructorUsedError;
+  String get likes => throw _privateConstructorUsedError;
+  String get comments => throw _privateConstructorUsedError;
+  String get new_followers => throw _privateConstructorUsedError;
+  String get mentions => throw _privateConstructorUsedError;
+  String get direct_messages => throw _privateConstructorUsedError;
+  String get video_updates => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PushNotificationCopyWith<PushNotification> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PushNotificationCopyWith<$Res> {
+  factory $PushNotificationCopyWith(
+          PushNotification value, $Res Function(PushNotification) then) =
+      _$PushNotificationCopyWithImpl<$Res, PushNotification>;
+  @useResult
+  $Res call(
+      {String id,
+      String likes,
+      String comments,
+      String new_followers,
+      String mentions,
+      String direct_messages,
+      String video_updates});
+}
+
+/// @nodoc
+class _$PushNotificationCopyWithImpl<$Res, $Val extends PushNotification>
+    implements $PushNotificationCopyWith<$Res> {
+  _$PushNotificationCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? likes = null,
+    Object? comments = null,
+    Object? new_followers = null,
+    Object? mentions = null,
+    Object? direct_messages = null,
+    Object? video_updates = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      likes: null == likes
+          ? _value.likes
+          : likes // ignore: cast_nullable_to_non_nullable
+              as String,
+      comments: null == comments
+          ? _value.comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as String,
+      new_followers: null == new_followers
+          ? _value.new_followers
+          : new_followers // ignore: cast_nullable_to_non_nullable
+              as String,
+      mentions: null == mentions
+          ? _value.mentions
+          : mentions // ignore: cast_nullable_to_non_nullable
+              as String,
+      direct_messages: null == direct_messages
+          ? _value.direct_messages
+          : direct_messages // ignore: cast_nullable_to_non_nullable
+              as String,
+      video_updates: null == video_updates
+          ? _value.video_updates
+          : video_updates // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_PushNotificationCopyWith<$Res>
+    implements $PushNotificationCopyWith<$Res> {
+  factory _$$_PushNotificationCopyWith(
+          _$_PushNotification value, $Res Function(_$_PushNotification) then) =
+      __$$_PushNotificationCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String likes,
+      String comments,
+      String new_followers,
+      String mentions,
+      String direct_messages,
+      String video_updates});
+}
+
+/// @nodoc
+class __$$_PushNotificationCopyWithImpl<$Res>
+    extends _$PushNotificationCopyWithImpl<$Res, _$_PushNotification>
+    implements _$$_PushNotificationCopyWith<$Res> {
+  __$$_PushNotificationCopyWithImpl(
+      _$_PushNotification _value, $Res Function(_$_PushNotification) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? likes = null,
+    Object? comments = null,
+    Object? new_followers = null,
+    Object? mentions = null,
+    Object? direct_messages = null,
+    Object? video_updates = null,
+  }) {
+    return _then(_$_PushNotification(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      likes: null == likes
+          ? _value.likes
+          : likes // ignore: cast_nullable_to_non_nullable
+              as String,
+      comments: null == comments
+          ? _value.comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as String,
+      new_followers: null == new_followers
+          ? _value.new_followers
+          : new_followers // ignore: cast_nullable_to_non_nullable
+              as String,
+      mentions: null == mentions
+          ? _value.mentions
+          : mentions // ignore: cast_nullable_to_non_nullable
+              as String,
+      direct_messages: null == direct_messages
+          ? _value.direct_messages
+          : direct_messages // ignore: cast_nullable_to_non_nullable
+              as String,
+      video_updates: null == video_updates
+          ? _value.video_updates
+          : video_updates // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_PushNotification implements _PushNotification {
+  const _$_PushNotification(
+      {required this.id,
+      required this.likes,
+      required this.comments,
+      required this.new_followers,
+      required this.mentions,
+      required this.direct_messages,
+      required this.video_updates});
+
+  factory _$_PushNotification.fromJson(Map<String, dynamic> json) =>
+      _$$_PushNotificationFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String likes;
+  @override
+  final String comments;
+  @override
+  final String new_followers;
+  @override
+  final String mentions;
+  @override
+  final String direct_messages;
+  @override
+  final String video_updates;
+
+  @override
+  String toString() {
+    return 'PushNotification(id: $id, likes: $likes, comments: $comments, new_followers: $new_followers, mentions: $mentions, direct_messages: $direct_messages, video_updates: $video_updates)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_PushNotification &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.likes, likes) || other.likes == likes) &&
+            (identical(other.comments, comments) ||
+                other.comments == comments) &&
+            (identical(other.new_followers, new_followers) ||
+                other.new_followers == new_followers) &&
+            (identical(other.mentions, mentions) ||
+                other.mentions == mentions) &&
+            (identical(other.direct_messages, direct_messages) ||
+                other.direct_messages == direct_messages) &&
+            (identical(other.video_updates, video_updates) ||
+                other.video_updates == video_updates));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, likes, comments,
+      new_followers, mentions, direct_messages, video_updates);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_PushNotificationCopyWith<_$_PushNotification> get copyWith =>
+      __$$_PushNotificationCopyWithImpl<_$_PushNotification>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_PushNotificationToJson(
+      this,
+    );
+  }
+}
+
+abstract class _PushNotification implements PushNotification {
+  const factory _PushNotification(
+      {required final String id,
+      required final String likes,
+      required final String comments,
+      required final String new_followers,
+      required final String mentions,
+      required final String direct_messages,
+      required final String video_updates}) = _$_PushNotification;
+
+  factory _PushNotification.fromJson(Map<String, dynamic> json) =
+      _$_PushNotification.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get likes;
+  @override
+  String get comments;
+  @override
+  String get new_followers;
+  @override
+  String get mentions;
+  @override
+  String get direct_messages;
+  @override
+  String get video_updates;
+  @override
+  @JsonKey(ignore: true)
+  _$$_PushNotificationCopyWith<_$_PushNotification> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Video _$VideoFromJson(Map<String, dynamic> json) {
+  return _Video.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Video {
   String get id => throw _privateConstructorUsedError;
   String get user_id => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -1775,13 +2249,13 @@ mixin _$Videos {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $VideosCopyWith<Videos> get copyWith => throw _privateConstructorUsedError;
+  $VideoCopyWith<Video> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $VideosCopyWith<$Res> {
-  factory $VideosCopyWith(Videos value, $Res Function(Videos) then) =
-      _$VideosCopyWithImpl<$Res, Videos>;
+abstract class $VideoCopyWith<$Res> {
+  factory $VideoCopyWith(Video value, $Res Function(Video) then) =
+      _$VideoCopyWithImpl<$Res, Video>;
   @useResult
   $Res call(
       {String id,
@@ -1809,9 +2283,9 @@ abstract class $VideosCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$VideosCopyWithImpl<$Res, $Val extends Videos>
-    implements $VideosCopyWith<$Res> {
-  _$VideosCopyWithImpl(this._value, this._then);
+class _$VideoCopyWithImpl<$Res, $Val extends Video>
+    implements $VideoCopyWith<$Res> {
+  _$VideoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -1938,9 +2412,9 @@ class _$VideosCopyWithImpl<$Res, $Val extends Videos>
 }
 
 /// @nodoc
-abstract class _$$_VideosCopyWith<$Res> implements $VideosCopyWith<$Res> {
-  factory _$$_VideosCopyWith(_$_Videos value, $Res Function(_$_Videos) then) =
-      __$$_VideosCopyWithImpl<$Res>;
+abstract class _$$_VideoCopyWith<$Res> implements $VideoCopyWith<$Res> {
+  factory _$$_VideoCopyWith(_$_Video value, $Res Function(_$_Video) then) =
+      __$$_VideoCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1969,10 +2443,9 @@ abstract class _$$_VideosCopyWith<$Res> implements $VideosCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_VideosCopyWithImpl<$Res>
-    extends _$VideosCopyWithImpl<$Res, _$_Videos>
-    implements _$$_VideosCopyWith<$Res> {
-  __$$_VideosCopyWithImpl(_$_Videos _value, $Res Function(_$_Videos) _then)
+class __$$_VideoCopyWithImpl<$Res> extends _$VideoCopyWithImpl<$Res, _$_Video>
+    implements _$$_VideoCopyWith<$Res> {
+  __$$_VideoCopyWithImpl(_$_Video _value, $Res Function(_$_Video) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2001,7 +2474,7 @@ class __$$_VideosCopyWithImpl<$Res>
     Object? comment_count = null,
     Object? like_count = null,
   }) {
-    return _then(_$_Videos(
+    return _then(_$_Video(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -2096,8 +2569,8 @@ class __$$_VideosCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Videos implements _Videos {
-  const _$_Videos(
+class _$_Video implements _Video {
+  const _$_Video(
       {required this.id,
       required this.user_id,
       required this.description,
@@ -2121,8 +2594,8 @@ class _$_Videos implements _Videos {
       required this.comment_count,
       required this.like_count});
 
-  factory _$_Videos.fromJson(Map<String, dynamic> json) =>
-      _$$_VideosFromJson(json);
+  factory _$_Video.fromJson(Map<String, dynamic> json) =>
+      _$$_VideoFromJson(json);
 
   @override
   final String id;
@@ -2171,14 +2644,14 @@ class _$_Videos implements _Videos {
 
   @override
   String toString() {
-    return 'Videos(id: $id, user_id: $user_id, description: $description, video: $video, thum: $thum, gif: $gif, view: $view, section: $section, sound_id: $sound_id, privacy_type: $privacy_type, allow_comments: $allow_comments, allow_duet: $allow_duet, block: $block, duet_video_id: $duet_video_id, old_video_id: $old_video_id, duration: $duration, promote: $promote, created: $created, like: $like, favourite: $favourite, comment_count: $comment_count, like_count: $like_count)';
+    return 'Video(id: $id, user_id: $user_id, description: $description, video: $video, thum: $thum, gif: $gif, view: $view, section: $section, sound_id: $sound_id, privacy_type: $privacy_type, allow_comments: $allow_comments, allow_duet: $allow_duet, block: $block, duet_video_id: $duet_video_id, old_video_id: $old_video_id, duration: $duration, promote: $promote, created: $created, like: $like, favourite: $favourite, comment_count: $comment_count, like_count: $like_count)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Videos &&
+            other is _$_Video &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.user_id, user_id) || other.user_id == user_id) &&
             (identical(other.description, description) ||
@@ -2245,19 +2718,19 @@ class _$_Videos implements _Videos {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_VideosCopyWith<_$_Videos> get copyWith =>
-      __$$_VideosCopyWithImpl<_$_Videos>(this, _$identity);
+  _$$_VideoCopyWith<_$_Video> get copyWith =>
+      __$$_VideoCopyWithImpl<_$_Video>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_VideosToJson(
+    return _$$_VideoToJson(
       this,
     );
   }
 }
 
-abstract class _Videos implements Videos {
-  const factory _Videos(
+abstract class _Video implements Video {
+  const factory _Video(
       {required final String id,
       required final String user_id,
       required final String description,
@@ -2279,9 +2752,9 @@ abstract class _Videos implements Videos {
       required final int like,
       required final int favourite,
       required final int comment_count,
-      required final int like_count}) = _$_Videos;
+      required final int like_count}) = _$_Video;
 
-  factory _Videos.fromJson(Map<String, dynamic> json) = _$_Videos.fromJson;
+  factory _Video.fromJson(Map<String, dynamic> json) = _$_Video.fromJson;
 
   @override
   String get id;
@@ -2329,6 +2802,6 @@ abstract class _Videos implements Videos {
   int get like_count;
   @override
   @JsonKey(ignore: true)
-  _$$_VideosCopyWith<_$_Videos> get copyWith =>
+  _$$_VideoCopyWith<_$_Video> get copyWith =>
       throw _privateConstructorUsedError;
 }

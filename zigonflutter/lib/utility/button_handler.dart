@@ -43,29 +43,26 @@ class ButtonHandler {
       if (AppUtil.isLoggedIn) {
         if (buttonTypes == ButtonTypes.camera) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           Get.toNamed(PageRouteList.camera);
         } else if (buttonTypes == ButtonTypes.discover) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           buttonController.navBarHandler(NavBarSelectionItem.discover);
           Get.toNamed(PageRouteList.discover);
         } else if (buttonTypes == ButtonTypes.notification) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           buttonController.navBarHandler(NavBarSelectionItem.notification);
           Get.toNamed(PageRouteList.notification);
         } else if (buttonTypes == ButtonTypes.userprofile) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
           Get.to(() => ProfileView());
         } else if (buttonTypes == ButtonTypes.like) {
-          // buttonController.likeButtonHandler(0);
+          Get.find<SlideScreenController>().toggleLike();
         } else if (buttonTypes == ButtonTypes.comment) {
           Get.find<SlideScreenController>().getComments();
           showModalBottomSheet(
             context: context,
+            backgroundColor: Colors.transparent,
             builder: (context) {
               return CommonWidgets.commentDialogWidget(context);
             },

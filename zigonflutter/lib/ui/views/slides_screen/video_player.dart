@@ -53,10 +53,7 @@ class _CachedVideoPlayerState extends State<CachedVideoPlayer> {
       future: _initializeVideoPlayerFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return AspectRatio(
-            aspectRatio: _controller!.value.aspectRatio,
-            child: VideoPlayer(_controller!),
-          );
+          return VideoPlayer(_controller!);
         } else {
           return Center(child: CircularProgressIndicator());
         }

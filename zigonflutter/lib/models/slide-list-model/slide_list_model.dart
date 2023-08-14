@@ -23,21 +23,17 @@ class SlideListModel with _$SlideListModel {
 @freezed
 class Msg with _$Msg {
   const factory Msg({
-    required Videos Video,
-    required Users User,
-    required Sounds Sound,
-    required List<dynamic> video_comment,
-    required List<dynamic> video_favourite,
-    required List<dynamic> video_like,
-    required List<dynamic> video_watch,
+    @JsonKey(name: 'Video') required Video video,
+    @JsonKey(name: 'User') required User user,
+    @JsonKey(name: 'Sound') required Sound sound,
   }) = _Msg;
 
   factory Msg.fromJson(Map<String, dynamic> json) => _$MsgFromJson(json);
 }
 
 @freezed
-class Sounds with _$Sounds {
-  const factory Sounds({
+class Sound with _$Sound {
+  const factory Sound({
     String? id,
     String? audio,
     String? duration,
@@ -48,60 +44,94 @@ class Sounds with _$Sounds {
     String? uploaded_by,
     String? publish,
     DateTime? created,
-  }) = _Sounds;
+  }) = _Sound;
 
-  factory Sounds.fromJson(Map<String, dynamic> json) => _$SoundsFromJson(json);
+  factory Sound.fromJson(Map<String, dynamic> json) => _$SoundFromJson(json);
 }
 
 @freezed
-class Users with _$Users {
-  const factory Users({
+class User with _$User {
+  const factory User({
     required String id,
-    required String first_name,
-    required String last_name,
-    required String gender,
-    required String bio,
-    required String website,
+    String? first_name,
+    String? last_name,
+    String? gender,
+    String? bio,
+    String? website,
     required String dob,
-    required String social_id,
+    String? social_id,
     required String email,
-    required String phone,
+    String? phone,
     required String password,
-    required String profile_pic,
-    required String profile_pic_small,
+    String? profile_pic,
+    String? profile_pic_small,
     required String role,
     required String username,
-    required String social,
-    required String device_token,
-    required String token,
+    String? social,
+    String? device_token,
+    String? token,
     required String active,
-    required String lat,
-    required String long,
+    String? lat,
+    String? long,
     required String online,
     required String verified,
-    required String authToken,
-    required String version,
-    required String device,
-    required String ip,
-    required String city,
-    required String country,
+    required String auth_token,
+    String? version,
+    String? device,
+    String? ip,
+    String? city,
+    String? country,
     required String city_id,
     required String state_id,
     required String country_id,
     required String wallet,
-    required String paypal,
+    String? paypal,
     required String reset_wallet_datetime,
-    required String fb_id,
+    String? fbId,
     required DateTime created,
+    @JsonKey(name: 'PushNotification')
+        required PushNotification pushNotification,
+    @JsonKey(name: 'PrivacySetting') required PrivacySetting privacySetting,
     required String button,
-  }) = _Users;
+  }) = _User;
 
-  factory Users.fromJson(Map<String, dynamic> json) => _$UsersFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
 @freezed
-class Videos with _$Videos {
-  const factory Videos({
+class PrivacySetting with _$PrivacySetting {
+  const factory PrivacySetting({
+    required String id,
+    required String videos_download,
+    required String direct_message,
+    required String duet,
+    required String liked_videos,
+    required String video_comment,
+  }) = _PrivacySetting;
+
+  factory PrivacySetting.fromJson(Map<String, dynamic> json) =>
+      _$PrivacySettingFromJson(json);
+}
+
+@freezed
+class PushNotification with _$PushNotification {
+  const factory PushNotification({
+    required String id,
+    required String likes,
+    required String comments,
+    required String new_followers,
+    required String mentions,
+    required String direct_messages,
+    required String video_updates,
+  }) = _PushNotification;
+
+  factory PushNotification.fromJson(Map<String, dynamic> json) =>
+      _$PushNotificationFromJson(json);
+}
+
+@freezed
+class Video with _$Video {
+  const factory Video({
     required String id,
     required String user_id,
     required String description,
@@ -124,7 +154,7 @@ class Videos with _$Videos {
     required int favourite,
     required int comment_count,
     required int like_count,
-  }) = _Videos;
+  }) = _Video;
 
-  factory Videos.fromJson(Map<String, dynamic> json) => _$VideosFromJson(json);
+  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
 }

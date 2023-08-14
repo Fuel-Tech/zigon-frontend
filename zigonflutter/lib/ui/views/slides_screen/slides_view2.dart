@@ -21,6 +21,7 @@ class VideoSwiper extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: CommonWidgets.bottomFloatingBar(context),
         extendBody: true,
+        extendBodyBehindAppBar: true,
         body: GetBuilder<SlideScreenController>(builder: (ctrl) {
           return Obx(
             () => ctrl.isVideoLoading.isTrue
@@ -34,6 +35,7 @@ class VideoSwiper extends StatelessWidget {
                         return Stack(
                           alignment: Alignment.center,
                           children: [
+                            // VIDEO PLAYER
                             CachedVideoPlayer(
                               videoUrl: ctrl.videoList[index],
                               onInitialized: (controller) =>
@@ -125,18 +127,19 @@ class RightToolBar extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    log('Like Button');
                     ButtonHandler.onTapHandler(
                         buttonTypes: ButtonTypes.like, context: context);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.favorite_border_outlined,
-                          color: Colors.white, size: 30),
+                      slideScreenController.isLiked.isTrue
+                          ? Icon(Icons.favorite, color: Colors.red, size: 30)
+                          : Icon(Icons.favorite_border_outlined,
+                              color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
-                        '${slideScreenController.slideListModel!.msg[index].Video.like_count} ',
+                        '${slideScreenController.slideListModel!.msg[index].video.like_count} ',
                         style: AppUtil.textStyle2(
                           textSize: 14,
                           weight: FontWeight.w400,
@@ -160,7 +163,7 @@ class RightToolBar extends StatelessWidget {
                           color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
-                        '${slideScreenController.slideListModel!.msg[index].Video.comment_count}',
+                        '${slideScreenController.slideListModel!.msg[index].video.comment_count}',
                         style: AppUtil.textStyle2(
                             textSize: 14, weight: FontWeight.w400),
                       )
@@ -172,7 +175,7 @@ class RightToolBar extends StatelessWidget {
                     log('Share');
                     List shareData = [
                       slideScreenController
-                          .slideListModel!.msg[index].Video.video
+                          .slideListModel!.msg[index].video.video
                     ];
                     ButtonHandler.onTapHandler(
                         buttonTypes: ButtonTypes.share,
@@ -240,7 +243,7 @@ class BottomToolbar extends StatelessWidget {
                       }
                     },
                     child: slideScreenControler
-                                .slideListModel?.msg[index].User.profile_pic ==
+                                .slideListModel?.msg[index].user.profile_pic ==
                             null
                         ? const CircleAvatar(
                             radius: 20,
@@ -251,11 +254,11 @@ class BottomToolbar extends StatelessWidget {
                             radius: 20,
                             backgroundImage: NetworkImage(IMG_URL +
                                 slideScreenControler.slideListModel!.msg[index]
-                                    .User.profile_pic),
+                                    .user.profile_pic!),
                           ),
                   ),
                   Text(
-                    '${slideScreenControler.slideListModel!.msg[index].User.username}',
+                    '${slideScreenControler.slideListModel!.msg[index].user.username}',
                     style: AppUtil.textStyle1(weight: FontWeight.w600),
                   ),
                   const SizedBox(width: 25),
@@ -265,7 +268,7 @@ class BottomToolbar extends StatelessWidget {
                     size: 16,
                   ),
                   Text(
-                    '${slideScreenControler.slideListModel!.msg[0].Video.view}',
+                    '${slideScreenControler.slideListModel!.msg[0].video.view}',
                     style: AppUtil.textStyle2(textSize: 12),
                   ),
                   const SizedBox(width: 10),
@@ -278,7 +281,7 @@ class BottomToolbar extends StatelessWidget {
               child: SizedBox(
                 width: AppUtil.screenWidth(context) / 1.5,
                 child: Text(
-                  '${slideScreenControler.slideListModel!.msg[index].Video.description}',
+                  '${slideScreenControler.slideListModel!.msg[index].video.description}',
                   style: AppUtil.textStyle2(
                     textSize: 12,
                   ),
@@ -299,7 +302,7 @@ class BottomToolbar extends StatelessWidget {
                   child: SizedBox(
                     width: AppUtil.screenWidth(context) / 1.5,
                     child: Text(
-                      '${slideScreenControler.slideListModel!.msg[index].Sound.name}',
+                      '${slideScreenControler.slideListModel!.msg[index].sound.name}',
                       style: AppUtil.textStyle2(
                         textSize: 12,
                       ),

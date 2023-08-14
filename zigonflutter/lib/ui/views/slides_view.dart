@@ -49,7 +49,7 @@ class SlidesPage extends StatelessWidget {
                   VideoWidget(
                     play: true,
                     videoUrl:
-                        slidesController.slideList!.msg[index].Video.video,
+                        slidesController.slideList!.msg[index].video.video,
                   ),
                   SlidesWidget.onTopGradient(context),
                   //----------------
@@ -99,13 +99,11 @@ class SlidesPage extends StatelessWidget {
                                     builder: (controller) {
                                   return Column(
                                     children: [
-                                     const Icon(
-                                              Icons.favorite_border_outlined,
-                                              color: Colors.white,
-                                              size: 35),
+                                      const Icon(Icons.favorite_border_outlined,
+                                          color: Colors.white, size: 35),
                                       const SizedBox(height: 3),
                                       Text(
-                                        '${slidesController.slideList!.msg[index].Video.like_count} ',
+                                        '${slidesController.slideList!.msg[index].video.like_count} ',
                                         style: AppUtil.textStyle2(
                                           textSize: 14,
                                           weight: FontWeight.w400,
@@ -129,7 +127,7 @@ class SlidesPage extends StatelessWidget {
                                         color: Colors.white, size: 35),
                                     const SizedBox(height: 3),
                                     Text(
-                                      '${slidesController.slideList!.msg[index].Video.comment_count}',
+                                      '${slidesController.slideList!.msg[index].video.comment_count}',
                                       style: AppUtil.textStyle2(
                                           textSize: 14,
                                           weight: FontWeight.w400),
@@ -142,7 +140,7 @@ class SlidesPage extends StatelessWidget {
                                   log('Share');
                                   List shareData = [
                                     slidesController
-                                        .slideList!.msg[index].Video.video
+                                        .slideList!.msg[index].video.video
                                   ];
                                   ButtonHandler.onTapHandler(
                                       buttonTypes: ButtonTypes.share,
@@ -205,11 +203,11 @@ class SlidesPage extends StatelessWidget {
                                     radius: 20,
                                     backgroundImage: NetworkImage(IMG_URL +
                                         slidesController.slideList!.msg[index]
-                                            .User.profile_pic),
+                                            .user.profile_pic!),
                                   ),
                                 ),
                                 Text(
-                                  '${slidesController.slideList!.msg[index].User.username}',
+                                  '${slidesController.slideList!.msg[index].user.username}',
                                   style: AppUtil.textStyle1(
                                       weight: FontWeight.w600),
                                 ),
@@ -220,7 +218,7 @@ class SlidesPage extends StatelessWidget {
                                   size: 16,
                                 ),
                                 Text(
-                                  '${slidesController.slideList!.msg[0].Video.view}',
+                                  '${slidesController.slideList!.msg[0].video.view}',
                                   style: AppUtil.textStyle2(textSize: 12),
                                 ),
                                 const SizedBox(width: 10),
@@ -233,7 +231,7 @@ class SlidesPage extends StatelessWidget {
                             child: SizedBox(
                               width: AppUtil.screenWidth(context) / 1.5,
                               child: Text(
-                                '${slidesController.slideList!.msg[index].Video.description}',
+                                '${slidesController.slideList!.msg[index].video.description}',
                                 style: AppUtil.textStyle2(
                                   textSize: 12,
                                 ),
@@ -255,7 +253,7 @@ class SlidesPage extends StatelessWidget {
                                 child: SizedBox(
                                   width: AppUtil.screenWidth(context) / 1.5,
                                   child: Text(
-                                    '${slidesController.slideList!.msg[index].Sound.name}',
+                                    '${slidesController.slideList!.msg[index].sound.name}',
                                     style: AppUtil.textStyle2(
                                       textSize: 12,
                                     ),
