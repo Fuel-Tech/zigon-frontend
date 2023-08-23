@@ -28,79 +28,86 @@ class VideoSwiper extends StatelessWidget {
                 ? const Center(
                     child: CircularProgressIndicator.adaptive(),
                   )
-                : Swiper(
-                    itemCount: ctrl.videoList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (ctrl.currentIndex.value == index) {
-                        return Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // VIDEO PLAYER
-                            CachedVideoPlayer(
-                              videoUrl: ctrl.videoList[index],
-                              onInitialized: (controller) =>
-                                  ctrl.updateIndex(index, controller),
-                            ),
-                            SlidesWidget.onTopGradient(context),
-                            SafeArea(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: SizedBox(
-                                  width: AppUtil.screenWidth(context),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SlidesWidget.watchAllSlidesButton(
-                                                context),
-                                            const SizedBox(width: 10),
-                                            // SlidesWidget.watchFollowingSlidesButton(
-                                            //     context),
-                                          ],
-                                        ),
-                                        // SlidesWidget.liveButton(),
-                                      ],
+                : GestureDetector(
+                    onTap: () {
+                      log("TAP DETECTED");
+                      ctrl.toggleMute();
+                    },
+                    child: Swiper(
+                      itemCount: ctrl.videoList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (ctrl.currentIndex.value == index) {
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              // VIDEO PLAYER
+                              CachedVideoPlayer(
+                                videoUrl: ctrl.videoList[index],
+                                onInitialized: (controller) =>
+                                    ctrl.updateIndex(index, controller),
+                              ),
+                              SlidesWidget.onTopGradient(context),
+                              SafeArea(
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: SizedBox(
+                                    width: AppUtil.screenWidth(context),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SlidesWidget.watchAllSlidesButton(
+                                                context,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              // SlidesWidget.watchFollowingSlidesButton(
+                                              //     context),
+                                            ],
+                                          ),
+                                          // SlidesWidget.liveButton(),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 70),
-                              child: RightToolBar(
-                                index: index,
-                                slideScreenController: ctrl,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 70),
+                                child: RightToolBar(
+                                  index: index,
+                                  slideScreenController: ctrl,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 70),
-                              child: BottomToolbar(
-                                index: index,
-                                slideScreenControler: ctrl,
-                              ),
-                            )
-                          ],
-                        );
-                      } else {
-                        return Container(); // Empty container for better performance
-                      }
-                    },
-                    onIndexChanged: (index) {
-                      ctrl.stopActiveVideo();
-                      ctrl.updateIndex(index, null);
-                      if (index == ctrl.videoList.length - 1) {
-                        log("Last Video");
-                        ctrl.fetchMoreVideos();
-                      }
-                    },
-                    loop: false,
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
-                    axisDirection: AxisDirection.down,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 70),
+                                child: BottomToolbar(
+                                  index: index,
+                                  slideScreenControler: ctrl,
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return Container(); // Empty container for better performance
+                        }
+                      },
+                      onIndexChanged: (index) {
+                        ctrl.stopActiveVideo();
+                        ctrl.updateIndex(index, null);
+                        if (index == ctrl.videoList.length - 1) {
+                          log("Last Video");
+                          ctrl.fetchMoreVideos();
+                        }
+                      },
+                      loop: false,
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      axisDirection: AxisDirection.down,
+                    ),
                   ),
           );
         }));
@@ -125,51 +132,64 @@ class RightToolBar extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    ButtonHandler.onTapHandler(
-                        buttonTypes: ButtonTypes.like, context: context);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      slideScreenController.isLiked.isTrue
-                          ? Icon(Icons.favorite, color: Colors.red, size: 30)
-                          : Icon(Icons.favorite_border_outlined,
-                              color: Colors.white, size: 30),
-                      const SizedBox(height: 3),
-                      Text(
-                        '${slideScreenController.slideListModel!.msg[index].video.like_count} ',
-                        style: AppUtil.textStyle2(
-                          textSize: 14,
-                          weight: FontWeight.w400,
+                Obx(
+                  () => GestureDetector(
+                    onTap: () {
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.like,
+                          context: context,
+                          value: slideScreenController
+                              .slideListModel!.msg[index].video.id);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        slideScreenController.isLiked.isTrue
+                            ? const Icon(Icons.favorite,
+                                color: Colors.red, size: 30)
+                            : const Icon(Icons.favorite_border_outlined,
+                                color: Colors.white, size: 30),
+                        const SizedBox(height: 3),
+                        Text(
+                          '${slideScreenController.slideListModel!.msg[index].video.like_count} ',
+                          style: AppUtil.textStyle2(
+                            textSize: 14,
+                            weight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                slideScreenController
+                            .slideListModel!.msg[index].video.allow_comments ==
+                        "true"
+                    ? GestureDetector(
+                        onTap: () {
+                          log('Comment List');
+                          ButtonHandler.onTapHandler(
+                            context: context,
+                            buttonTypes: ButtonTypes.comment,
+                            subButtonType: SubButtonType.openDialog,
+                            value: slideScreenController
+                                .slideListModel!.msg[index].video.id,
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.mode_comment_outlined,
+                                color: Colors.white, size: 30),
+                            const SizedBox(height: 3),
+                            Text(
+                              '${slideScreenController.slideListModel!.msg[index].video.comment_count}',
+                              style: AppUtil.textStyle2(
+                                  textSize: 14, weight: FontWeight.w400),
+                            )
+                          ],
                         ),
                       )
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    log('Comment List');
-                    ButtonHandler.onTapHandler(
-                        context: context,
-                        buttonTypes: ButtonTypes.comment,
-                        subButtonType: SubButtonType.openDialog);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.mode_comment_outlined,
-                          color: Colors.white, size: 30),
-                      const SizedBox(height: 3),
-                      Text(
-                        '${slideScreenController.slideListModel!.msg[index].video.comment_count}',
-                        style: AppUtil.textStyle2(
-                            textSize: 14, weight: FontWeight.w400),
-                      )
-                    ],
-                  ),
-                ),
+                    : Container(),
                 GestureDetector(
                   onTap: () {
                     log('Share');

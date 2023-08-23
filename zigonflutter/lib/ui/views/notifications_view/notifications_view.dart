@@ -25,7 +25,7 @@ class NotificationsView extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: 12,
+                itemCount: 0,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -34,6 +34,7 @@ class NotificationsView extends StatelessWidget {
                         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                         child: GestureDetector(
                           onTap: () {
+                            // TODO: NOTIFICATION HANDLER
                             Get.snackbar('Bad Connectivity',
                                 'Please check your internet connection.');
                           },

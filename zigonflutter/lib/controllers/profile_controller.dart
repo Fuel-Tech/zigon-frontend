@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/models/user_profile_model/user_profile_model.dart';
@@ -32,6 +33,30 @@ class ProfileController extends GetxController {
     return;
   }
 
+  RxList<dynamic> publicVideos = [].obs;
+  RxList<dynamic> privateVideos = [].obs;
+
+  getUserVideos() async {
+    String path = 'showVideosAgainstUserID';
+    Map<String, dynamic> body = {"user_id": "8"};
+
+    var response = await NetworkHandler.dioPost(path, body: body);
+    var json = jsonDecode(response);
+    if (json["code"] == 200) {
+      publicVideos.value = json["msg"]["public"];
+      privateVideos.value = json["msg"]["private"];
+    } else if (response["code"] == 201) {
+      log(json["msg"]);
+    } else {
+      log(json.toString());
+      Get.snackbar(
+        "Try again",
+        "Unable to fetch the videos, please try agian🫡",
+        backgroundColor: Colors.white,
+      );
+    }
+  }
+
   iniChecks() {
     Get.arguments != null ? userProfileSelected = false : null;
     if (userProfileSelected) {
@@ -41,6 +66,7 @@ class ProfileController extends GetxController {
       userID = Get.arguments["id"];
     }
     getUserDetails();
+    getUserVideos();
   }
 
   @override

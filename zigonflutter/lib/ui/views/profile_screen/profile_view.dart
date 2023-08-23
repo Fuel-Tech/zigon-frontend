@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/ui/views/single_slide_view/single_slide_view.dart';
 import 'package:zigonflutter/ui/views/user_settings_screen.dart/user_settings_view.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
@@ -58,21 +59,23 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        SizedBox(height: 10),
                                         SizedBox(
                                           width: Get.width * .38,
                                           child: Text(
                                             "${ctrl.userProfileModel?.msg.User.first_name ?? ''}",
                                             style: GoogleFonts.roboto(
-                                              fontSize: 20,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.w700,
                                             ),
                                             overflow: TextOverflow.clip,
                                           ),
                                         ),
+                                        SizedBox(height: 5),
                                         Text(
                                           "@${ctrl.userProfileModel!.msg.User.username}",
                                           style: GoogleFonts.roboto(
-                                            fontSize: 12,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -84,12 +87,8 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                             InkWell(
                                                 onTap: () {},
                                                 child: Icon(
-                                                    Icons.play_arrow_rounded)),
-                                            SizedBox(width: 20),
-                                            InkWell(
-                                                onTap: () {},
-                                                child: Icon(
-                                                    Ionicons.logo_instagram)),
+                                                  Ionicons.logo_instagram,
+                                                )),
                                             SizedBox(width: 20),
                                             ctrl.userProfileSelected
                                                 ? Container()
@@ -110,6 +109,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     //FOLLOW/UNFOLLOW / MESSAGES
+                                    SizedBox(height: 10),
                                     GestureDetector(
                                       onTap: () {},
                                       child: Container(
@@ -229,65 +229,86 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                             tabs: const [
                               Text('Slides'),
                               Text('Liked'),
-                              Text('Favouite'),
+                              Text('Private'),
                             ],
                             indicatorColor: AppUtil.secondary,
                             indicatorWeight: 4,
                           ),
                           Expanded(
-                            child: TabBarView(
-                              children: [
-                                GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    childAspectRatio: 9 / 16,
+                            child: Obx(
+                              () => TabBarView(
+                                children: [
+                                  // SLIDES
+                                  ctrl.publicVideos.isEmpty
+                                      ? Center(
+                                          child: Text(
+                                              'You have no slides to show'))
+                                      : GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            childAspectRatio: 9 / 16,
+                                          ),
+                                          itemCount: ctrl.publicVideos.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            return slideGridWidgets(
+                                                thumbUrl:
+                                                    ctrl.publicVideos[index]
+                                                        ['Video']["thum"],
+                                                likes: ctrl.publicVideos[index]
+                                                        ['Video']["like_count"]
+                                                    .toString(),
+                                                comments: ctrl
+                                                    .publicVideos[index]['Video']
+                                                        ["comment_count"]
+                                                    .toString(),
+                                                views: ctrl.publicVideos[index]
+                                                        ['Video']["view"]
+                                                    .toString(),
+                                                videoUrl:
+                                                    ctrl.publicVideos[index]
+                                                        ['Video']["video"]);
+                                          },
+                                        ),
+                                  // LIKED
+                                  GridView.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 9 / 16,
+                                    ),
+                                    itemCount: 0,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return slideGridWidgets(
+                                          thumbUrl: thumbs[index],
+                                          likes: '2k',
+                                          comments: '12',
+                                          views: '32k',
+                                          videoUrl: '');
+                                    },
                                   ),
-                                  itemCount: thumbs.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return slideGridWidgets(
-                                      thumbUrl: thumbs[index],
-                                      likes: '2k',
-                                      comments: '12',
-                                      views: '32k',
-                                    );
-                                  },
-                                ),
-                                GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    childAspectRatio: 9 / 16,
+                                  // PRIVATE
+                                  GridView.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            childAspectRatio: 9 / 16),
+                                    itemCount: 0,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return slideGridWidgets(
+                                        thumbUrl: thumbs[index],
+                                        likes: '2k',
+                                        comments: '12',
+                                        views: '32k',
+                                        videoUrl: '',
+                                      );
+                                    },
                                   ),
-                                  itemCount: thumbs.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return slideGridWidgets(
-                                      thumbUrl: thumbs[index],
-                                      likes: '2k',
-                                      comments: '12',
-                                      views: '32k',
-                                    );
-                                  },
-                                ),
-                                GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          childAspectRatio: 9 / 16),
-                                  itemCount: thumbs.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return slideGridWidgets(
-                                      thumbUrl: thumbs[index],
-                                      likes: '2k',
-                                      comments: '12',
-                                      views: '32k',
-                                    );
-                                  },
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           )
                         ],
@@ -306,49 +327,57 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
 List t = ['t2', 't3', 't4'];
 
 slideGridWidgets({
-  String thumbUrl = '',
+  required String thumbUrl,
   String likes = '0',
   String comments = '0',
   String views = '0',
+  required String videoUrl,
 }) {
-  return Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(
-          thumbUrl,
-        ),
-        fit: BoxFit.cover,
-        // colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+  return GestureDetector(
+    onTap: () {
+      Get.to(() => SlideBackground(
+            videoUrl: videoUrl,
+          ));
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+            thumbUrl,
+          ),
+          fit: BoxFit.cover,
+          // colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
 
-        filterQuality: FilterQuality.low,
+          filterQuality: FilterQuality.low,
+        ),
       ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.remove_red_eye),
-              Text('$views'),
-            ],
-          ),
-          SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(Icons.message_rounded),
-              Text('$comments'),
-            ],
-          ),
-          SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(Icons.favorite),
-              Text('$likes'),
-            ],
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.remove_red_eye),
+                Text('$views'),
+              ],
+            ),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Icon(Icons.message_rounded),
+                Text('$comments'),
+              ],
+            ),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Icon(Icons.favorite),
+                Text('$likes'),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
   );

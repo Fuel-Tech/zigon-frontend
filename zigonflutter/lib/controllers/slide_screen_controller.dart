@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,15 +77,18 @@ class SlideScreenController extends GetxController {
   RxBool commentLoader = false.obs;
   // COMMENTS
   CommentListModel? commentList;
-  getComments() async {
+  getComments({required String videoID}) async {
+    String userId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     commentLoader.value = true;
     Dio dio = Dio();
-    String postUrl = 'https://mocki.io/v1/ba663eae-94c4-4176-a73c-9e167ef48697';
-
-    var response = await dio.get(postUrl);
-    log(response.toString());
-    if (response.statusCode == 200) {
-      commentList = CommentListModel.fromJson(response.data);
+    String postUrl = 'showVideoComments';
+    Map<String, String> body = {"video_id": videoID, "user_id": userId};
+    var response = await NetworkHandler.dioPost(postUrl, body: body);
+    var json = jsonDecode(response);
+    log(json.toString());
+    if (json['code'] == 200) {
+      commentList = CommentListModel.fromJson(json);
       Get.toNamed(PageRouteList.slides);
       // log(commentList.toString());
       update();
@@ -95,6 +99,10 @@ class SlideScreenController extends GetxController {
     }
 
     commentLoader.value = false;
+  }
+
+  getTime(DateTime dt) {
+    return timeago.format(dt);
   }
 
   TextEditingController commentFieldController = TextEditingController();
@@ -116,7 +124,7 @@ class SlideScreenController extends GetxController {
     var json = jsonDecode(response);
     if (json['code'] == 200) {
       log(json.toString());
-      getComments();
+      getComments(videoID: videoId);
       update();
     } else {
       Get.snackbar(
@@ -178,8 +186,21 @@ class SlideScreenController extends GetxController {
   }
 
   RxBool isLiked = false.obs;
+  RxBool toggleLikeActivate = false.obs;
   toggleLike() {
     isLiked.value = !isLiked.value;
+  }
+
+  toggleLikeApi({required String videoID}) async {
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "likeVideo";
+
+    Map<String, String> body = {"video_id": videoID, "user_id": userID};
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    var json = jsonDecode(response);
+    if (json["code"] == 200) {}
   }
 
   LoginTypes loginType = LoginTypes.none;
@@ -202,6 +223,18 @@ class SlideScreenController extends GetxController {
   void stopActiveVideo() {
     log("VIDEO STATUS: STOPPED");
     activeVideoController?.pause();
+  }
+
+  resetMute() {
+    activeVideoController!.setVolume(1.0);
+  }
+
+  toggleMute() {
+    if (activeVideoController!.value.volume == 0.0) {
+      activeVideoController!.setVolume(1.0);
+    } else {
+      activeVideoController!.setVolume(0.0);
+    }
   }
 
   void playActiveVideo() {

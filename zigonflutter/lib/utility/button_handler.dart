@@ -6,13 +6,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zigonflutter/controllers/app_controller.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
-import 'package:zigonflutter/ui/views/discover_view/discover_view.dart';
-import 'package:zigonflutter/ui/views/notifications_view/notifications_view.dart';
 import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
-import 'package:zigonflutter/ui/views/slides_screen/slides_view2.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
-import '../ui/views/video_upload_screens/camera_page.dart';
 import '../ui/widgets/common_widgets.dart';
 import 'navigation_utility.dart';
 
@@ -59,7 +55,7 @@ class ButtonHandler {
         } else if (buttonTypes == ButtonTypes.like) {
           Get.find<SlideScreenController>().toggleLike();
         } else if (buttonTypes == ButtonTypes.comment) {
-          Get.find<SlideScreenController>().getComments();
+          Get.find<SlideScreenController>().getComments(videoID: value);
           showModalBottomSheet(
             context: context,
             backgroundColor: Colors.transparent,
@@ -500,6 +496,23 @@ emailLoginState(BuildContext context, SlideScreenController controller) {
             ),
           ),
           SizedBox(height: 20),
+          TextButton(
+              onPressed: () {
+                Get.to(() => RegisterUserScreen());
+              },
+              child: RichText(
+                text: TextSpan(
+                    style: GoogleFonts.quicksand(color: AppUtil.secondary),
+                    children: [
+                      TextSpan(
+                        text: " click here to get started!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                    text: "New here,"),
+              ))
         ],
       ),
     ),
@@ -568,4 +581,226 @@ enum ButtonTypes {
   live,
   login,
   setting,
+}
+
+class RegisterUserScreen extends StatelessWidget {
+  const RegisterUserScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Sign up",
+          style: GoogleFonts.quicksand(
+              color: Colors.black, fontWeight: FontWeight.w700),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListView(
+          children: [
+            // FIRSTNAME FIELD
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "First Name",
+                hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                    bottomLeft: Radius.circular(0),
+                    bottomRight: Radius.circular(0),
+                  ),
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
+                    ),
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5)),
+              ),
+            ),
+            // LASTNAME FIELD
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Last Name",
+                hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                    bottomLeft: Radius.circular(4),
+                    bottomRight: Radius.circular(4),
+                  ),
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                    bottomLeft: Radius.circular(4),
+                    bottomRight: Radius.circular(4),
+                  ),
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "User Name",
+                hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Must contain atleast 5 letters',
+              style: AppUtil.textStyle2().copyWith(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              readOnly: true,
+              onTap: () {},
+              decoration: InputDecoration(
+                  hintText: "Brithday",
+                  hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  suffixIcon: Icon(
+                    Icons.calendar_month,
+                    color: Colors.grey,
+                  )),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Your birthday will not be shared with others using ZigOn',
+              style: AppUtil.textStyle2().copyWith(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Email",
+                hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Your email will not be shared with others using ZigOn',
+              style: AppUtil.textStyle2().copyWith(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Mobile No",
+                hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                ),
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Your email will not be shared with others using ZigOn',
+              style: AppUtil.textStyle2().copyWith(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                  hintText: "Password",
+                  hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                  )),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Your email will not be shared with others using ZigOn',
+              style: AppUtil.textStyle2().copyWith(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Checkbox(
+              side: BorderSide(color: Colors.black),
+              value: false,
+              onChanged: (value) {},
+            ).marginZero,
+            Align(
+              alignment: FractionalOffset.center,
+              child: Text(
+                'By checking this box\n you agree to our terms & conditions',
+                textAlign: TextAlign.center,
+                style: AppUtil.textStyle2().copyWith(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            // Text('Username', style: AppUtil.textStyle2().copyWith(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),),
+            // Text('This name will be publicaly visible, you can always change this later'),
+          ],
+        ),
+      ),
+    );
+  }
 }

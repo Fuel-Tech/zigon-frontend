@@ -24,11 +24,11 @@ class CommonWidgets {
           child: GetBuilder<AppController>(builder: (controller) {
             return Container(
               width: AppUtil.screenWidth(context) - 20,
-              height: 60,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(40),
               ),
+              padding: EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -38,13 +38,16 @@ class CommonWidgets {
                       ButtonHandler.onTapHandler(
                           buttonTypes: ButtonTypes.slide, context: context);
                     },
-                    child: FaIcon(
-                      FontAwesomeIcons.film,
-                      color: appController.selectedNavBarItem ==
-                              NavBarSelectionItem.slide
-                          ? Colors.white
-                          : Colors.grey,
-                      size: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: FaIcon(
+                        FontAwesomeIcons.film,
+                        color: appController.selectedNavBarItem ==
+                                NavBarSelectionItem.slide
+                            ? Colors.white
+                            : Colors.grey,
+                        size: 20,
+                      ),
                     ),
                   ),
 
@@ -55,13 +58,16 @@ class CommonWidgets {
                       ButtonHandler.onTapHandler(
                           buttonTypes: ButtonTypes.discover, context: context);
                     },
-                    child: FaIcon(
-                      FontAwesomeIcons.earthAsia,
-                      color: appController.selectedNavBarItem ==
-                              NavBarSelectionItem.discover
-                          ? Colors.white
-                          : Colors.grey,
-                      size: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: FaIcon(
+                        FontAwesomeIcons.earthAsia,
+                        color: appController.selectedNavBarItem ==
+                                NavBarSelectionItem.discover
+                            ? Colors.white
+                            : Colors.grey,
+                        size: 20,
+                      ),
                     ),
                   ),
 
@@ -96,13 +102,16 @@ class CommonWidgets {
                           buttonTypes: ButtonTypes.notification,
                           context: context);
                     },
-                    child: FaIcon(
-                      FontAwesomeIcons.bell,
-                      color: appController.selectedNavBarItem ==
-                              NavBarSelectionItem.notification
-                          ? Colors.white
-                          : Colors.grey,
-                      size: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: FaIcon(
+                        FontAwesomeIcons.bell,
+                        color: appController.selectedNavBarItem ==
+                                NavBarSelectionItem.notification
+                            ? Colors.white
+                            : Colors.grey,
+                        size: 20,
+                      ),
                     ),
                   ),
 
@@ -113,13 +122,16 @@ class CommonWidgets {
                           buttonTypes: ButtonTypes.userprofile,
                           context: context);
                     },
-                    child: FaIcon(
-                      FontAwesomeIcons.user,
-                      color: appController.selectedNavBarItem ==
-                              NavBarSelectionItem.userprofile
-                          ? Colors.white
-                          : Colors.grey,
-                      size: 20,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: FaIcon(
+                        FontAwesomeIcons.user,
+                        color: appController.selectedNavBarItem ==
+                                NavBarSelectionItem.userprofile
+                            ? Colors.white
+                            : Colors.grey,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ],
@@ -195,9 +207,8 @@ class CommonWidgets {
                         shrinkWrap: true,
                         // physics: BouncingScrollPhysics(),
                         physics: BouncingScrollPhysics(),
-                        itemCount: slideScreenController
-                                .commentList?.commentList.length ??
-                            0,
+                        itemCount:
+                            slideScreenController.commentList?.msg.length ?? 0,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(12.0),
@@ -205,32 +216,36 @@ class CommonWidgets {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    // PROFILE PIC
                                     CircleAvatar(
                                       backgroundColor: Colors.amber,
                                       radius: 24,
                                       backgroundImage: NetworkImage(
-                                          '${slideScreenController.commentList!.commentList[index].userPic}'),
+                                          '${slideScreenController.commentList!.msg[index].user.profilePicSmall}'),
                                     ),
                                     const SizedBox(width: 10),
+                                    // NAME, COMMENT, DATE, LIKE, REPLY BTN
                                     Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '${slideScreenController.commentList!.commentList[index].commentUser}',
-                                              style: AppUtil.textStyle2(
-                                                  weight: FontWeight.w600),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              '${slideScreenController.commentList!.commentList[index].comment}',
-                                              style: AppUtil.textStyle2(
-                                                  weight: FontWeight.w400),
-                                            ),
-                                          ],
+                                        Text(
+                                          '${slideScreenController.commentList!.msg[index].user.userName}',
+                                          style: AppUtil.textStyle2(
+                                              weight: FontWeight.w600),
+                                        ),
+                                        SizedBox(height: 5),
+                                        SizedBox(
+                                          width: Get.width - 150,
+                                          child: Text(
+                                            '${slideScreenController.commentList!.msg[index].comment}',
+                                            style: AppUtil.textStyle2(
+                                                weight: FontWeight.w400),
+                                          ),
                                         ),
                                         SizedBox(height: 10),
                                         Row(
@@ -238,7 +253,11 @@ class CommonWidgets {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${slideScreenController.commentList!.commentList[index].commentedTime}',
+                                              slideScreenController.getTime(
+                                                  slideScreenController
+                                                      .commentList!
+                                                      .msg[index]
+                                                      .created),
                                               style: AppUtil.textStyle2(
                                                 textColor: Colors.grey,
                                                 textSize: 12,
@@ -247,7 +266,7 @@ class CommonWidgets {
                                             ),
                                             SizedBox(width: 20),
                                             Text(
-                                              '${slideScreenController.commentList!.commentList[index].commentLike} likes',
+                                              '${slideScreenController.commentList!.msg[index].likeCount} likes',
                                               style: AppUtil.textStyle2(
                                                 textColor: Colors.grey,
                                                 textSize: 12,
@@ -269,9 +288,21 @@ class CommonWidgets {
                                     ),
                                   ],
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.favorite_outline),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: false
+                                          ? Icon(
+                                              Icons.favorite,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(Icons.favorite_outline),
+                                    ),
+                                    Text(
+                                        "${slideScreenController.commentList!.msg[index].likeCount}")
+                                  ],
                                 )
                               ],
                             ),
