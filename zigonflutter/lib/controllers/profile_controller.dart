@@ -15,6 +15,11 @@ class ProfileController extends GetxController {
   RxBool isLoading = true.obs;
   UserProfileModel? userProfileModel;
 
+  Future<void> refreshPage() async {
+    await getUserDetails();
+    await getUserVideos();
+  }
+
   ///FETCHED USER DETAILS
   Future<void> getUserDetails() async {
     String path = "showUserDetail";
@@ -37,15 +42,17 @@ class ProfileController extends GetxController {
   RxList<dynamic> privateVideos = [].obs;
 
   getUserVideos() async {
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     String path = 'showVideosAgainstUserID';
-    Map<String, dynamic> body = {"user_id": "8"};
+    Map<String, dynamic> body = {"user_id": "$userID"};
 
     var response = await NetworkHandler.dioPost(path, body: body);
     var json = jsonDecode(response);
     if (json["code"] == 200) {
       publicVideos.value = json["msg"]["public"];
       privateVideos.value = json["msg"]["private"];
-    } else if (response["code"] == 201) {
+    } else if (json["code"] == 201) {
       log(json["msg"]);
     } else {
       log(json.toString());

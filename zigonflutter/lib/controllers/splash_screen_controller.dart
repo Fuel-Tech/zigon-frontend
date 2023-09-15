@@ -30,12 +30,14 @@ class SplashScreenController extends GetxController {
       "device_id":1,
       "limit":4
     }''';
+    log("YES WE ARE IN");
     var response = await NetworkHandler.dioPost(endpoint, body: body);
-
+    log("YES WE ARE IN2");
     Map<String, dynamic> json = jsonDecode(response);
+    log("DECODED: $json");
     if (json["code"] == 200) {
+      log("YES WE ARE IN3");
       slideListModel = SlideListModel.fromJson(json);
-
       log("SUCCESS 200");
     } else if (json["code"] == 201) {
       slideListModel = null;

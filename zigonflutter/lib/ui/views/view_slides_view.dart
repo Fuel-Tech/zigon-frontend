@@ -28,230 +28,228 @@ class ViewSlidesView extends StatelessWidget {
                 buttonTypes: ButtonTypes.like, context: context);
           },
           child: Stack(
-                children: [
-                  VideoWidgets(
-                    play: true,
-                    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4',
-                  ),
-                  SlidesWidget.onTopGradient(context),
-                  //----------------
-                  //Top Tools
-                  // SafeArea(
-                  //   child: SizedBox(
-                  //     width: AppUtil.screenWidth(context),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       child: Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           Row(
-                  //             children: [
-                  //               SlidesWidget.watchAllSlidesButton(context),
-                  //               const SizedBox(width: 10),
-                  //               SlidesWidget.watchFollowingSlidesButton(
-                  //                   context),
-                  //             ],
-                  //           ),
-                  //           // SlidesWidget.liveButton(),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  //----------------
-                  //Right Tools
-                  SafeArea(
-                    child: Align(
-                      alignment: FractionalOffset.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: SizedBox(
-                          height: 250,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  log('Like Button');
-                                  ButtonHandler.onTapHandler(
-                                      buttonTypes: ButtonTypes.like,
-                                      context: context);
-                                },
-                                child: GetBuilder<SlidesController>(
-                                    builder: (controller) {
-                                  return Column(
-                                    children: [
-                                      false
-                                          ? const Icon(Icons.favorite,
-                                              color: Colors.red, size: 35)
-                                          : const Icon(
-                                              Icons.favorite_border_outlined,
-                                              color: Colors.white,
-                                              size: 35),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        '{slidesController.likeCountForCurrentVideo} ',
-                                        style: AppUtil.textStyle2(
-                                          textSize: 14,
-                                          weight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  log('Comment List');
-                                  ButtonHandler.onTapHandler(
-                                      context: context,
-                                      buttonTypes: ButtonTypes.comment,
-                                      subButtonType: SubButtonType.openDialog);
-                                },
-                                child: Column(
-                                  children: [
-                                    const Icon(Icons.mode_comment_outlined,
-                                        color: Colors.white, size: 35),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      '{slidesController.slideList!.slideList[0].slideComments.count}',
-                                      style: AppUtil.textStyle2(
-                                          textSize: 14,
-                                          weight: FontWeight.w400),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  log('Share');
-                                  List shareData = [
-                                    // slidesController
-                                    //     .slideList!.slideList[0].slideURL
-                                  ];
-                                  ButtonHandler.onTapHandler(
-                                      buttonTypes: ButtonTypes.share,
-                                      value: shareData,
-                                      context: context);
-                                },
-                                child: Column(
-                                  children: [
-                                    const Icon(Icons.share_outlined,
-                                        color: Colors.white, size: 35),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      'Share',
-                                      style: AppUtil.textStyle1(
-                                          textSize: 14,
-                                          weight: FontWeight.w400),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SlidesWidget.settingsWidget(context),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  //----------------
-                  //Bottom Tools
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 55,
-                        bottom: 20,
-                      ),
+            children: [
+              VideoWidgets(
+                play: true,
+                videoUrl:
+                    'https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4',
+              ),
+              SlidesWidget.onTopGradient(context),
+              //----------------
+              //Top Tools
+              // SafeArea(
+              //   child: SizedBox(
+              //     width: AppUtil.screenWidth(context),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Row(
+              //             children: [
+              //               SlidesWidget.watchAllSlidesButton(context),
+              //               const SizedBox(width: 10),
+              //               SlidesWidget.watchFollowingSlidesButton(
+              //                   context),
+              //             ],
+              //           ),
+              //           // SlidesWidget.liveButton(),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              //----------------
+              //Right Tools
+              SafeArea(
+                child: Align(
+                  alignment: FractionalOffset.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SizedBox(
+                      height: 250,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // const SizedBox(height: 5),
-                          //Name, tag, views, options
                           GestureDetector(
                             onTap: () {
+                              log('Like Button');
                               ButtonHandler.onTapHandler(
-                                  buttonTypes: ButtonTypes.profile,
+                                  buttonTypes: ButtonTypes.like,
                                   context: context);
                             },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            child: GetBuilder<SlidesController>(
+                                builder: (controller) {
+                              return Column(
+                                children: [
+                                  false
+                                      ? const Icon(Icons.favorite,
+                                          color: Colors.red, size: 35)
+                                      : const Icon(
+                                          Icons.favorite_border_outlined,
+                                          color: Colors.white,
+                                          size: 35),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    '{slidesController.likeCountForCurrentVideo} ',
+                                    style: AppUtil.textStyle2(
+                                      textSize: 14,
+                                      weight: FontWeight.w400,
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              log('Comment List');
+                              ButtonHandler.onTapHandler(
+                                  context: context,
+                                  buttonTypes: ButtonTypes.comment,
+                                  subButtonType: SubButtonType.openDialog);
+                            },
+                            child: Column(
                               children: [
-                                //Profile picture
-                                CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: NetworkImage(
-                                      '{slidesController.slideList!.slideList[0].metadata.profilepicture}'),
-                                ),
+                                const Icon(Icons.mode_comment_outlined,
+                                    color: Colors.white, size: 35),
+                                const SizedBox(height: 3),
                                 Text(
-                                  '{slidesController.slideList!.slideList[0].metadata.username}',
-                                  style: AppUtil.textStyle1(
-                                      weight: FontWeight.w600),
-                                ),
-                                const SizedBox(width: 25),
-                                const Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                                Text(
-                                  '{slidesController.slideList!.slideList[0].slideViews}',
-                                  style: AppUtil.textStyle2(textSize: 12),
-                                ),
-                                const SizedBox(width: 10),
+                                  '{slidesController.slideList!.slideList[0].slideComments.count}',
+                                  style: AppUtil.textStyle2(
+                                      textSize: 14, weight: FontWeight.w400),
+                                )
                               ],
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          //Video Description
+                          GestureDetector(
+                            onTap: () {
+                              log('Share');
+                              List shareData = [
+                                // slidesController
+                                //     .slideList!.slideList[0].slideURL
+                              ];
+                              ButtonHandler.onTapHandler(
+                                  buttonTypes: ButtonTypes.share,
+                                  value: shareData,
+                                  context: context);
+                            },
+                            child: Column(
+                              children: [
+                                const Icon(Icons.share_outlined,
+                                    color: Colors.white, size: 35),
+                                const SizedBox(height: 3),
+                                Text(
+                                  'Share',
+                                  style: AppUtil.textStyle1(
+                                      textSize: 14, weight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                          ),
+                          SlidesWidget.settingsWidget(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //----------------
+              //Bottom Tools
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 55,
+                    bottom: 20,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // const SizedBox(height: 5),
+                      //Name, tag, views, options
+                      GestureDetector(
+                        onTap: () {
+                          ButtonHandler.onTapHandler(
+                              buttonTypes: ButtonTypes.profile,
+                              context: context);
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            //Profile picture
+
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(
+                                  '${slidesController.slideList!.msg[0].user.profile_pic}'),
+                            ),
+                            Text(
+                              '{slidesController.slideList!.slideList[0].metadata.username}',
+                              style:
+                                  AppUtil.textStyle1(weight: FontWeight.w600),
+                            ),
+                            const SizedBox(width: 25),
+                            const Icon(
+                              Icons.remove_red_eye,
+                              color: Colors.grey,
+                              size: 16,
+                            ),
+                            Text(
+                              '{slidesController.slideList!.slideList[0].slideViews}',
+                              style: AppUtil.textStyle2(textSize: 12),
+                            ),
+                            const SizedBox(width: 10),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      //Video Description
+                      FittedBox(
+                        child: SizedBox(
+                          width: AppUtil.screenWidth(context) / 1.5,
+                          child: Text(
+                            '{slidesController.slideList!.slideList[0].slideDesc}',
+                            style: AppUtil.textStyle2(
+                              textSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                AssetImage('assets/images/disc.png'),
+                          ),
+                          const SizedBox(width: 5),
                           FittedBox(
                             child: SizedBox(
                               width: AppUtil.screenWidth(context) / 1.5,
                               child: Text(
-                                '{slidesController.slideList!.slideList[0].slideDesc}',
+                                '{slidesController.slideList!.slideList[0].audioName}',
                                 style: AppUtil.textStyle2(
                                   textSize: 12,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const CircleAvatar(
-                                radius: 10,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    AssetImage('assets/images/disc.png'),
-                              ),
-                              const SizedBox(width: 5),
-                              FittedBox(
-                                child: SizedBox(
-                                  width: AppUtil.screenWidth(context) / 1.5,
-                                  child: Text(
-                                    '{slidesController.slideList!.slideList[0].audioName}',
-                                    style: AppUtil.textStyle2(
-                                      textSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
+            ],
+          ),
         ));
   }
 }
-
-
 
 class VideoWidgets extends StatefulWidget {
   const VideoWidgets({Key? key, required this.videoUrl, required this.play})

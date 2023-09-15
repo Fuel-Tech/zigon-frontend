@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -14,9 +15,9 @@ class NetworkHandler {
     String userID =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID) ??
             '0';
-    String token =
-        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERTOKEN) ??
-            '0';
+    String token = SharedPrefHandler.getInstance()
+            .getString(SharedPrefHandler.USERTOKEN) ??
+        '0';
 
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
@@ -45,6 +46,7 @@ class NetworkHandler {
     log("Status Code: ${response.statusCode}");
 
     if (response.statusCode == 200) {
+      log("data: ${response.data}");
       return response.data;
     } else if (response.statusCode == 201) {
       log('$postUrl - Created');

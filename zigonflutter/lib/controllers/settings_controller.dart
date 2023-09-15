@@ -13,7 +13,7 @@ class SettingsController extends GetxController {
   logOut() async {
     await SharedPrefHandler.getInstance().clearStorage();
     log("User Logged Out");
-    Get.to(() => SplashScreen());
+    Get.offAll(() => SplashScreen());
   }
 
   UserProfileModel? userProfileModel;

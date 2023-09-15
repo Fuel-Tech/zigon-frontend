@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/main.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -92,6 +93,8 @@ class SlideScreenController extends GetxController {
       Get.toNamed(PageRouteList.slides);
       // log(commentList.toString());
       update();
+    } else if (json["code"] == 201) {
+      log("No comments yet");
     } else {
       Get.snackbar("Try Again",
           "Unable to fetch comments, check your network and try agian🫡",
@@ -108,16 +111,17 @@ class SlideScreenController extends GetxController {
   TextEditingController commentFieldController = TextEditingController();
 
   RxBool addingComment = false.obs;
+
   Future<void> addComment(String videoId, String comment) async {
     addingComment.value = true;
     String userID =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     String url = "postCommentOnVideo";
-    String body = '''{
-      "video_id": $videoId,
-      "user_id": $userID,
-      "comment": $comment
-    }''';
+    Map<String, String> body = {
+      "video_id": videoId,
+      "user_id": userID,
+      "comment": comment
+    };
 
     var response = await NetworkHandler.dioPost(url, body: body);
     log(response.toString());
@@ -138,6 +142,21 @@ class SlideScreenController extends GetxController {
     addingComment.value = false;
   }
 
+  Future<void> addCommentLike(String commentId) async {
+    String userId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "likeComment";
+    Map<String, String> body = {"comment_id": commentId, "user_id": userId};
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    var json = jsonDecode(response);
+    if (json["code"] == 200) {
+      log("comment like api called");
+    } else {
+      log("unable to like");
+    }
+  }
+
   // USER LOGIN HANDLER
   TextEditingController emailFieldController = TextEditingController();
   TextEditingController passwordFieldController = TextEditingController();
@@ -147,8 +166,9 @@ class SlideScreenController extends GetxController {
     log("loggin in");
     String path = 'login';
     String body = '''{
-      "email": "${emailFieldController.text}",
-      "password":"${passwordFieldController.text}"
+      "email":"${emailFieldController.text}",
+      "password":"${passwordFieldController.text}",
+      "fcm":"$fcm"
     }''';
     // var body = {"email": "jassimpv@gmail.com", "password": "123@123"};
     log(body.toString());
@@ -185,13 +205,55 @@ class SlideScreenController extends GetxController {
     isLoading.value = false;
   }
 
-  RxBool isLiked = false.obs;
   RxBool toggleLikeActivate = false.obs;
-  toggleLike() {
-    isLiked.value = !isLiked.value;
+  toggleLike({required String videoID, required int index}) async {
+    // toggleLikeActivate.value = false;
+    if (toggleLikeActivate.isFalse) {
+      addRemoveLike(slideListModel!.msg[index].video.isVideoLiked, index);
+      toggleLikeActivate.value = true;
+      await toggleLikeApi(videoID: videoID);
+      toggleLikeActivate.value = false;
+    }
   }
 
-  toggleLikeApi({required String videoID}) async {
+  addRemoveLike(bool likeStatus, int index) {
+    if (!likeStatus) {
+      final originalVideo = slideListModel!.msg[index]
+          .video; // Assuming you want to increment the like count of the first video
+      final updatedVideo = originalVideo.copyWith(
+        like_count: originalVideo.like_count + 1,
+        isVideoLiked: !originalVideo.isVideoLiked,
+      );
+
+      final updatedMsg =
+          slideListModel!.msg[index].copyWith(video: updatedVideo);
+      final updatedMsgList =
+          slideListModel!.msg.toList(); // Create a copy of the list
+      updatedMsgList[index] =
+          updatedMsg; // Update the first Msg object in the list
+
+      slideListModel = slideListModel!.copyWith(msg: updatedMsgList);
+    } else {
+      final originalVideo = slideListModel!.msg[index]
+          .video; // Assuming you want to increment the like count of the first video
+      final updatedVideo = originalVideo.copyWith(
+        like_count: originalVideo.like_count - 1,
+        isVideoLiked: !originalVideo.isVideoLiked,
+      );
+
+      final updatedMsg =
+          slideListModel!.msg[index].copyWith(video: updatedVideo);
+      final updatedMsgList =
+          slideListModel!.msg.toList(); // Create a copy of the list
+      updatedMsgList[index] =
+          updatedMsg; // Update the first Msg object in the list
+
+      slideListModel = slideListModel!.copyWith(msg: updatedMsgList);
+    }
+    update();
+  }
+
+  Future<void> toggleLikeApi({required String videoID}) async {
     String userID =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     String url = "likeVideo";
@@ -200,7 +262,12 @@ class SlideScreenController extends GetxController {
 
     var response = await NetworkHandler.dioPost(url, body: body);
     var json = jsonDecode(response);
-    if (json["code"] == 200) {}
+    log("$json");
+    if (json["code"] == 200) {
+      log("video like api called");
+    } else {
+      log("UNABLE TO LIKE");
+    }
   }
 
   LoginTypes loginType = LoginTypes.none;

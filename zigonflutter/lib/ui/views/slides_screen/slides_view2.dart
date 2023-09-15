@@ -132,33 +132,36 @@ class RightToolBar extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(
-                  () => GestureDetector(
-                    onTap: () {
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.like,
-                          context: context,
-                          value: slideScreenController
-                              .slideListModel!.msg[index].video.id);
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        slideScreenController.isLiked.isTrue
-                            ? const Icon(Icons.favorite,
-                                color: Colors.red, size: 30)
-                            : const Icon(Icons.favorite_border_outlined,
-                                color: Colors.white, size: 30),
-                        const SizedBox(height: 3),
-                        Text(
-                          '${slideScreenController.slideListModel!.msg[index].video.like_count} ',
-                          style: AppUtil.textStyle2(
-                            textSize: 14,
-                            weight: FontWeight.w400,
-                          ),
-                        )
-                      ],
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    ButtonHandler.onTapHandler(
+                      buttonTypes: ButtonTypes.like,
+                      context: context,
+                      value: {
+                        "index": index,
+                        "videoId": slideScreenController
+                            .slideListModel!.msg[index].video.id
+                      },
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      slideScreenController
+                              .slideListModel!.msg[index].video.isVideoLiked
+                          ? const Icon(Icons.favorite,
+                              color: Colors.red, size: 30)
+                          : const Icon(Icons.favorite_border_outlined,
+                              color: Colors.white, size: 30),
+                      const SizedBox(height: 3),
+                      Text(
+                        '${slideScreenController.slideListModel!.msg[index].video.like_count} ',
+                        style: AppUtil.textStyle2(
+                          textSize: 14,
+                          weight: FontWeight.w400,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 slideScreenController
@@ -253,7 +256,7 @@ class BottomToolbar extends StatelessWidget {
                     buttonTypes: ButtonTypes.profile, context: context);
               },
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //Profile picture
                   GestureDetector(
@@ -277,6 +280,7 @@ class BottomToolbar extends StatelessWidget {
                                     .user.profile_pic!),
                           ),
                   ),
+                  SizedBox(width: 5),
                   Text(
                     '${slideScreenControler.slideListModel!.msg[index].user.username}',
                     style: AppUtil.textStyle1(weight: FontWeight.w600),

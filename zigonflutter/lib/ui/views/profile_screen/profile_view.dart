@@ -15,11 +15,7 @@ import 'package:zigonflutter/utility/network_utility.dart';
 class ProfileView extends StatelessWidget with ProfileWidgets {
   ProfileView({Key? key}) : super(key: key);
   final ProfileController profileController = Get.put(ProfileController());
-  final List<String> thumbs = [
-    'https://images.pexels.com/photos/3889742/pexels-photo-3889742.jpeg',
-    'https://images.pexels.com/photos/4871012/pexels-photo-4871012.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    'https://images.pexels.com/photos/2499699/pexels-photo-2499699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -33,285 +29,293 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                   ? const Center(
                       child: CircularProgressIndicator.adaptive(),
                     )
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          //Profile Header
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(IMG_URL +
-                                          (ctrl.userProfileModel?.msg.User
-                                                  .profile_pic ??
-                                              '')),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(height: 10),
-                                        SizedBox(
-                                          width: Get.width * .38,
-                                          child: Text(
-                                            "${ctrl.userProfileModel?.msg.User.first_name ?? ''}",
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            overflow: TextOverflow.clip,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          "@${ctrl.userProfileModel!.msg.User.username}",
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            InkWell(
-                                                onTap: () {},
-                                                child: Icon(
-                                                  Ionicons.logo_instagram,
-                                                )),
-                                            SizedBox(width: 20),
-                                            ctrl.userProfileSelected
-                                                ? Container()
-                                                : InkWell(
-                                                    onTap: () {
-                                                      //  TODO: ADD POPMENU FOR BLOCK AND REPORT
-                                                    },
-                                                    child: Icon(Icons
-                                                        .more_vert_rounded)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    //FOLLOW/UNFOLLOW / MESSAGES
-                                    SizedBox(height: 10),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppUtil.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border:
-                                              Border.all(color: Colors.white),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 6, horizontal: 8),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              ctrl.userProfileSelected
-                                                  ? Icons.message
-                                                  : Icons.add_box_rounded,
-                                              size: 16,
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              ctrl.userProfileSelected
-                                                  ? 'Chat'
-                                                  : 'Follow',
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 15),
-                                    // MESSAGE / SETTINGS
-                                    GestureDetector(
-                                      onTap: () {
-                                        ctrl.userProfileSelected
-                                            ? Get.to(() => UserSettingsView())
-                                            : null;
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: AppUtil.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border:
-                                              Border.all(color: Colors.white),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 6, horizontal: 8),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              ctrl.userProfileSelected
-                                                  ? Icons.settings
-                                                  : Icons.message,
-                                              size: 16,
-                                            ),
-                                            SizedBox(width: 4),
-                                            Text(
-                                              ctrl.userProfileSelected
-                                                  ? 'Settings'
-                                                  : 'Chat',
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          //User Stats
-                          SizedBox(
-                            width: AppUtil.screenWidth(context),
-                            height: 45,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                userProfileStatsWidget(
-                                    ctrl.userProfileModel!.msg.User
-                                        .followers_count!
-                                        .toStringAsFixed(0),
-                                    'Followers'),
-                                VerticalDivider(
-                                  color: AppUtil.secondary,
-                                  thickness: 2,
-                                ),
-                                userProfileStatsWidget(
-                                    ctrl.userProfileModel!.msg.User.video_count!
-                                        .toStringAsFixed(0),
-                                    'Posts'),
-                                VerticalDivider(
-                                  color: AppUtil.secondary,
-                                  thickness: 2,
-                                ),
-                                userProfileStatsWidget(
-                                    ctrl.userProfileModel!.msg.User.likes_count!
-                                        .toStringAsFixed(0),
-                                    'Likes'),
-                              ],
-                            ),
-                          ),
-
-                          SizedBox(height: 30),
-                          TabBar(
-                            tabs: const [
-                              Text('Slides'),
-                              Text('Liked'),
-                              Text('Private'),
-                            ],
-                            indicatorColor: AppUtil.secondary,
-                            indicatorWeight: 4,
-                          ),
-                          Expanded(
-                            child: Obx(
-                              () => TabBarView(
+                  : RefreshIndicator(
+                      onRefresh: () async {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            //Profile Header
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // SLIDES
-                                  ctrl.publicVideos.isEmpty
-                                      ? Center(
-                                          child: Text(
-                                              'You have no slides to show'))
-                                      : GridView.builder(
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            childAspectRatio: 9 / 16,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: NetworkImage(IMG_URL +
+                                            (ctrl.userProfileModel?.msg.User
+                                                    .profile_pic ??
+                                                '')),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(height: 10),
+                                          SizedBox(
+                                            width: Get.width * .38,
+                                            child: Text(
+                                              "${ctrl.userProfileModel?.msg.User.first_name ?? ''}",
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              overflow: TextOverflow.clip,
+                                            ),
                                           ),
-                                          itemCount: ctrl.publicVideos.length,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            return slideGridWidgets(
-                                                thumbUrl:
-                                                    ctrl.publicVideos[index]
-                                                        ['Video']["thum"],
-                                                likes: ctrl.publicVideos[index]
-                                                        ['Video']["like_count"]
-                                                    .toString(),
-                                                comments: ctrl
-                                                    .publicVideos[index]['Video']
-                                                        ["comment_count"]
-                                                    .toString(),
-                                                views: ctrl.publicVideos[index]
-                                                        ['Video']["view"]
-                                                    .toString(),
-                                                videoUrl:
-                                                    ctrl.publicVideos[index]
-                                                        ['Video']["video"]);
-                                          },
+                                          SizedBox(height: 5),
+                                          Text(
+                                            "@${ctrl.userProfileModel!.msg.User.username}",
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                  onTap: () {},
+                                                  child: Icon(
+                                                    Ionicons.logo_instagram,
+                                                  )),
+                                              SizedBox(width: 20),
+                                              ctrl.userProfileSelected
+                                                  ? Container()
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        //  TODO: ADD POPMENU FOR BLOCK AND REPORT
+                                                      },
+                                                      child: Icon(Icons
+                                                          .more_vert_rounded)),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      //FOLLOW/UNFOLLOW / MESSAGES
+                                      SizedBox(height: 10),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppUtil.secondary,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border:
+                                                Border.all(color: Colors.white),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 8),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                ctrl.userProfileSelected
+                                                    ? Icons.message
+                                                    : Icons.add_box_rounded,
+                                                size: 16,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                ctrl.userProfileSelected
+                                                    ? 'Chat'
+                                                    : 'Follow',
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                  // LIKED
-                                  GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      childAspectRatio: 9 / 16,
-                                    ),
-                                    itemCount: 0,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return slideGridWidgets(
-                                          thumbUrl: thumbs[index],
-                                          likes: '2k',
-                                          comments: '12',
-                                          views: '32k',
-                                          videoUrl: '');
-                                    },
-                                  ),
-                                  // PRIVATE
-                                  GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            childAspectRatio: 9 / 16),
-                                    itemCount: 0,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      return slideGridWidgets(
-                                        thumbUrl: thumbs[index],
-                                        likes: '2k',
-                                        comments: '12',
-                                        views: '32k',
-                                        videoUrl: '',
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      // MESSAGE / SETTINGS
+                                      GestureDetector(
+                                        onTap: () {
+                                          ctrl.userProfileSelected
+                                              ? Get.to(() => UserSettingsView())
+                                              : null;
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: AppUtil.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border:
+                                                Border.all(color: Colors.white),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 8),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                ctrl.userProfileSelected
+                                                    ? Icons.settings
+                                                    : Icons.message,
+                                                size: 16,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                ctrl.userProfileSelected
+                                                    ? 'Settings'
+                                                    : 'Chat',
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-                          )
-                        ],
+                            SizedBox(height: 15),
+                            //User Stats
+                            SizedBox(
+                              width: AppUtil.screenWidth(context),
+                              height: 45,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  userProfileStatsWidget(
+                                      ctrl.userProfileModel!.msg.User
+                                          .followers_count!
+                                          .toStringAsFixed(0),
+                                      'Followers'),
+                                  VerticalDivider(
+                                    color: AppUtil.secondary,
+                                    thickness: 2,
+                                  ),
+                                  userProfileStatsWidget(
+                                      ctrl.userProfileModel!.msg.User
+                                          .video_count!
+                                          .toStringAsFixed(0),
+                                      'Posts'),
+                                  VerticalDivider(
+                                    color: AppUtil.secondary,
+                                    thickness: 2,
+                                  ),
+                                  userProfileStatsWidget(
+                                      ctrl.userProfileModel!.msg.User
+                                          .likes_count!
+                                          .toStringAsFixed(0),
+                                      'Likes'),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(height: 30),
+                            TabBar(
+                              tabs: const [
+                                Text('Slides'),
+                                Text('Liked'),
+                                Text('Private'),
+                              ],
+                              indicatorColor: AppUtil.secondary,
+                              indicatorWeight: 4,
+                            ),
+                            Expanded(
+                              child: Obx(
+                                () => TabBarView(
+                                  children: [
+                                    // SLIDES
+                                    ctrl.publicVideos.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                                'You have no slides to show'))
+                                        : GridView.builder(
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              childAspectRatio: 9 / 16,
+                                            ),
+                                            itemCount: ctrl.publicVideos.length,
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, index) {
+                                              return slideGridWidgets(
+                                                  thumbUrl: ctrl.publicVideos[index]
+                                                      ['Video']["thum"],
+                                                  likes: ctrl.publicVideos[index]
+                                                          ['Video']
+                                                          ["like_count"]
+                                                      .toString(),
+                                                  comments: ctrl
+                                                      .publicVideos[index]['Video']
+                                                          ["comment_count"]
+                                                      .toString(),
+                                                  views: ctrl.publicVideos[index]
+                                                          ['Video']["view"]
+                                                      .toString(),
+                                                  videoUrl:
+                                                      ctrl.publicVideos[index]
+                                                          ['Video']["video"]);
+                                            },
+                                          ),
+                                    // LIKED
+                                    GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        childAspectRatio: 9 / 16,
+                                      ),
+                                      itemCount: 0,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return slideGridWidgets(
+                                            thumbUrl: "",
+                                            likes: '2k',
+                                            comments: '12',
+                                            views: '32k',
+                                            videoUrl: '');
+                                      },
+                                    ),
+                                    // PRIVATE
+                                    GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              childAspectRatio: 9 / 16),
+                                      itemCount: 0,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return slideGridWidgets(
+                                          thumbUrl: "",
+                                          likes: '2k',
+                                          comments: '12',
+                                          views: '32k',
+                                          videoUrl: '',
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
             );
@@ -335,9 +339,12 @@ slideGridWidgets({
 }) {
   return GestureDetector(
     onTap: () {
-      Get.to(() => SlideBackground(
-            videoUrl: videoUrl,
-          ));
+      Get.to(
+        () => SlideBackground(
+          videoUrl: videoUrl,
+        ),
+        transition: Transition.upToDown,
+      );
     },
     child: Container(
       decoration: BoxDecoration(

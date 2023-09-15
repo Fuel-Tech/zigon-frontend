@@ -40,7 +40,7 @@ class AppController extends GetxController {
     isUploadingVideo.value = true;
     await dios.post(postUrl, data: body, onSendProgress: (sent, total) {
       uploadProgress.value = sent / total;
-    });
+    }).then((value) => Get.back());
     isUploadingVideo.value = false;
   }
 }

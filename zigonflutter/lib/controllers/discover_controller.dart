@@ -13,6 +13,7 @@ class DiscoverController extends GetxController {
 
   bool isLoading1 = true;
   bool isLoading2 = true;
+  RxBool showGif = false.obs;
 
   Future<void> getPopularVideo() async {
     String userID =

@@ -38,11 +38,9 @@ class _CameraPageState extends State<CameraPage> {
     super.initState();
   }
 
-  //WHEN RECORD BUTTON IS PRESSED THE RECOREDTIMER STARTS COUNTING 
+  //WHEN RECORD BUTTON IS PRESSED THE RECOREDTIMER STARTS COUNTING
 
-  recordTimer() {
-    
-  }
+  recordTimer() {}
 
   getZoomLevels() async {
     if (_camera.value.isInitialized) {

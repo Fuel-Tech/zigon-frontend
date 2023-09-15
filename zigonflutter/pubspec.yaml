@@ -59,6 +59,9 @@ dependencies:
   textfield_tags: ^2.0.2
   shimmer: ^3.0.0
   timeago: ^3.5.0
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:

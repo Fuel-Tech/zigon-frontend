@@ -13,8 +13,8 @@ import 'package:zigonflutter/ui/views/video_upload_screens/upload_final_screen.d
 
 import '../../../utility/app_utility.dart';
 import 'camera_page.dart';
-import 'ffmpeg_services.dart';
-import 'filter_services.dart';
+import '../../../utility/ffmpeg_services.dart';
+import '../../../utility/filter_services.dart';
 import 'upload_video_page.dart';
 
 class VideoEditorPage extends StatefulWidget {

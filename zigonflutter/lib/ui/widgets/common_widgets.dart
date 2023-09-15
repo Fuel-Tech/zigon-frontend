@@ -174,186 +174,192 @@ class CommonWidgets {
   static commentDialogWidget(BuildContext context) {
     final SlideScreenController slideScreenController = Get.find();
     return GetBuilder<SlideScreenController>(builder: (ctrl) {
-      return Container(
-        width: AppUtil.screenWidth(context),
-        height: AppUtil.screenHeight(context),
-        decoration: BoxDecoration(
-          color: AppUtil.primary,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40),
-            topRight: Radius.circular(40),
+      return Padding(
+        padding: EdgeInsets.only(bottom: Get.mediaQuery.viewInsets.bottom),
+        child: Container(
+          width: AppUtil.screenWidth(context),
+          height: AppUtil.screenHeight(context),
+          decoration: BoxDecoration(
+            color: AppUtil.primary,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Comments',
-                style: AppUtil.textStyle1(
-                  weight: FontWeight.w500,
-                  textSize: 20,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Comments',
+                  style: AppUtil.textStyle1(
+                    weight: FontWeight.w500,
+                    textSize: 20,
+                  ),
                 ),
               ),
-            ),
-            Divider(),
-            Obx(
-              () => slideScreenController.commentLoader.value
-                  ? CircularProgressIndicator(
-                      color: AppUtil.secondary,
-                    )
-                  : Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        // physics: BouncingScrollPhysics(),
-                        physics: BouncingScrollPhysics(),
-                        itemCount:
-                            slideScreenController.commentList?.msg.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // PROFILE PIC
-                                    CircleAvatar(
-                                      backgroundColor: Colors.amber,
-                                      radius: 24,
-                                      backgroundImage: NetworkImage(
-                                          '${slideScreenController.commentList!.msg[index].user.profilePicSmall}'),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    // NAME, COMMENT, DATE, LIKE, REPLY BTN
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${slideScreenController.commentList!.msg[index].user.userName}',
-                                          style: AppUtil.textStyle2(
-                                              weight: FontWeight.w600),
-                                        ),
-                                        SizedBox(height: 5),
-                                        SizedBox(
-                                          width: Get.width - 150,
-                                          child: Text(
-                                            '${slideScreenController.commentList!.msg[index].comment}',
+              Divider(),
+              Obx(
+                () => slideScreenController.commentLoader.value
+                    ? CircularProgressIndicator(
+                        color: AppUtil.secondary,
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          // physics: BouncingScrollPhysics(),
+                          physics: BouncingScrollPhysics(),
+                          itemCount:
+                              slideScreenController.commentList?.msg.length ??
+                                  0,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // PROFILE PIC
+                                      CircleAvatar(
+                                        backgroundColor: Colors.amber,
+                                        radius: 24,
+                                        backgroundImage: NetworkImage(
+                                            '${slideScreenController.commentList!.msg[index].user.profilePicSmall}'),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // NAME, COMMENT, DATE, LIKE, REPLY BTN
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${slideScreenController.commentList!.msg[index].user.userName}',
                                             style: AppUtil.textStyle2(
-                                                weight: FontWeight.w400),
+                                                weight: FontWeight.w600),
                                           ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              slideScreenController.getTime(
-                                                  slideScreenController
-                                                      .commentList!
-                                                      .msg[index]
-                                                      .created),
+                                          SizedBox(height: 5),
+                                          SizedBox(
+                                            width: Get.width - 150,
+                                            child: Text(
+                                              '${slideScreenController.commentList!.msg[index].comment}',
                                               style: AppUtil.textStyle2(
-                                                textColor: Colors.grey,
-                                                textSize: 12,
-                                                weight: FontWeight.w600,
-                                              ),
+                                                  weight: FontWeight.w400),
                                             ),
-                                            SizedBox(width: 20),
-                                            Text(
-                                              '${slideScreenController.commentList!.msg[index].likeCount} likes',
-                                              style: AppUtil.textStyle2(
-                                                textColor: Colors.grey,
-                                                textSize: 12,
-                                                weight: FontWeight.w600,
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                slideScreenController.getTime(
+                                                    slideScreenController
+                                                        .commentList!
+                                                        .msg[index]
+                                                        .created),
+                                                style: AppUtil.textStyle2(
+                                                  textColor: Colors.grey,
+                                                  textSize: 12,
+                                                  weight: FontWeight.w600,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(width: 20),
-                                            Text(
-                                              'Reply',
-                                              style: AppUtil.textStyle2(
-                                                textColor: Colors.grey,
-                                                textSize: 12,
-                                                weight: FontWeight.w600,
+                                              SizedBox(width: 20),
+                                              Text(
+                                                '${slideScreenController.commentList!.msg[index].likeCount} likes',
+                                                style: AppUtil.textStyle2(
+                                                  textColor: Colors.grey,
+                                                  textSize: 12,
+                                                  weight: FontWeight.w600,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: false
-                                          ? Icon(
-                                              Icons.favorite,
-                                              color: Colors.red,
-                                            )
-                                          : Icon(Icons.favorite_outline),
-                                    ),
-                                    Text(
-                                        "${slideScreenController.commentList!.msg[index].likeCount}")
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: TextFormField(
-                controller: ctrl.commentFieldController,
-                decoration: InputDecoration(
-                    suffixIcon: Obx(
-                      () => ctrl.addingComment.isTrue
-                          ? CircularProgressIndicator(
-                              color: AppUtil.secondary,
-                            )
-                          : IconButton(
-                              onPressed: () {
-                                if (ctrl.commentFieldController.text
-                                        .removeAllWhitespace !=
-                                    '') {
-                                  ctrl.addComment(
-                                      ctrl
-                                          .slideListModel!
-                                          .msg[ctrl.currentIndex.value]
-                                          .video
-                                          .id,
-                                      ctrl.commentFieldController.text);
-                                }
-                              },
-                              icon: Icon(
-                                Icons.send,
-                                size: 30,
-                                color: ctrl.commentFieldController.text
-                                            .removeAllWhitespace ==
-                                        ''
-                                    ? Colors.grey
-                                    : AppUtil.secondary,
+                                              SizedBox(width: 20),
+                                              Text(
+                                                'Reply',
+                                                style: AppUtil.textStyle2(
+                                                  textColor: Colors.grey,
+                                                  textSize: 12,
+                                                  weight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: false
+                                            ? Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
+                                            : Icon(Icons.favorite_outline),
+                                      ),
+                                      Text(
+                                          "${slideScreenController.commentList!.msg[index].likeCount}")
+                                    ],
+                                  )
+                                ],
                               ),
-                            ),
-                    ),
-                    isDense: true,
-                    hintText: 'Add comment...',
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                            );
+                          },
+                        ),
+                      ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TextFormField(
+                  controller: ctrl.commentFieldController,
+                  decoration: InputDecoration(
+                      suffixIcon: Obx(
+                        () => ctrl.addingComment.isTrue
+                            ? CircularProgressIndicator(
+                                color: AppUtil.secondary,
+                              )
+                            : IconButton(
+                                onPressed: () {
+                                  if (ctrl.commentFieldController.text
+                                          .removeAllWhitespace !=
+                                      '') {
+                                    ctrl.addComment(
+                                        ctrl
+                                            .slideListModel!
+                                            .msg[ctrl.currentIndex.value]
+                                            .video
+                                            .id,
+                                        ctrl.commentFieldController.text);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.send,
+                                  size: 30,
+                                  color: ctrl.commentFieldController.text
+                                              .removeAllWhitespace ==
+                                          ''
+                                      ? Colors.grey
+                                      : AppUtil.secondary,
+                                ),
+                              ),
+                      ),
+                      isDense: true,
+                      hintText: 'Add comment...',
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      )),
+                ),
+              )
+            ],
+          ),
         ),
       );
     });

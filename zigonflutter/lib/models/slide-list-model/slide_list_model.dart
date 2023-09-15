@@ -55,79 +55,45 @@ class User with _$User {
     required String id,
     String? first_name,
     String? last_name,
-    String? gender,
-    String? bio,
-    String? website,
-    required String dob,
-    String? social_id,
-    required String email,
-    String? phone,
-    required String password,
     String? profile_pic,
-    String? profile_pic_small,
-    required String role,
     required String username,
-    String? social,
-    String? device_token,
-    String? token,
-    required String active,
-    String? lat,
-    String? long,
-    required String online,
-    required String verified,
-    required String auth_token,
-    String? version,
-    String? device,
-    String? ip,
-    String? city,
-    String? country,
-    required String city_id,
-    required String state_id,
-    required String country_id,
-    required String wallet,
-    String? paypal,
-    required String reset_wallet_datetime,
-    String? fbId,
-    required DateTime created,
-    @JsonKey(name: 'PushNotification')
-        required PushNotification pushNotification,
-    @JsonKey(name: 'PrivacySetting') required PrivacySetting privacySetting,
+    required bool verified,
     required String button,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
-@freezed
-class PrivacySetting with _$PrivacySetting {
-  const factory PrivacySetting({
-    required String id,
-    required String videos_download,
-    required String direct_message,
-    required String duet,
-    required String liked_videos,
-    required String video_comment,
-  }) = _PrivacySetting;
+// @freezed
+// class PrivacySetting with _$PrivacySetting {
+//   const factory PrivacySetting({
+//     required String id,
+//     required String videos_download,
+//     required String direct_message,
+//     required String duet,
+//     required String liked_videos,
+//     required String video_comment,
+//   }) = _PrivacySetting;
 
-  factory PrivacySetting.fromJson(Map<String, dynamic> json) =>
-      _$PrivacySettingFromJson(json);
-}
+//   factory PrivacySetting.fromJson(Map<String, dynamic> json) =>
+//       _$PrivacySettingFromJson(json);
+// }
 
-@freezed
-class PushNotification with _$PushNotification {
-  const factory PushNotification({
-    required String id,
-    required String likes,
-    required String comments,
-    required String new_followers,
-    required String mentions,
-    required String direct_messages,
-    required String video_updates,
-  }) = _PushNotification;
+// @freezed
+// class PushNotification with _$PushNotification {
+//   const factory PushNotification({
+//     required String id,
+//     required String likes,
+//     required String comments,
+//     required String new_followers,
+//     required String mentions,
+//     required String direct_messages,
+//     required String video_updates,
+//   }) = _PushNotification;
 
-  factory PushNotification.fromJson(Map<String, dynamic> json) =>
-      _$PushNotificationFromJson(json);
-}
+//   factory PushNotification.fromJson(Map<String, dynamic> json) =>
+//       _$PushNotificationFromJson(json);
+// }
 
 @freezed
 class Video with _$Video {
@@ -139,6 +105,7 @@ class Video with _$Video {
     required String thum,
     required String gif,
     required String view,
+    required bool isVideoLiked,
     required String section,
     required String sound_id,
     required String privacy_type,
@@ -150,7 +117,6 @@ class Video with _$Video {
     required String duration,
     required String promote,
     required DateTime created,
-    required int like,
     required int favourite,
     required int comment_count,
     required int like_count,

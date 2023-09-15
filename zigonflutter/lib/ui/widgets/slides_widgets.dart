@@ -36,7 +36,7 @@ class SlidesWidget {
           ],
           stops: [
             0.1,
-            0.8,
+            0.6,
             0.8,
             0.9,
           ],

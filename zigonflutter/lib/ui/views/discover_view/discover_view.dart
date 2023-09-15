@@ -65,155 +65,15 @@ class DiscoverView extends StatelessWidget {
                       items: discoverController.set1!.msg.map((video) {
                         return Visibility(
                           visible: discoverController.isLoading1,
-                          replacement: GestureDetector(
-                            onTap: () {
-                              Get.to(() =>
-                                  SlideBackground(videoUrl: video.video.video));
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                    image: NetworkImage(video.video.thum),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                alignment: Alignment.bottomCenter,
-                                //Toolbar
-                                child: Container(
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    borderRadius: const BorderRadius.vertical(
-                                      bottom: Radius.circular(12),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          //DP
-                                          Container(
-                                            height: 50,
-                                            width: 50,
-                                            decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/images/prodp.jpg'),
-                                                    fit: BoxFit.cover),
-                                                shape: BoxShape.circle),
-                                          ),
-                                          SizedBox(width: 10),
-                                          //Name, Views, Comments, Likes
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                video.user.username,
-                                                style: GoogleFonts.raleway(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              //Views, Comments, Likes
-                                              Row(
-                                                children: [
-                                                  //Views
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.remove_red_eye,
-                                                        color: Colors.grey,
-                                                        size: 16,
-                                                      ),
-                                                      Text(
-                                                        '${video.video.view}k',
-                                                        style: GoogleFonts
-                                                            .quicksand(
-                                                                fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  //Comments
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.messenger,
-                                                        color: Colors.grey,
-                                                        size: 16,
-                                                      ),
-                                                      Text(
-                                                        video
-                                                            .video.comment_count
-                                                            .toString(),
-                                                        style: GoogleFonts
-                                                            .quicksand(
-                                                                fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  //Likes
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.favorite,
-                                                        color: Colors.grey,
-                                                        size: 16,
-                                                      ),
-                                                      Text(
-                                                        video.video.like_count
-                                                            .toString(),
-                                                        style: GoogleFonts
-                                                            .quicksand(
-                                                                fontSize: 12),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: AppUtil.secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppUtil.secondary,
-                                                blurRadius: 6,
-                                                offset: Offset(0, 4),
-                                              )
-                                            ]),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 15),
-                                        child: Text(
-                                          'Follow',
-                                          style: GoogleFonts.raleway(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          replacement: TopPickVideoWidget(
+                              video: video.video.video,
+                              commentCount:
+                                  video.video.comment_count.toString(),
+                              likeCount: video.video.like_count.toString(),
+                              views: video.video.view,
+                              gif: video.video.gif,
+                              thumb: video.video.thum,
+                              userName: video.user.username),
                           child: Shimmer.fromColors(
                             baseColor: Colors.white.withOpacity(0.1),
                             highlightColor: Colors.white.withOpacity(0.4),
@@ -400,9 +260,12 @@ class DiscoverView extends StatelessWidget {
                                 visible: discoverController.isLoading1,
                                 replacement: GestureDetector(
                                   onTap: () {
-                                    Get.to(() => SlideBackground(
-                                        videoUrl: discoverController
-                                            .set1!.msg[index].video.video));
+                                    Get.to(
+                                      () => SlideBackground(
+                                          videoUrl: discoverController
+                                              .set1!.msg[index].video.video),
+                                      transition: Transition.upToDown,
+                                    );
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -438,7 +301,7 @@ class DiscoverView extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                         image: NetworkImage(
-                                                            "$IMG_URL${discoverController.set1!.msg[index].user.profile_pic_small}"),
+                                                            "$IMG_URL${discoverController.set1!.msg[index].user.profile_pic}"),
                                                         fit: BoxFit.cover),
                                                     shape: BoxShape.circle),
                                               ),
@@ -560,6 +423,180 @@ class DiscoverView extends StatelessWidget {
                 ),
         );
       }),
+    );
+  }
+}
+
+class TopPickVideoWidget extends StatefulWidget {
+  TopPickVideoWidget({
+    super.key,
+    required this.video,
+    required this.commentCount,
+    required this.gif,
+    required this.likeCount,
+    required this.thumb,
+    required this.views,
+    required this.userName,
+  });
+  String video;
+  String userName;
+  String thumb;
+  String gif;
+  String views;
+  String commentCount;
+  String likeCount;
+  @override
+  State<TopPickVideoWidget> createState() => _TopPickVideoWidgetState();
+}
+
+class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
+  bool showGif = false;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => SlideBackground(videoUrl: widget.video));
+      },
+      onLongPressStart: (value) {
+        setState(() {
+          showGif = true;
+        });
+      },
+      onLongPressEnd: (value) {
+        setState(() {
+          showGif = false;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            image: DecorationImage(
+              image: NetworkImage(
+                showGif ? widget.gif : widget.thumb,
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          alignment: Alignment.bottomCenter,
+          //Toolbar
+          child: Container(
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    //DP
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/prodp.jpg'),
+                              fit: BoxFit.cover),
+                          shape: BoxShape.circle),
+                    ),
+                    SizedBox(width: 10),
+                    //Name, Views, Comments, Likes
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.userName,
+                          style: GoogleFonts.raleway(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        //Views, Comments, Likes
+                        Row(
+                          children: [
+                            //Views
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.grey,
+                                  size: 16,
+                                ),
+                                Text(
+                                  '${widget.views}k',
+                                  style: GoogleFonts.quicksand(fontSize: 12),
+                                )
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                            //Comments
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.messenger,
+                                  color: Colors.grey,
+                                  size: 16,
+                                ),
+                                Text(
+                                  widget.commentCount,
+                                  style: GoogleFonts.quicksand(fontSize: 12),
+                                )
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                            //Likes
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.favorite,
+                                  color: Colors.grey,
+                                  size: 16,
+                                ),
+                                Text(
+                                  widget.likeCount,
+                                  style: GoogleFonts.quicksand(fontSize: 12),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: AppUtil.secondary,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppUtil.secondary,
+                          blurRadius: 6,
+                          offset: Offset(0, 4),
+                        )
+                      ]),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  child: Text(
+                    'Follow',
+                    style: GoogleFonts.raleway(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
