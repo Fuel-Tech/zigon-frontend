@@ -295,7 +295,14 @@ class SlideScreenController extends GetxController {
 
   void stopActiveVideo() {
     log("VIDEO STATUS: STOPPED");
+    isPlaying = true;
     activeVideoController?.pause();
+  }
+
+  RxBool isFullScreen = false.obs;
+  toggleFullScreen() {
+    isFullScreen.value = !isFullScreen.value;
+    log("FULLSCREEN: $isFullScreen");
   }
 
   resetMute() {
@@ -307,6 +314,17 @@ class SlideScreenController extends GetxController {
       activeVideoController!.setVolume(1.0);
     } else {
       activeVideoController!.setVolume(0.0);
+    }
+  }
+
+  bool isPlaying = true;
+  togglePause() {
+    if (isPlaying) {
+      activeVideoController!.pause();
+      isPlaying = false;
+    } else {
+      activeVideoController!.play();
+      isPlaying = true;
     }
   }
 

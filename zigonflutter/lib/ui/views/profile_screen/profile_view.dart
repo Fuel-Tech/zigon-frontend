@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
@@ -341,36 +343,49 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                     crossAxisCount: 3,
                                                     childAspectRatio: 9 / 16,
                                                   ),
-                                                  itemCount: ctrl.likedVideos.length,
+                                                  itemCount:
+                                                      ctrl.likedVideos.length,
                                                   shrinkWrap: true,
                                                   itemBuilder:
                                                       (context, index) {
                                                     return slideGridWidgets(
-                                                      thumbUrl: "",
-                                                      likes: '2k',
+                                                      thumbUrl:
+                                                          ctrl.likedVideos[
+                                                                  index]
+                                                              ["Video"]['thum'],
+                                                      likes: ctrl
+                                                          .likedVideos[index]
+                                                              ["Video"]
+                                                              ['like_count']
+                                                          .toString(),
                                                       comments: '12',
-                                                      views: '32k',
-                                                      videoUrl: '',
+                                                      views: ctrl.likedVideos[
+                                                              index]["Video"]
+                                                          ['view'],
+                                                      videoUrl: ctrl
+                                                                  .likedVideos[
+                                                              index]["Video"]
+                                                          ['video'],
                                                       description: ctrl
-                                                                  .publicVideos[
+                                                                  .likedVideos[
                                                               index]['Video']
                                                           ['description'],
-                                                      profilePic:
-                                                          ctrl.publicVideos[
+                                                      profilePic: ctrl.likedVideos[
                                                                           index]
-                                                                      ['User'][
-                                                                  'profile_pic'] ??
-                                                              "",
-                                                      sound: ctrl.publicVideos[
-                                                              index]['Sound']
-                                                          ['name'],
-                                                      soundId: ctrl
-                                                              .publicVideos[
-                                                          index]['Sound']['id'],
-                                                      username:
-                                                          ctrl.publicVideos[
-                                                                  index]['User']
-                                                              ['username'],
+                                                                      ['Video']
+                                                                  ['User']
+                                                              ['profile_pic'] ??
+                                                          "",
+                                                      sound: ctrl.likedVideos[
+                                                              index]['Video']
+                                                          ['Sound']['name'],
+                                                      soundId: ctrl.likedVideos[
+                                                              index]['Video']
+                                                          ['Sound']['id'],
+                                                      username: ctrl
+                                                                  .likedVideos[
+                                                              index]['Video']
+                                                          ['User']['username'],
                                                     );
                                                   },
                                                 ),
@@ -409,10 +424,11 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                           .privateVideos[index]
                                                               ['Video']["view"]
                                                           .toString(),
-                                                      videoUrl: ctrl
-                                                                  .privateVideos[
-                                                              index]['Video']
-                                                          ["video"],
+                                                      videoUrl:
+                                                          ctrl.privateVideos[
+                                                                      index]
+                                                                  ['Video']
+                                                              ["video"],
                                                       description:
                                                           ctrl.privateVideos[
                                                                       index]
@@ -504,6 +520,21 @@ slideGridWidgets({
           },
         ),
         transition: Transition.upToDown,
+      );
+    },
+    onLongPress: () {
+      log("PRESSED");
+      showMenu(
+        context: Get.context!,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6),
+        ),
+        position: const RelativeRect.fromLTRB(100, 70, 0, 0),
+        color: AppUtil.primary,
+        items: [
+          PopupMenuItem(child: Text('Delete')),
+          PopupMenuItem(child: Text('Make private')),
+        ],
       );
     },
     child: Container(

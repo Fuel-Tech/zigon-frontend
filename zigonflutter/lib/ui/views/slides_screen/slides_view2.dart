@@ -19,7 +19,11 @@ class VideoSwiper extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.black,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+        floatingActionButton: Obx(
+          () => Get.find<SlideScreenController>().isFullScreen.value
+              ? Container()
+              : CommonWidgets.bottomFloatingBar(context),
+        ),
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: GetBuilder<SlideScreenController>(builder: (ctrl) {
@@ -30,8 +34,11 @@ class VideoSwiper extends StatelessWidget {
                   )
                 : GestureDetector(
                     onTap: () {
-                      log("TAP DETECTED");
-                      ctrl.toggleMute();
+                      log("VIDEO PLAYING: ${ctrl.isPlaying}");
+                      ctrl.togglePause();
+                    },
+                    onLongPress: () {
+                      ctrl.toggleFullScreen();
                     },
                     child: RefreshIndicator(
                       onRefresh: () async {
@@ -82,20 +89,31 @@ class VideoSwiper extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 70),
-                                  child: RightToolBar(
-                                    index: index,
-                                    slideScreenController: ctrl,
-                                  ),
+
+                                Obx(
+                                  () => ctrl.isFullScreen.value
+                                      ? Container()
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 70),
+                                          child: RightToolBar(
+                                            index: index,
+                                            slideScreenController: ctrl,
+                                          ),
+                                        ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 70),
-                                  child: BottomToolbar(
-                                    index: index,
-                                    slideScreenControler: ctrl,
-                                  ),
-                                )
+                                Obx(
+                                  () => ctrl.isFullScreen.value
+                                      ? Container()
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 70),
+                                          child: BottomToolbar(
+                                            index: index,
+                                            slideScreenControler: ctrl,
+                                          ),
+                                        ),
+                                ),
                               ],
                             );
                           } else {

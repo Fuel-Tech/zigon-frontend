@@ -87,13 +87,31 @@ class ProfileController extends GetxController {
   }
 
   Future<void> reloadScreen() async {
-    // await getUserDetails();
-    // await getUserVideos();
+    await getUserDetails();
+    await getUserVideos();
     await getUserLikedVideos();
   }
 
   gotoTerms() {
     launchUrl(Uri.parse('https://zigon.in/terms_condition.html'));
+  }
+
+  Future<void> requestVerification() async {
+    var response;
+    var json;
+    if (json["msg"] == 200) {
+      Get.snackbar(
+        "Requested Succussfully",
+        "We have received your request and will be updated by our team in the next 7 days",
+        backgroundColor: Colors.white,
+      );
+    } else {
+      Get.snackbar(
+        "Sorry, try again",
+        "We were unable to proccess your request, please try again later",
+        backgroundColor: Colors.white,
+      );
+    }
   }
 
   iniChecks() {
