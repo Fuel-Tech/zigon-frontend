@@ -70,8 +70,8 @@ class _SingleSlideViewState extends State<SingleSlideView> {
 }
 
 class SlideBackground extends StatelessWidget {
-  const SlideBackground({required this.videoUrl});
-  final String videoUrl;
+  SlideBackground({required this.videoData});
+  Map<String, dynamic> videoData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +104,7 @@ class SlideBackground extends StatelessWidget {
                       children: [
                         // VIDEO PLAYER
                         SingleSlideView(
-                          videoUrl: videoUrl,
+                          videoUrl: videoData["video"],
                         ),
                         SlidesWidget.onTopGradient(context),
                         // SafeArea(
@@ -136,11 +136,20 @@ class SlideBackground extends StatelessWidget {
                         //   ),
                         // ),
                         RightToolBar(
-                          index: 0,
+                          data: {
+                            "id": videoData["id"],
+                            "likeCount": videoData["likeCount"],
+                            "commentCount": videoData["commentCount"],
+                          },
                         ),
-                        BottomToolbar(
-                          index: 0,
-                        )
+                        BottomToolbar(data: {
+                          "profilePic": videoData["profilePic"],
+                          "username": videoData["username"],
+                          "views": videoData["views"],
+                          "description": videoData["description"],
+                          "sound": videoData["sound"],
+                          "soundId": videoData["soundId"],
+                        })
                       ],
                     ),
                   ),
@@ -152,9 +161,9 @@ class SlideBackground extends StatelessWidget {
 class RightToolBar extends StatelessWidget {
   RightToolBar({
     Key? key,
-    required this.index,
+    required this.data,
   }) : super(key: key);
-  int index;
+  Map<String, dynamic> data;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -248,8 +257,8 @@ class RightToolBar extends StatelessWidget {
 }
 
 class BottomToolbar extends StatelessWidget {
-  BottomToolbar({Key? key, required this.index}) : super(key: key);
-  int index;
+  BottomToolbar({Key? key, required this.data}) : super(key: key);
+  Map<String, dynamic> data;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -271,15 +280,14 @@ class BottomToolbar extends StatelessWidget {
                     buttonTypes: ButtonTypes.profile, context: context);
               },
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //Profile picture
                   GestureDetector(
                     onTap: () {
-                      if (index > 0) {
-                        Get.toNamed(PageRouteList.profile);
-                      }
+                      Get.toNamed(PageRouteList.profile);
                     },
+                    // TODO: UPDATE
                     child: true
                         ? const CircleAvatar(
                             radius: 20,
@@ -291,6 +299,7 @@ class BottomToolbar extends StatelessWidget {
                             backgroundImage: NetworkImage(""),
                           ),
                   ),
+                  SizedBox(width: 10),
                   Text(
                     'harry',
                     style: AppUtil.textStyle1(weight: FontWeight.w600),

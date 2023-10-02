@@ -33,80 +33,88 @@ class VideoSwiper extends StatelessWidget {
                       log("TAP DETECTED");
                       ctrl.toggleMute();
                     },
-                    child: Swiper(
-                      itemCount: ctrl.videoList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (ctrl.currentIndex.value == index) {
-                          return Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // VIDEO PLAYER
-                              CachedVideoPlayer(
-                                videoUrl: ctrl.videoList[index],
-                                onInitialized: (controller) =>
-                                    ctrl.updateIndex(index, controller),
-                              ),
-                              SlidesWidget.onTopGradient(context),
-                              SafeArea(
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: SizedBox(
-                                    width: AppUtil.screenWidth(context),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SlidesWidget.watchAllSlidesButton(
-                                                context,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              // SlidesWidget.watchFollowingSlidesButton(
-                                              //     context),
-                                            ],
-                                          ),
-                                          // SlidesWidget.liveButton(),
-                                        ],
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await ctrl.fetchMoreVideos(newStart: 0, refresh: true);
+                      },
+                      child: Swiper(
+                        itemCount: ctrl.videoList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (ctrl.currentIndex.value == index) {
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // VIDEO PLAYER
+                                CachedVideoPlayer(
+                                  thumb: ctrl
+                                      .slideListModel!.msg[index].video.thum,
+                                  videoUrl: ctrl.videoList[index],
+                                  onInitialized: (controller) =>
+                                      ctrl.updateIndex(index, controller),
+                                ),
+                                SlidesWidget.onTopGradient(context),
+                                SafeArea(
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: SizedBox(
+                                      width: AppUtil.screenWidth(context),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                SlidesWidget
+                                                    .watchAllSlidesButton(
+                                                  context,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                // SlidesWidget.watchFollowingSlidesButton(
+                                                //     context),
+                                              ],
+                                            ),
+                                            // SlidesWidget.liveButton(),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 70),
-                                child: RightToolBar(
-                                  index: index,
-                                  slideScreenController: ctrl,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 70),
+                                  child: RightToolBar(
+                                    index: index,
+                                    slideScreenController: ctrl,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 70),
-                                child: BottomToolbar(
-                                  index: index,
-                                  slideScreenControler: ctrl,
-                                ),
-                              )
-                            ],
-                          );
-                        } else {
-                          return Container(); // Empty container for better performance
-                        }
-                      },
-                      onIndexChanged: (index) {
-                        ctrl.stopActiveVideo();
-                        ctrl.updateIndex(index, null);
-                        if (index == ctrl.videoList.length - 1) {
-                          log("Last Video");
-                          ctrl.fetchMoreVideos();
-                        }
-                      },
-                      loop: false,
-                      scrollDirection: Axis.vertical,
-                      physics: const BouncingScrollPhysics(),
-                      axisDirection: AxisDirection.down,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 70),
+                                  child: BottomToolbar(
+                                    index: index,
+                                    slideScreenControler: ctrl,
+                                  ),
+                                )
+                              ],
+                            );
+                          } else {
+                            return Container(); // Empty container for better performance
+                          }
+                        },
+                        onIndexChanged: (index) {
+                          ctrl.stopActiveVideo();
+                          ctrl.updateIndex(index, null);
+                          if (index == ctrl.videoList.length - 1) {
+                            log("Last Video");
+                            ctrl.fetchMoreVideos();
+                          }
+                        },
+                        loop: false,
+                        scrollDirection: Axis.vertical,
+                        physics: const BouncingScrollPhysics(),
+                        axisDirection: AxisDirection.down,
+                      ),
                     ),
                   ),
           );

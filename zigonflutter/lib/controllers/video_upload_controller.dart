@@ -47,9 +47,10 @@ class VideoUploadController extends GetxController {
 
     Get.defaultDialog(
       title: "Uploading",
+      barrierDismissible: false,
       content: Obx(() {
         if (isProccessing.value) {
-          return Text("Processing...please wait.");
+          return const Text("Processing...please wait.");
         } else {
           return Column(
             children: [

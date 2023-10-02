@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
-import 'package:zigonflutter/controllers/settings_controller.dart';
 
 class UserSettingsView extends StatelessWidget {
   UserSettingsView({Key? key}) : super(key: key);
-  final SettingsController settingsController = Get.put(SettingsController());
+  final ProfileController ctrl = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class UserSettingsView extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    settingsController.logOut();
+                    Get.find<AppController>().logOut();
                   },
                   child: Row(
                     children: [
@@ -67,11 +68,11 @@ class UserSettingsView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ListView(
                 children: [
-                  accountWidget(),
+                  accountWidget(ctrl),
                   const SizedBox(height: 20),
                   supportWidget(),
                   const SizedBox(height: 20),
-                  privacyWidget(),
+                  privacyWidget(ctrl),
                   const SizedBox(height: 20),
                   actionsWidget(),
                 ],
@@ -84,7 +85,7 @@ class UserSettingsView extends StatelessWidget {
   }
 }
 
-accountWidget() {
+accountWidget(ProfileController ctrl) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -131,7 +132,7 @@ accountWidget() {
   );
 }
 
-privacyWidget() {
+privacyWidget(ProfileController ctrl) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -153,7 +154,13 @@ privacyWidget() {
         ],
       ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Terms & Conditions', value: 'Click here'),
+      settingsSubWidgets(
+        'Terms & Conditions',
+        value: 'Click here',
+        function: () {
+          ctrl.gotoTerms();
+        },
+      ),
       const SizedBox(height: 25),
       settingsSubWidgets('Privacy Policy', value: 'Click here'),
     ],
@@ -223,7 +230,7 @@ actionsWidget() {
   );
 }
 
-settingsSubWidgets(String title, {Function? function, String? value}) {
+settingsSubWidgets(String title, {Function()? function, String? value}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -232,10 +239,13 @@ settingsSubWidgets(String title, {Function? function, String? value}) {
         style: GoogleFonts.openSans(
             fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
       ),
-      Text(
-        value!,
-        style: GoogleFonts.openSans(
-            fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+      InkWell(
+        onTap: function,
+        child: Text(
+          value!,
+          style: GoogleFonts.openSans(
+              fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+        ),
       ),
     ],
   );

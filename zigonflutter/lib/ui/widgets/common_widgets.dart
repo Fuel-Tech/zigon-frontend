@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class CommonWidgets {
           ),
           child: GetBuilder<AppController>(builder: (controller) {
             return Container(
-              width: AppUtil.screenWidth(context) - 20,
+              height: Get.height * .06,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(40),
@@ -33,104 +34,121 @@ class CommonWidgets {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   //Slide Icon
-                  GestureDetector(
-                    onTap: () {
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.slide, context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: FaIcon(
-                        FontAwesomeIcons.film,
-                        color: appController.selectedNavBarItem ==
-                                NavBarSelectionItem.slide
-                            ? Colors.white
-                            : Colors.grey,
-                        size: 20,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        ButtonHandler.onTapHandler(
+                            buttonTypes: ButtonTypes.slide, context: context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        alignment: Alignment.center,
+                        child: FaIcon(
+                          FontAwesomeIcons.film,
+                          color: appController.selectedNavBarItem ==
+                                  NavBarSelectionItem.slide
+                              ? Colors.white
+                              : Colors.grey,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
 
                   //Discover Icon
-                  GestureDetector(
-                    onTap: () {
-                      //Goto Discover Page
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.discover, context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: FaIcon(
-                        FontAwesomeIcons.earthAsia,
-                        color: appController.selectedNavBarItem ==
-                                NavBarSelectionItem.discover
-                            ? Colors.white
-                            : Colors.grey,
-                        size: 20,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        //Goto Discover Page
+                        ButtonHandler.onTapHandler(
+                            buttonTypes: ButtonTypes.discover,
+                            context: context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(8),
+                        child: FaIcon(
+                          FontAwesomeIcons.earthAsia,
+                          color: appController.selectedNavBarItem ==
+                                  NavBarSelectionItem.discover
+                              ? Colors.white
+                              : Colors.grey,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
 
                   //Add Slides Icon
-                  GestureDetector(
-                    onTap: () {
-                      //Add Slides Function
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.camera, context: context);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        gradient: AppUtil.buttonGradient,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: const FaIcon(
-                        FontAwesomeIcons.video,
-                        color: Colors.white,
-                        size: 18,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        //Add Slides Function
+                        ButtonHandler.onTapHandler(
+                            buttonTypes: ButtonTypes.camera, context: context);
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          gradient: AppUtil.buttonGradient,
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: const FaIcon(
+                          FontAwesomeIcons.video,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
 
                   //Notification Icon
-                  GestureDetector(
-                    onTap: () {
-                      //Goto Notification Page
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.notification,
-                          context: context);
-                    },
+                  Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: FaIcon(
-                        FontAwesomeIcons.bell,
-                        color: appController.selectedNavBarItem ==
-                                NavBarSelectionItem.notification
-                            ? Colors.white
-                            : Colors.grey,
-                        size: 20,
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        onTap: () {
+                          //Goto Notification Page
+                          ButtonHandler.onTapHandler(
+                              buttonTypes: ButtonTypes.notification,
+                              context: context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: FaIcon(
+                            FontAwesomeIcons.bell,
+                            color: appController.selectedNavBarItem ==
+                                    NavBarSelectionItem.notification
+                                ? Colors.white
+                                : Colors.grey,
+                            size: 20,
+                          ),
+                        ),
                       ),
                     ),
                   ),
 
                   //Profile Icon
-                  GestureDetector(
-                    onTap: () {
-                      ButtonHandler.onTapHandler(
-                          buttonTypes: ButtonTypes.userprofile,
-                          context: context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: FaIcon(
-                        FontAwesomeIcons.user,
-                        color: appController.selectedNavBarItem ==
-                                NavBarSelectionItem.userprofile
-                            ? Colors.white
-                            : Colors.grey,
-                        size: 20,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        ButtonHandler.onTapHandler(
+                            buttonTypes: ButtonTypes.userprofile,
+                            context: context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(8),
+                        child: FaIcon(
+                          FontAwesomeIcons.user,
+                          color: appController.selectedNavBarItem ==
+                                  NavBarSelectionItem.userprofile
+                              ? Colors.white
+                              : Colors.grey,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),

@@ -23,10 +23,10 @@ class SlideScreenController extends GetxController {
   int startingPoint = 1;
   RxBool isVideoLoading = false.obs;
 
-  setVideoData(SlideListModel? data) {
+  setVideoData(SlideListModel? data, {bool refresh = false}) {
     try {
       if (data != null) {
-        if (slideListModel == null) {
+        if (slideListModel == null || refresh == true) {
           slideListModel = data;
         } else {
           slideListModel = SlideListModel(
@@ -47,12 +47,18 @@ class SlideScreenController extends GetxController {
     }
   }
 
-  Future<void> fetchMoreVideos() async {
-    isLoading.value = true;
+  Future<void> fetchMoreVideos({int? newStart, bool refresh = false}) async {
+    if (!refresh) {
+      isLoading.value = true;
+    }
     String userID = await SharedPrefHandler.getInstance()
             .getString(SharedPrefHandler.USERID) ??
         '0';
-    startingPoint = startingPoint + 1;
+    if (newStart != null) {
+      startingPoint = newStart;
+    } else {
+      startingPoint = startingPoint + 1;
+    }
     log("Getting video for slides_view");
     String endpoint = 'showRelatedVideos';
     String body = '''{
@@ -62,12 +68,12 @@ class SlideScreenController extends GetxController {
       "limit":4
     }''';
     var response = await NetworkHandler.dioPost(endpoint, body: body);
-    if (response['code'] == 200) {
-      var json = jsonDecode(response);
+    var json = jsonDecode(response);
+    if (json['code'] == 200) {
       var newSlideListModel = SlideListModel.fromJson(json);
-      setVideoData(newSlideListModel);
+      setVideoData(newSlideListModel, refresh: refresh);
       isLoading.value = false;
-    } else if (response['code'] == 201) {
+    } else if (json['code'] == 201) {
       log("NO MORE VIDEOS TO SHOW!!!");
     }
     // slideListModel = SlideListModel.fromJson(json);

@@ -49,21 +49,21 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  void _onScaleStart(ScaleStartDetails details) {
-    // Set the initial scale value when the user starts to pinch
-    setState(() {
-      _scale = maxZoomLevel;
-    });
-  }
+  // void _onScaleStart(ScaleStartDetails details) {
+  //   // Set the initial scale value when the user starts to pinch
+  //   setState(() {
+  //     _scale = maxZoomLevel;
+  //   });
+  // }
 
-  void _onScaleUpdate(ScaleUpdateDetails details) {
-    double scale = maxZoomLevel + details.scale - 1.0;
-    scale = scale.clamp(
-      minZoomLevel,
-      maxZoomLevel,
-    );
-    _camera.setZoomLevel(scale);
-  }
+  // void _onScaleUpdate(ScaleUpdateDetails details) {
+  //   double scale = maxZoomLevel + details.scale - 1.0;
+  //   scale = scale.clamp(
+  //     minZoomLevel,
+  //     maxZoomLevel,
+  //   );
+  //   _camera.setZoomLevel(scale);
+  // }
 
   IconData icons = Icons.flash_off;
   void _toggleFlash() {
@@ -115,8 +115,8 @@ class _CameraPageState extends State<CameraPage> {
       },
       child: Material(
         child: GestureDetector(
-          onScaleStart: _onScaleStart,
-          onScaleUpdate: _onScaleUpdate,
+          // onScaleStart: _onScaleStart,
+          // onScaleUpdate: _onScaleUpdate,
           child: CameraPreview(
             _camera,
             child: SafeArea(

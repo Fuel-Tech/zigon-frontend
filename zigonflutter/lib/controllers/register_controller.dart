@@ -43,6 +43,11 @@ class RegisterController extends GetxController {
     }
   }
 
+  RxBool isHidden = true.obs;
+  toggleHidePassword() {
+    isHidden.value = !isHidden.value;
+  }
+
   Future<void> registerUser() async {
     String url = "registerUser";
 

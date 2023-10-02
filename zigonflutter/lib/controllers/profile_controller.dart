@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/models/user_profile_model/user_profile_model.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
@@ -40,6 +41,7 @@ class ProfileController extends GetxController {
 
   RxList<dynamic> publicVideos = [].obs;
   RxList<dynamic> privateVideos = [].obs;
+  RxList<dynamic> likedVideos = [].obs;
 
   getUserVideos() async {
     String userID =
@@ -64,6 +66,36 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<void> getUserLikedVideos() async {
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String path = 'showUserLikedVideos';
+    Map<String, dynamic> body = {"user_id": userID, "starting_point": 0};
+
+    var response = await NetworkHandler.dioPost(path, body: body);
+    var json = jsonDecode(response);
+    if (json['code'] == 200) {
+      likedVideos.value = json["msg"];
+    } else {
+      log(json.toString());
+      Get.snackbar(
+        "Try again",
+        "Unable to fetch slides you had liked, please try agian🫡",
+        backgroundColor: Colors.white,
+      );
+    }
+  }
+
+  Future<void> reloadScreen() async {
+    // await getUserDetails();
+    // await getUserVideos();
+    await getUserLikedVideos();
+  }
+
+  gotoTerms() {
+    launchUrl(Uri.parse('https://zigon.in/terms_condition.html'));
+  }
+
   iniChecks() {
     Get.arguments != null ? userProfileSelected = false : null;
     if (userProfileSelected) {
@@ -74,6 +106,7 @@ class ProfileController extends GetxController {
     }
     getUserDetails();
     getUserVideos();
+    getUserLikedVideos();
   }
 
   @override

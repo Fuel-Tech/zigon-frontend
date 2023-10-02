@@ -140,35 +140,45 @@ class RegisterUserScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
 
-              TextFormField(
-                controller: ctrl.passwordCtrl,
-                style: TextStyle(color: Colors.black),
-                obscureText: true,
-                validator: (value) {
-                  if (value.toString().removeAllWhitespace.isEmpty) {
-                    return "Password cannot be empty";
-                  } else if (value.toString().removeAllWhitespace.length < 5) {
-                    return "Passord should have more than 5 characters";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                    hintText: "Password",
-                    hintStyle:
-                        AppUtil.textStyle2().copyWith(color: Colors.black),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 0.5),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey, width: 0.5),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.visibility_off,
-                        color: Colors.grey,
+              Obx(
+                () => TextFormField(
+                  controller: ctrl.passwordCtrl,
+                  style: TextStyle(color: Colors.black),
+                  obscureText: ctrl.isHidden.value,
+                  validator: (value) {
+                    if (value.toString().removeAllWhitespace.isEmpty) {
+                      return "Password cannot be empty";
+                    } else if (value.toString().removeAllWhitespace.length <
+                        5) {
+                      return "Passord should have more than 5 characters";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Password",
+                      hintStyle:
+                          AppUtil.textStyle2().copyWith(color: Colors.black),
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 0.5),
                       ),
-                    )),
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          ctrl.toggleHidePassword();
+                        },
+                        icon: ctrl.isHidden.value
+                            ? Icon(
+                                Icons.visibility_off,
+                                color: Colors.grey,
+                              )
+                            : Icon(
+                                Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                      )),
+                ),
               ),
               SizedBox(height: 6),
               Text(

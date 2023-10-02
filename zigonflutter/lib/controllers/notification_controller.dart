@@ -36,9 +36,23 @@ class NotificationController extends GetxController {
     update();
   }
 
-  onNotificationTap(String type, {String? url}) {
+  onNotificationTap(
+    String type, {
+    var value,
+  }) {
     if (type.contains("video")) {
-      Get.to(() => SlideBackground(videoUrl: url!),
+      Get.to(
+          () => SlideBackground(videoData: {
+                "video": value["video"],
+                "username": value["username"],
+                "thumb": value["thumb"],
+                "likeCount": value["likeCount"],
+                "commentCount": value["commentCount"],
+                "description": value["description"],
+                "sound": value["sound"],
+                "soundId": value["soundId"],
+                "profilePic": value["profilePic"],
+              }),
           transition: Transition.upToDown);
     } else {}
   }
