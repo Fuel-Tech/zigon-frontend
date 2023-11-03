@@ -15,6 +15,7 @@ import 'package:zigonflutter/ui/views/video_upload_screens/camera_page.dart';
 import 'package:zigonflutter/ui/views/view_slides_view.dart';
 import 'package:zigonflutter/utility/fcm_handler.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
+import 'ui/views/bottom_nav_bar/bottom_nav_bar.dart';
 import 'ui/views/notifications_view/notifications_view.dart';
 import 'ui/views/profile_screen/profile_view.dart';
 import 'ui/views/slides_screen/slides_view2.dart';
@@ -71,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       defaultTransition: Transition.rightToLeftWithFade,
       getPages: [
         GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
-        GetPage(name: PageRouteList.slides, page: () => VideoSwiper()),
+        GetPage(name: PageRouteList.slides, page: () => BottomBar()),
         GetPage(name: PageRouteList.profile, page: () => ProfileView()),
         GetPage(name: PageRouteList.discover, page: () => DiscoverView()),
         GetPage(

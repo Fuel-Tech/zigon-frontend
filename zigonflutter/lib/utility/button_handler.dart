@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
@@ -27,9 +29,11 @@ class ButtonHandler {
         buttonTypes == ButtonTypes.slidesList ||
         buttonTypes == ButtonTypes.setting) {
       if (buttonTypes == ButtonTypes.slide) {
-        buttonController.navBarHandler(NavBarSelectionItem.slide);
-        Get.toNamed(PageRouteList.slides);
-        Get.find<SlideScreenController>().playActiveVideo();
+        if (buttonController.selectedNavBarItem != NavBarSelectionItem.slide) {
+          buttonController.navBarHandler(NavBarSelectionItem.slide);
+          Get.toNamed(PageRouteList.slides);
+          Get.find<SlideScreenController>().playActiveVideo();
+        }
       } else if (buttonTypes == ButtonTypes.share) {
         var shareUrl = value;
         Share.share('Check out this video from ZigOn - $shareUrl');
@@ -43,9 +47,12 @@ class ButtonHandler {
           Get.find<SlideScreenController>().stopActiveVideo();
           Get.toNamed(PageRouteList.camera);
         } else if (buttonTypes == ButtonTypes.discover) {
-          Get.find<SlideScreenController>().stopActiveVideo();
-          buttonController.navBarHandler(NavBarSelectionItem.discover);
-          Get.toNamed(PageRouteList.discover);
+          if (buttonController.selectedNavBarItem !=
+              NavBarSelectionItem.discover) {
+            Get.find<SlideScreenController>().stopActiveVideo();
+            buttonController.navBarHandler(NavBarSelectionItem.discover);
+            Get.toNamed(PageRouteList.discover);
+          }
         } else if (buttonTypes == ButtonTypes.notification) {
           Get.find<SlideScreenController>().stopActiveVideo();
           buttonController.navBarHandler(NavBarSelectionItem.notification);

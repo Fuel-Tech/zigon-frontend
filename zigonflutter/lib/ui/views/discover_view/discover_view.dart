@@ -15,14 +15,14 @@ import '../../widgets/common_widgets.dart';
 
 class DiscoverView extends StatelessWidget {
   DiscoverView({Key? key}) : super(key: key);
-  final DiscoverController discoverController = Get.put(DiscoverController());
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => DiscoverController());
     return Scaffold(
       backgroundColor: AppUtil.primary,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
-      body: GetBuilder<DiscoverController>(builder: (controller) {
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+      body: GetBuilder<DiscoverController>(builder: (ctrl) {
         return SafeArea(
           child: ListView(
             physics: BouncingScrollPhysics(),
@@ -61,16 +61,16 @@ class DiscoverView extends StatelessWidget {
               SizedBox(height: 10),
               //Top Picks Widget
               Visibility(
-                visible: discoverController.isLoading1,
+                visible: ctrl.isLoading1,
                 replacement: CarouselSlider(
                   options: CarouselOptions(
                     height: 250,
                     padEnds: true,
                     viewportFraction: 0.9,
                   ),
-                  items: discoverController.set1?.msg.map((video) {
+                  items: ctrl.set1?.msg.map((video) {
                     return Visibility(
-                      visible: discoverController.isLoading1,
+                      visible: ctrl.isLoading1,
                       replacement: TopPickVideoWidget(
                           id: video.video.id,
                           description: video.video.description,
@@ -146,37 +146,28 @@ class DiscoverView extends StatelessWidget {
                       crossAxisSpacing: 16.0,
                       mainAxisSpacing: 16.0,
                     ),
-                    itemCount: discoverController.set1?.msg.length ?? 0,
+                    itemCount: ctrl.set1?.msg.length ?? 0,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Visibility(
-                        visible: discoverController.isLoading1,
+                        visible: ctrl.isLoading1,
                         replacement: PopularVideoWidget(
-                          id: discoverController.set1!.msg[index].video.id,
-                          description: discoverController
-                              .set1!.msg[index].video.description,
-                          sound:
-                              discoverController.set1!.msg[index].sound.name ??
-                                  "",
-                          soundId: discoverController
-                              .set1!.msg[index].video.sound_id,
-                          commentCount: discoverController
+                          id: ctrl.set1!.msg[index].video.id,
+                          description: ctrl.set1!.msg[index].video.description,
+                          sound: ctrl.set1!.msg[index].sound.name ?? "",
+                          soundId: ctrl.set1!.msg[index].video.sound_id,
+                          commentCount: ctrl
                               .set1!.msg[index].video.comment_count
                               .toString(),
-                          gif: discoverController.set1!.msg[index].video.gif,
-                          likeCount: discoverController
-                              .set1!.msg[index].video.like_count
-                              .toString(),
-                          views: discoverController.set1!.msg[index].video.view
-                              .toString(),
-                          thumb: discoverController.set1!.msg[index].video.thum,
-                          video:
-                              discoverController.set1!.msg[index].video.video,
-                          userName:
-                              discoverController.set1!.msg[index].user.username,
-                          profilePic: discoverController
-                                  .set1!.msg[index].user.profile_pic ??
-                              '',
+                          gif: ctrl.set1!.msg[index].video.gif,
+                          likeCount:
+                              ctrl.set1!.msg[index].video.like_count.toString(),
+                          views: ctrl.set1!.msg[index].video.view.toString(),
+                          thumb: ctrl.set1!.msg[index].video.thum,
+                          video: ctrl.set1!.msg[index].video.video,
+                          userName: ctrl.set1!.msg[index].user.username,
+                          profilePic:
+                              ctrl.set1!.msg[index].user.profile_pic ?? '',
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),

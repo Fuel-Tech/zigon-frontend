@@ -103,6 +103,7 @@ class Users with _$Users {
     required String reset_wallet_datetime,
     required String fb_id,
     required DateTime created,
+    String? button,
     double? followers_count,
     double? following_count,
     double? likes_count,

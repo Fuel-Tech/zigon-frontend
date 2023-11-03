@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
 import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import '../../../utility/app_utility.dart';
 import '../../../utility/button_handler.dart';
@@ -18,12 +21,12 @@ class VideoSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Obx(
-          () => Get.find<SlideScreenController>().isFullScreen.value
-              ? Container()
-              : CommonWidgets.bottomFloatingBar(context),
-        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: Obx(
+        //   () => Get.find<SlideScreenController>().isFullScreen.value
+        //       ? Container()
+        //       : CommonWidgets.bottomFloatingBar(context),
+        // ),
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: GetBuilder<SlideScreenController>(builder: (ctrl) {
@@ -39,6 +42,7 @@ class VideoSwiper extends StatelessWidget {
                     },
                     onLongPress: () {
                       ctrl.toggleFullScreen();
+                      // bottomBarKey.currentState?.toggleNavBar();
                     },
                     child: RefreshIndicator(
                       onRefresh: () async {
@@ -59,7 +63,13 @@ class VideoSwiper extends StatelessWidget {
                                   onInitialized: (controller) =>
                                       ctrl.updateIndex(index, controller),
                                 ),
-                                SlidesWidget.onTopGradient(context),
+                                Obx(
+                                  () => Get.find<SlideScreenController>()
+                                          .isFullScreen
+                                          .value
+                                      ? Container()
+                                      : SlidesWidget.onTopGradient(context),
+                                ),
                                 SafeArea(
                                   child: Align(
                                     alignment: Alignment.topLeft,
@@ -276,7 +286,7 @@ class BottomToolbar extends StatelessWidget {
           children: [
             // const SizedBox(height: 5),
             //Name, tag, views, options
-            GestureDetector(
+            InkWell(
               onTap: () {
                 ButtonHandler.onTapHandler(
                     buttonTypes: ButtonTypes.profile, context: context);
@@ -285,38 +295,50 @@ class BottomToolbar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //Profile picture
-                  GestureDetector(
-                    onTap: () {
-                      if (index > 0) {
-                        Get.toNamed(PageRouteList.profile);
+                  InkWell(
+                    onTap: () async {
+                      if (Get.isRegistered<ProfileController>()) {
+                        Get.delete<ProfileController>();
                       }
+                      slideScreenControler.stopActiveVideo();
+                      Get.toNamed(PageRouteList.profile, arguments: {
+                        'id': slideScreenControler
+                            .slideListModel!.msg[index].user.id,
+                        "fromSlides": true,
+                      });
                     },
-                    child: slideScreenControler
-                                .slideListModel?.msg[index].user.profile_pic ==
-                            null
-                        ? const CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                AssetImage('assets/images/prodp.jpg'),
-                          )
-                        : CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(IMG_URL +
-                                slideScreenControler.slideListModel!.msg[index]
-                                    .user.profile_pic!),
-                          ),
+                    child: Row(
+                      children: [
+                        slideScreenControler.slideListModel?.msg[index].user
+                                    .profile_pic ==
+                                null
+                            ? const CircleAvatar(
+                                radius: 20,
+                                backgroundImage:
+                                    AssetImage('assets/images/prodp.jpg'),
+                              )
+                            : CircleAvatar(
+                                radius: 20,
+                                backgroundImage: NetworkImage(IMG_URL +
+                                    slideScreenControler.slideListModel!
+                                        .msg[index].user.profile_pic!),
+                              ),
+                        SizedBox(width: 5),
+                        Text(
+                          '${slideScreenControler.slideListModel!.msg[index].user.username}',
+                          style: AppUtil.textStyle1(weight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(width: 5),
-                  Text(
-                    '${slideScreenControler.slideListModel!.msg[index].user.username}',
-                    style: AppUtil.textStyle1(weight: FontWeight.w600),
-                  ),
-                  const SizedBox(width: 25),
+
+                  const SizedBox(width: 15),
                   const Icon(
                     Icons.remove_red_eye,
                     color: Colors.grey,
                     size: 16,
                   ),
+                  const SizedBox(width: 5),
                   Text(
                     '${slideScreenControler.slideListModel!.msg[0].video.view}',
                     style: AppUtil.textStyle2(textSize: 12),

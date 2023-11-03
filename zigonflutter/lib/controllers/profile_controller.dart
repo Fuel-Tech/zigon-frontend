@@ -21,19 +21,59 @@ class ProfileController extends GetxController {
     await getUserVideos();
   }
 
-  ///FETCHED USER DETAILS
+  bool isFollowing = false;
+  bool btnPressed = false;
+
+  ///TOGGLE FOLLOW
+  Future<void> toggleFollow() async {
+    String senderId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    isFollowing = !isFollowing;
+    btnPressed = true;
+    update();
+    String url = 'followUser';
+    String body = '''{
+      "sender_id: "$senderId",
+      "receiver_id: "$userID"
+    }''';
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    response = jsonDecode(response);
+    if (response["code"] == 200) {
+      btnPressed = false;
+      update();
+    } else {
+      isFollowing = !isFollowing;
+      btnPressed = false;
+      update();
+    }
+  }
+
+  ///FETCH USER DETAILS
   Future<void> getUserDetails() async {
     String path = "showUserDetail";
-    String body = '''{
-      "user_id": "$userID"
-    }''';
+    String body;
+    if (userProfileSelected) {
+      body = '''{
+        "user_id": "$userID"
+      }''';
+    } else {
+      body = '''{
+        "user_id": "${SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID)}",
+        "other_user_id": "$userID"
+      }''';
+    }
 
     var response = await NetworkHandler.dioPost(path, body: body);
     response = jsonDecode(response);
     log(response.toString());
     if (response["code"] == 200) {
       userProfileModel = UserProfileModel.fromJson(response);
+      if (userProfileModel!.msg.User.button == "following") {
+        isFollowing = true;
+      }
       isLoading.value = false;
+
       update();
     }
     return;
@@ -44,11 +84,8 @@ class ProfileController extends GetxController {
   RxList<dynamic> likedVideos = [].obs;
 
   getUserVideos() async {
-    String userID =
-        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     String path = 'showVideosAgainstUserID';
     Map<String, dynamic> body = {"user_id": "$userID"};
-
     var response = await NetworkHandler.dioPost(path, body: body);
     var json = jsonDecode(response);
     if (json["code"] == 200) {
@@ -60,15 +97,14 @@ class ProfileController extends GetxController {
       log(json.toString());
       Get.snackbar(
         "Try again",
-        "Unable to fetch the videos, please try agian🫡",
+        "Unable to fetch your slides, please try agian🫡",
         backgroundColor: Colors.white,
+        colorText: Colors.black,
       );
     }
   }
 
   Future<void> getUserLikedVideos() async {
-    String userID =
-        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     String path = 'showUserLikedVideos';
     Map<String, dynamic> body = {"user_id": userID, "starting_point": 0};
 
@@ -76,12 +112,15 @@ class ProfileController extends GetxController {
     var json = jsonDecode(response);
     if (json['code'] == 200) {
       likedVideos.value = json["msg"];
+    } else if (json['code'] == 201) {
+      log("NO LIKED VIDEOS");
     } else {
       log(json.toString());
       Get.snackbar(
         "Try again",
-        "Unable to fetch slides you had liked, please try agian🫡",
+        "Unable to fetch slides you have liked, please try agian🫡",
         backgroundColor: Colors.white,
+        colorText: Colors.black,
       );
     }
   }
@@ -115,7 +154,8 @@ class ProfileController extends GetxController {
   }
 
   iniChecks() {
-    Get.arguments != null ? userProfileSelected = false : null;
+    userProfileSelected = Get.arguments == null ? true : false;
+
     if (userProfileSelected) {
       userID =
           SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);

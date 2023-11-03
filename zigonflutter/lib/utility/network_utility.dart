@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
-String BASE_URL = 'https://zigon.in/mobile/api/';
-String IMG_URL = 'https://zigon.in/mobile/';
+String BASE_URL = 'http://zigon.in/mobile/api/';
+String IMG_URL = 'http://zigon.in/mobile/';
 
 class NetworkHandler {
   static final Dio dio = Dio();

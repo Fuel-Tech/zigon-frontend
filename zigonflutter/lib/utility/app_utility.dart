@@ -12,6 +12,8 @@ class AppUtil {
   static Color onlineGreen = const Color(0xFF199A2F);
   static Color lightTextColor = const Color(0xFF9E9E9E);
   static Color grey1 = Color.fromARGB(255, 81, 79, 79);
+  static Color activeIconColor = const Color(0xffC8AE01);
+  static Color inActiveIconColor = Color.fromARGB(255, 81, 79, 79);
 
   static double screenWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;

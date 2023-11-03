@@ -9,13 +9,13 @@ import 'package:zigonflutter/utility/app_utility.dart';
 
 class NotificationsView extends StatelessWidget {
   NotificationsView({Key? key}) : super(key: key);
-  final NotificationController notificationController =
-      Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => NotificationController());
+
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CommonWidgets.bottomFloatingBar(context),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: CommonWidgets.bottomFloatingBar(context),
       backgroundColor: AppUtil.primary,
       extendBodyBehindAppBar: true,
       appBar: CommonWidgets.customAppBar(title: 'Notifications'),
@@ -105,9 +105,8 @@ class NotificationsView extends StatelessWidget {
                                                         GoogleFonts.raleway(),
                                                   ),
                                                   Text(
-                                                    AppUtil.timeFormat.format(
-                                                        notificationController
-                                                            .now),
+                                                    AppUtil.timeFormat
+                                                        .format(ctrl.now),
                                                     style:
                                                         GoogleFonts.raleway(),
                                                   ),

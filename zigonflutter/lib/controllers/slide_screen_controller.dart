@@ -295,7 +295,7 @@ class SlideScreenController extends GetxController {
 
   void stopActiveVideo() {
     log("VIDEO STATUS: STOPPED");
-    isPlaying = true;
+    isPlaying = false;
     activeVideoController?.pause();
   }
 

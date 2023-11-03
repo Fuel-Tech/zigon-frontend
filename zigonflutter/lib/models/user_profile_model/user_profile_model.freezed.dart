@@ -943,6 +943,7 @@ mixin _$Users {
   String get reset_wallet_datetime => throw _privateConstructorUsedError;
   String get fb_id => throw _privateConstructorUsedError;
   DateTime get created => throw _privateConstructorUsedError;
+  String? get button => throw _privateConstructorUsedError;
   double? get followers_count => throw _privateConstructorUsedError;
   double? get following_count => throw _privateConstructorUsedError;
   double? get likes_count => throw _privateConstructorUsedError;
@@ -996,6 +997,7 @@ abstract class $UsersCopyWith<$Res> {
       String reset_wallet_datetime,
       String fb_id,
       DateTime created,
+      String? button,
       double? followers_count,
       double? following_count,
       double? likes_count,
@@ -1052,6 +1054,7 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
     Object? reset_wallet_datetime = null,
     Object? fb_id = null,
     Object? created = null,
+    Object? button = freezed,
     Object? followers_count = freezed,
     Object? following_count = freezed,
     Object? likes_count = freezed,
@@ -1206,6 +1209,10 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      button: freezed == button
+          ? _value.button
+          : button // ignore: cast_nullable_to_non_nullable
+              as String?,
       followers_count: freezed == followers_count
           ? _value.followers_count
           : followers_count // ignore: cast_nullable_to_non_nullable
@@ -1270,6 +1277,7 @@ abstract class _$$_UsersCopyWith<$Res> implements $UsersCopyWith<$Res> {
       String reset_wallet_datetime,
       String fb_id,
       DateTime created,
+      String? button,
       double? followers_count,
       double? following_count,
       double? likes_count,
@@ -1322,6 +1330,7 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
     Object? reset_wallet_datetime = null,
     Object? fb_id = null,
     Object? created = null,
+    Object? button = freezed,
     Object? followers_count = freezed,
     Object? following_count = freezed,
     Object? likes_count = freezed,
@@ -1476,6 +1485,10 @@ class __$$_UsersCopyWithImpl<$Res> extends _$UsersCopyWithImpl<$Res, _$_Users>
           ? _value.created
           : created // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      button: freezed == button
+          ? _value.button
+          : button // ignore: cast_nullable_to_non_nullable
+              as String?,
       followers_count: freezed == followers_count
           ? _value.followers_count
           : followers_count // ignore: cast_nullable_to_non_nullable
@@ -1537,6 +1550,7 @@ class _$_Users implements _Users {
       required this.reset_wallet_datetime,
       required this.fb_id,
       required this.created,
+      this.button,
       this.followers_count,
       this.following_count,
       this.likes_count,
@@ -1620,6 +1634,8 @@ class _$_Users implements _Users {
   @override
   final DateTime created;
   @override
+  final String? button;
+  @override
   final double? followers_count;
   @override
   final double? following_count;
@@ -1630,7 +1646,7 @@ class _$_Users implements _Users {
 
   @override
   String toString() {
-    return 'Users(id: $id, first_name: $first_name, last_name: $last_name, gender: $gender, bio: $bio, website: $website, dob: $dob, social_id: $social_id, email: $email, phone: $phone, password: $password, profile_pic: $profile_pic, profile_pic_small: $profile_pic_small, role: $role, username: $username, social: $social, device_token: $device_token, token: $token, active: $active, lat: $lat, long: $long, online: $online, verified: $verified, auth_token: $auth_token, version: $version, device: $device, ip: $ip, city: $city, country: $country, city_id: $city_id, state_id: $state_id, country_id: $country_id, wallet: $wallet, paypal: $paypal, reset_wallet_datetime: $reset_wallet_datetime, fb_id: $fb_id, created: $created, followers_count: $followers_count, following_count: $following_count, likes_count: $likes_count, video_count: $video_count)';
+    return 'Users(id: $id, first_name: $first_name, last_name: $last_name, gender: $gender, bio: $bio, website: $website, dob: $dob, social_id: $social_id, email: $email, phone: $phone, password: $password, profile_pic: $profile_pic, profile_pic_small: $profile_pic_small, role: $role, username: $username, social: $social, device_token: $device_token, token: $token, active: $active, lat: $lat, long: $long, online: $online, verified: $verified, auth_token: $auth_token, version: $version, device: $device, ip: $ip, city: $city, country: $country, city_id: $city_id, state_id: $state_id, country_id: $country_id, wallet: $wallet, paypal: $paypal, reset_wallet_datetime: $reset_wallet_datetime, fb_id: $fb_id, created: $created, button: $button, followers_count: $followers_count, following_count: $following_count, likes_count: $likes_count, video_count: $video_count)';
   }
 
   @override
@@ -1688,6 +1704,7 @@ class _$_Users implements _Users {
                 other.reset_wallet_datetime == reset_wallet_datetime) &&
             (identical(other.fb_id, fb_id) || other.fb_id == fb_id) &&
             (identical(other.created, created) || other.created == created) &&
+            (identical(other.button, button) || other.button == button) &&
             (identical(other.followers_count, followers_count) ||
                 other.followers_count == followers_count) &&
             (identical(other.following_count, following_count) ||
@@ -1739,6 +1756,7 @@ class _$_Users implements _Users {
         reset_wallet_datetime,
         fb_id,
         created,
+        button,
         followers_count,
         following_count,
         likes_count,
@@ -1798,6 +1816,7 @@ abstract class _Users implements Users {
       required final String reset_wallet_datetime,
       required final String fb_id,
       required final DateTime created,
+      final String? button,
       final double? followers_count,
       final double? following_count,
       final double? likes_count,
@@ -1879,6 +1898,8 @@ abstract class _Users implements Users {
   String get fb_id;
   @override
   DateTime get created;
+  @override
+  String? get button;
   @override
   double? get followers_count;
   @override
