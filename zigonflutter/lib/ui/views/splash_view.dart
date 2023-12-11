@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
     Get.find<SlideScreenController>()
         .setVideoData(splashScreenController.slideListModel);
     log("DOWNLOADED DATA");
-    Get.offNamed(PageRouteList.slides);
+    Get.offNamed(PageRouteList.bottomBar);
   }
 
   @override

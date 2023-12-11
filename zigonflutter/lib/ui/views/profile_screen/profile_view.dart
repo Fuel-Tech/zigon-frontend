@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/profile_controller.dart';
@@ -38,9 +40,10 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
             child: GetBuilder<ProfileController>(builder: (ctrl) {
               return Obx(
                 () => ctrl.isLoading.isTrue
-                    ? const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      )
+                    ? Center(
+                        child: SpinKitFadingFour(
+                        color: AppUtil.secondary,
+                      ))
                     : Padding(
                         padding: const EdgeInsets.all(0.0),
                         child: RefreshIndicator(
@@ -148,6 +151,8 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                 onTap: () {
                                                   if (ctrl
                                                       .userProfileSelected) {
+                                                    Get.snackbar("Server - 500",
+                                                        "Chat MODULE DISABLED");
                                                   } else {
                                                     ctrl.toggleFollow();
                                                   }
@@ -177,9 +182,12 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                       Text(
                                                         ctrl.userProfileSelected
                                                             ? 'Chat'
-                                                            : ctrl.userProfileModel!.msg.User
-                                                                            .button ==
-                                                                        "following"
+                                                            : ctrl
+                                                                        .userProfileModel!
+                                                                        .msg
+                                                                        .User
+                                                                        .button ==
+                                                                    "following"
                                                                 ? 'Unfollow'
                                                                 : 'Follow',
                                                         style:
@@ -595,12 +603,10 @@ slideGridWidgets({
     child: Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(
+          image: CachedNetworkImageProvider(
             thumbUrl,
           ),
           fit: BoxFit.cover,
-          // colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-
           filterQuality: FilterQuality.low,
         ),
       ),

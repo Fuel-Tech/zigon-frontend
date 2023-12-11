@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/main.dart';
+import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -302,6 +303,8 @@ class SlideScreenController extends GetxController {
   RxBool isFullScreen = false.obs;
   toggleFullScreen() {
     isFullScreen.value = !isFullScreen.value;
+    bottomBarKey.currentState!.controller.hideNavBar =
+        !bottomBarKey.currentState!.controller.hideNavBar;
     log("FULLSCREEN: $isFullScreen");
   }
 

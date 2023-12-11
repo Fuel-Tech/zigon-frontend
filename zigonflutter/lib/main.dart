@@ -72,7 +72,8 @@ class _MyAppState extends State<MyApp> {
       defaultTransition: Transition.rightToLeftWithFade,
       getPages: [
         GetPage(name: PageRouteList.splash, page: () => SplashScreen()),
-        GetPage(name: PageRouteList.slides, page: () => BottomBar()),
+        GetPage(name: PageRouteList.bottomBar, page: () => BottomBar()),
+        GetPage(name: PageRouteList.slides, page: () => VideoSwiper()),
         GetPage(name: PageRouteList.profile, page: () => ProfileView()),
         GetPage(name: PageRouteList.discover, page: () => DiscoverView()),
         GetPage(

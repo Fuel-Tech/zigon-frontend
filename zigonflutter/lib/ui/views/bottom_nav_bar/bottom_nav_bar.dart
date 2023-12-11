@@ -14,6 +14,7 @@ import 'package:zigonflutter/ui/views/slides_screen/slides_view2.dart';
 import 'package:zigonflutter/ui/views/video_upload_screens/camera_page.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
+import '../../../controllers/bottombar_controller.dart';
 import '../../widgets/login_widget.dart';
 
 final GlobalKey<BottomBarState> bottomBarKey = GlobalKey<BottomBarState>();
@@ -26,26 +27,19 @@ class BottomBar extends StatefulWidget {
 }
 
 class BottomBarState extends State<BottomBar> {
-  PersistentTabController navBarController =
-      PersistentTabController(initialIndex: 0);
-  bool hideNavBar = false;
-
-  toggleNavBar() {
-    hideNavBar = !hideNavBar;
-    setState(() {});
-  }
+  final BottomBarController controller = Get.put(BottomBarController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PersistentTabView(
         context,
-        controller: navBarController,
+        controller: controller.navBarController,
         backgroundColor: Colors.black,
         // decoration: NavBarDecoration(borderRadius: BorderRadius.circular(40)),
         onItemSelected: (value) {
           if (AppUtil.isLoggedIn) {
-            navBarController.index = value;
+            controller.navBarController.index = value;
             if (value != 0) {
               Get.find<SlideScreenController>().stopActiveVideo();
             } else {
@@ -55,10 +49,10 @@ class BottomBarState extends State<BottomBar> {
             log("Unable to navigate");
           }
         },
-        hideNavigationBar: hideNavBar,
+        hideNavigationBar: controller.hideNavBar,
         bottomScreenMargin: 0,
-        popAllScreensOnTapAnyTabs: true,
         items: [
+          // SLIDES
           PersistentBottomNavBarItem(
             contentPadding: 0,
             icon: FaIcon(
@@ -72,11 +66,12 @@ class BottomBarState extends State<BottomBar> {
               size: 20,
             ),
           ),
+          // DISCOVER
           PersistentBottomNavBarItem(
             contentPadding: 0,
             onPressed: (p0) {
               if (AppUtil.isLoggedIn) {
-                navBarController.index = 1;
+                controller.navBarController.index = 1;
                 Get.find<SlideScreenController>().stopActiveVideo();
               } else {
                 log("Unable to navigate");
@@ -94,11 +89,15 @@ class BottomBarState extends State<BottomBar> {
               size: 20,
             ),
           ),
+          // CAMERA
           PersistentBottomNavBarItem(
             activeColorPrimary: AppUtil.activeIconColor,
             onPressed: (p0) {
+              controller.cameraView = true;
+              controller.toggleNavBar();
               if (AppUtil.isLoggedIn) {
-                navBarController.index = 2;
+                // toggleNavBar();
+                controller.navBarController.index = 2;
                 Get.find<SlideScreenController>().stopActiveVideo();
               } else {
                 log("Unable to navigate");
@@ -115,11 +114,12 @@ class BottomBarState extends State<BottomBar> {
               size: 29,
             ),
           ),
+          // NOTIFICATION
           PersistentBottomNavBarItem(
             contentPadding: 0,
             onPressed: (p0) {
               if (AppUtil.isLoggedIn) {
-                navBarController.index = 3;
+                controller.navBarController.index = 3;
                 Get.find<SlideScreenController>().stopActiveVideo();
               } else {
                 log("Unable to navigate");
@@ -137,11 +137,12 @@ class BottomBarState extends State<BottomBar> {
               size: 20,
             ),
           ),
+          // PROFILE
           PersistentBottomNavBarItem(
             contentPadding: 0,
             onPressed: (p0) {
               if (AppUtil.isLoggedIn) {
-                navBarController.index = 4;
+                controller.navBarController.index = 4;
                 Get.find<SlideScreenController>().stopActiveVideo();
               } else {
                 log("Unable to navigate");
@@ -161,6 +162,20 @@ class BottomBarState extends State<BottomBar> {
           )
         ],
         navBarStyle: NavBarStyle.style15,
+        onWillPop: (p0) async {
+          if (controller.navBarController.index != 0) {
+            controller.navBarController.index = 0;
+            Get.find<SlideScreenController>().playActiveVideo();
+            if (controller.cameraView) {
+              controller.toggleNavBar();
+              controller.cameraView = false;
+            }
+            return false;
+          } else {
+            return true;
+          }
+        },
+        handleAndroidBackButtonPress: false,
         screens: [
           VideoSwiper(),
           DiscoverView(),

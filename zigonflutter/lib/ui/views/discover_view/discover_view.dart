@@ -1,11 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:zigonflutter/ui/views/single_slide_view/single_slide_view.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
@@ -135,58 +136,82 @@ class DiscoverView extends StatelessWidget {
               ),
               SizedBox(height: 10),
               // POPULAR VIDEO WIDGET
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1 / 1.5,
-                      crossAxisSpacing: 16.0,
-                      mainAxisSpacing: 16.0,
-                    ),
-                    itemCount: ctrl.set1?.msg.length ?? 0,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Visibility(
-                        visible: ctrl.isLoading1,
-                        replacement: PopularVideoWidget(
-                          id: ctrl.set1!.msg[index].video.id,
-                          description: ctrl.set1!.msg[index].video.description,
-                          sound: ctrl.set1!.msg[index].sound.name ?? "",
-                          soundId: ctrl.set1!.msg[index].video.sound_id,
-                          commentCount: ctrl
-                              .set1!.msg[index].video.comment_count
-                              .toString(),
-                          gif: ctrl.set1!.msg[index].video.gif,
-                          likeCount:
-                              ctrl.set1!.msg[index].video.like_count.toString(),
-                          views: ctrl.set1!.msg[index].video.view.toString(),
-                          thumb: ctrl.set1!.msg[index].video.thum,
-                          video: ctrl.set1!.msg[index].video.video,
-                          userName: ctrl.set1!.msg[index].user.username,
-                          profilePic:
-                              ctrl.set1!.msg[index].user.profile_pic ?? '',
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.3)),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaY: 4, sigmaX: 4),
-                              child: ClipRRect(
-                                child:
-                                    Image.asset("assets/images/watermark.png"),
-                              ),
-                            ),
+              ctrl.set1 == null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 1 / 1.5,
+                            crossAxisSpacing: 16.0,
+                            mainAxisSpacing: 16.0,
                           ),
-                        ),
-                      );
-                    }),
-              ),
+                          itemCount: 4,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(),
+                                  child: SpinKitFadingFour(
+                                    color: AppUtil.secondary.withOpacity(0.2),
+                                  )),
+                            );
+                          }),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 1 / 1.5,
+                            crossAxisSpacing: 16.0,
+                            mainAxisSpacing: 16.0,
+                          ),
+                          itemCount: ctrl.set1?.msg.length ?? 0,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Visibility(
+                              visible: ctrl.isLoading1,
+                              replacement: PopularVideoWidget(
+                                id: ctrl.set1!.msg[index].video.id,
+                                description:
+                                    ctrl.set1!.msg[index].video.description,
+                                sound: ctrl.set1!.msg[index].sound.name ?? "",
+                                soundId: ctrl.set1!.msg[index].video.sound_id,
+                                commentCount: ctrl
+                                    .set1!.msg[index].video.comment_count
+                                    .toString(),
+                                gif: ctrl.set1!.msg[index].video.gif,
+                                likeCount: ctrl
+                                    .set1!.msg[index].video.like_count
+                                    .toString(),
+                                views:
+                                    ctrl.set1!.msg[index].video.view.toString(),
+                                thumb: ctrl.set1!.msg[index].video.thum,
+                                video: ctrl.set1!.msg[index].video.video,
+                                userName: ctrl.set1!.msg[index].user.username,
+                                profilePic:
+                                    ctrl.set1!.msg[index].user.profile_pic ??
+                                        '',
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(),
+                                    child: SpinKitFadingFour(
+                                      color: AppUtil.secondary.withOpacity(0.2),
+                                    )),
+                              ),
+                            );
+                          }),
+                    ),
               SizedBox(height: 20),
             ],
           ),
@@ -415,125 +440,148 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
+          width: Get.width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            image: DecorationImage(
-              image: NetworkImage(
-                showGif ? widget.gif : widget.thumb,
-              ),
-              fit: BoxFit.cover,
-            ),
           ),
           alignment: Alignment.bottomCenter,
           //Toolbar
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.5),
-              borderRadius: const BorderRadius.vertical(
-                bottom: Radius.circular(12),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
               children: [
-                Row(
-                  children: [
-                    //DP
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/prodp.jpg'),
-                              fit: BoxFit.cover),
-                          shape: BoxShape.circle),
+                SizedBox(
+                  width: Get.width,
+                  child: CachedNetworkImage(
+                    imageUrl: showGif ? widget.gif : widget.thumb,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return CachedNetworkImage(
+                        imageUrl: widget.thumb,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    height: 60,
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.5),
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(12),
+                      ),
                     ),
-                    SizedBox(width: 10),
-                    //Name, Views, Comments, Likes
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          widget.userName,
-                          style: GoogleFonts.raleway(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        //Views, Comments, Likes
                         Row(
                           children: [
-                            //Views
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                                Text(
-                                  '${widget.views}k',
-                                  style: GoogleFonts.quicksand(fontSize: 12),
-                                )
-                              ],
+                            //DP
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/prodp.jpg'),
+                                      fit: BoxFit.cover),
+                                  shape: BoxShape.circle),
                             ),
                             SizedBox(width: 10),
-                            //Comments
-                            Row(
+                            //Name, Views, Comments, Likes
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                  Icons.messenger,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
                                 Text(
-                                  widget.commentCount,
-                                  style: GoogleFonts.quicksand(fontSize: 12),
-                                )
-                              ],
-                            ),
-                            SizedBox(width: 10),
-                            //Likes
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.favorite,
-                                  color: Colors.grey,
-                                  size: 16,
+                                  widget.userName,
+                                  style: GoogleFonts.raleway(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                                Text(
-                                  widget.likeCount,
-                                  style: GoogleFonts.quicksand(fontSize: 12),
-                                )
+                                const SizedBox(height: 5),
+                                //Views, Comments, Likes
+                                Row(
+                                  children: [
+                                    //Views
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.remove_red_eye,
+                                          color: Colors.grey,
+                                          size: 16,
+                                        ),
+                                        Text(
+                                          '${widget.views}k',
+                                          style: GoogleFonts.quicksand(
+                                              fontSize: 12),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(width: 10),
+                                    //Comments
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.messenger,
+                                          color: Colors.grey,
+                                          size: 16,
+                                        ),
+                                        Text(
+                                          widget.commentCount,
+                                          style: GoogleFonts.quicksand(
+                                              fontSize: 12),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(width: 10),
+                                    //Likes
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.favorite,
+                                          color: Colors.grey,
+                                          size: 16,
+                                        ),
+                                        Text(
+                                          widget.likeCount,
+                                          style: GoogleFonts.quicksand(
+                                              fontSize: 12),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ],
                         ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: AppUtil.secondary,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppUtil.secondary,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 4),
+                                )
+                              ]),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                          child: Text(
+                            'Follow',
+                            style: GoogleFonts.raleway(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
                       ],
-                    ),
-                  ],
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: AppUtil.secondary,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppUtil.secondary,
-                          blurRadius: 6,
-                          offset: Offset(0, 4),
-                        )
-                      ]),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  child: Text(
-                    'Follow',
-                    style: GoogleFonts.raleway(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
                     ),
                   ),
                 ),

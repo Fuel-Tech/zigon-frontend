@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,6 +160,26 @@ class CommonWidgets {
         ),
       ),
     );
+  }
+
+  // GIF set as dialog
+  static Widget loadingWidget({bool fromCreate = false}) {
+    return SpinKitFadingCircle(
+      color: fromCreate ? Colors.black : Colors.white,
+      size: 40,
+    );
+  }
+
+  //loading dialog
+  static void loadingDialog() {
+    Get.dialog(loadingWidget(), barrierDismissible: false);
+  }
+
+  //hide the dialog
+  static void hideDialog() {
+    if (Get.isDialogOpen!) {
+      Get.back();
+    }
   }
 
   static showDialogBox(BuildContext context,

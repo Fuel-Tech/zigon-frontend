@@ -4,8 +4,10 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
 
 import '../../../main.dart';
 import 'video_editor_page.dart';
@@ -108,175 +110,168 @@ class _CameraPageState extends State<CameraPage> {
   @override
   Widget build(BuildContext context) {
     log(_camera.value.isInitialized.toString());
-    return WillPopScope(
-      onWillPop: () async {
-        _camera.dispose();
-        return true;
-      },
-      child: Material(
-        child: GestureDetector(
-          // onScaleStart: _onScaleStart,
-          // onScaleUpdate: _onScaleUpdate,
-          child: CameraPreview(
-            _camera,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //Top Toolbar
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //ADD MUSIC BUTTON
-                            isPlaying
-                                ? Container()
-                                : IconButton(
-                                    onPressed: () {},
-                                    icon:
-                                        const Icon(Icons.music_note_outlined)),
-                            //TOGGLE FLASH BUTTON
-                            IconButton(
-                                onPressed: () {
-                                  _toggleFlash();
-                                },
-                                icon: Icon(icons)),
-                            //TOGGLE CAMERA DIRECTION
-                            isPlaying
-                                ? Container()
-                                : IconButton(
-                                    onPressed: () {
-                                      _switchCameras();
-                                    },
-                                    icon: const Icon(
-                                        Icons.camera_front_outlined)),
-                          ],
-                        ),
+    return Material(
+      child: GestureDetector(
+        // onScaleStart: _onScaleStart,
+        // onScaleUpdate: _onScaleUpdate,
+        child: CameraPreview(
+          _camera,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Top Toolbar
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //ADD MUSIC BUTTON
+                          isPlaying
+                              ? Container()
+                              : IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.music_note_outlined)),
+                          //TOGGLE FLASH BUTTON
+                          IconButton(
+                              onPressed: () {
+                                _toggleFlash();
+                              },
+                              icon: Icon(icons)),
+                          //TOGGLE CAMERA DIRECTION
+                          isPlaying
+                              ? Container()
+                              : IconButton(
+                                  onPressed: () {
+                                    _switchCameras();
+                                  },
+                                  icon:
+                                      const Icon(Icons.camera_front_outlined)),
+                        ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black.withOpacity(0.4)),
-                          child: IconButton(
-                              onPressed: () async {
-                                ImagePicker _picker = ImagePicker();
-                                file = await _picker.pickVideo(
-                                    source: ImageSource.gallery);
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black.withOpacity(0.4)),
+                        child: IconButton(
+                            onPressed: () async {
+                              ImagePicker _picker = ImagePicker();
+                              file = await _picker.pickVideo(
+                                  source: ImageSource.gallery);
 
-                                if (file != null) {
-                                  _camera.dispose();
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(
-                                    builder: (context) {
-                                      return VideoEditorPage(
-                                          videoFile: File(file!.path));
-                                    },
-                                  ));
-                                }
-                              },
-                              icon: const Icon(
-                                Icons.folder_copy,
-                                color: Colors.white,
-                                size: 25,
-                              )),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            if (startedRecording) {
-                              isPlaying
-                                  ? setState(() {
-                                      isPlaying = false;
-                                      _camera.pauseVideoRecording();
-                                    })
-                                  : setState(() {
-                                      isPlaying = true;
-                                      _camera.resumeVideoRecording();
-                                    });
-                            } else {
-                              startedRecording = true;
-                              isPlaying = true;
-                              setState(() {
-                                _camera.startVideoRecording();
-                              });
-                            }
-                          },
-                          child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: isPlaying
-                                  ? BoxDecoration()
-                                  : BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: Colors.white, width: 5),
-                                    ),
-                              alignment: Alignment.center,
-                              child: isPlaying
-                                  ? const Icon(
-                                      Icons.pause,
-                                      color: Colors.white,
-                                      size: 25,
-                                    )
-                                  : Container()),
-                        ),
-                        isPlaying
-                            ? Container(
-                                decoration: BoxDecoration(
+                              if (file != null) {
+                                _camera.dispose();
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(
+                                  builder: (context) {
+                                    return VideoEditorPage(
+                                        videoFile: File(file!.path));
+                                  },
+                                ));
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.folder_copy,
+                              color: Colors.white,
+                              size: 25,
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (startedRecording) {
+                            isPlaying
+                                ? setState(() {
+                                    isPlaying = false;
+                                    _camera.pauseVideoRecording();
+                                  })
+                                : setState(() {
+                                    isPlaying = true;
+                                    _camera.resumeVideoRecording();
+                                  });
+                          } else {
+                            startedRecording = true;
+                            isPlaying = true;
+                            setState(() {
+                              _camera.startVideoRecording();
+                            });
+                          }
+                        },
+                        child: Container(
+                            height: 80,
+                            width: 80,
+                            decoration: isPlaying
+                                ? BoxDecoration()
+                                : BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.black.withOpacity(0.4)),
-                                child: IconButton(
-                                    onPressed: () async {
-                                      file = await _camera.stopVideoRecording();
-                                      startedRecording = false;
-                                      isPlaying = false;
-                                      setState(() {
-                                        _camera.dispose();
-                                      });
-
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(
-                                        builder: (context) {
-                                          return VideoEditorPage(
-                                              videoFile: File(file!.path));
-                                        },
-                                      ));
-                                    },
-                                    icon: const Icon(
-                                      Icons.stop,
-                                      color: Colors.red,
-                                      size: 25,
-                                    )),
-                              )
-                            : Container(
-                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.white, width: 5),
+                                  ),
+                            alignment: Alignment.center,
+                            child: isPlaying
+                                ? const Icon(
+                                    Icons.pause,
+                                    color: Colors.white,
+                                    size: 25,
+                                  )
+                                : Container()),
+                      ),
+                      isPlaying
+                          ? Container(
+                              decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                ),
-                                child: IconButton(
-                                    onPressed: () async {},
-                                    icon: const Icon(
-                                      Icons.folder_copy,
-                                      color: Colors.transparent,
-                                      size: 25,
-                                    )),
+                                  color: Colors.black.withOpacity(0.4)),
+                              child: IconButton(
+                                  onPressed: () async {
+                                    file = await _camera.stopVideoRecording();
+                                    startedRecording = false;
+                                    isPlaying = false;
+                                    setState(() {
+                                      _camera.dispose();
+                                    });
+
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(
+                                      builder: (context) {
+                                        return VideoEditorPage(
+                                            videoFile: File(file!.path));
+                                      },
+                                    ));
+                                  },
+                                  icon: const Icon(
+                                    Icons.stop,
+                                    color: Colors.red,
+                                    size: 25,
+                                  )),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
                               ),
-                      ],
-                    ),
-                  ],
-                ),
+                              child: IconButton(
+                                  onPressed: () async {},
+                                  icon: const Icon(
+                                    Icons.folder_copy,
+                                    color: Colors.transparent,
+                                    size: 25,
+                                  )),
+                            ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

@@ -63,13 +63,16 @@ class VideoSwiper extends StatelessWidget {
                                   onInitialized: (controller) =>
                                       ctrl.updateIndex(index, controller),
                                 ),
-                                Obx(
-                                  () => Get.find<SlideScreenController>()
-                                          .isFullScreen
-                                          .value
-                                      ? Container()
-                                      : SlidesWidget.onTopGradient(context),
-                                ),
+                                Obx(() => AnimatedOpacity(
+                                      opacity: Get.find<SlideScreenController>()
+                                              .isFullScreen
+                                              .value
+                                          ? 0
+                                          : 1,
+                                      duration: Duration(milliseconds: 300),
+                                      child:
+                                          SlidesWidget.onTopGradient(context),
+                                    )),
                                 SafeArea(
                                   child: Align(
                                     alignment: Alignment.topLeft,
@@ -101,29 +104,31 @@ class VideoSwiper extends StatelessWidget {
                                 ),
 
                                 Obx(
-                                  () => ctrl.isFullScreen.value
-                                      ? Container()
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 70),
-                                          child: RightToolBar(
-                                            index: index,
-                                            slideScreenController: ctrl,
-                                          ),
-                                        ),
+                                  () => AnimatedOpacity(
+                                    opacity: ctrl.isFullScreen.value ? 0 : 1,
+                                    duration: Duration(milliseconds: 300),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 70),
+                                      child: RightToolBar(
+                                        index: index,
+                                        slideScreenController: ctrl,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                Obx(
-                                  () => ctrl.isFullScreen.value
-                                      ? Container()
-                                      : Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 70),
-                                          child: BottomToolbar(
-                                            index: index,
-                                            slideScreenControler: ctrl,
-                                          ),
+                                Obx(() => AnimatedOpacity(
+                                      opacity: ctrl.isFullScreen.value ? 0 : 1,
+                                      duration: Duration(milliseconds: 300),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 70),
+                                        child: BottomToolbar(
+                                          index: index,
+                                          slideScreenControler: ctrl,
                                         ),
-                                ),
+                                      ),
+                                    )),
                               ],
                             );
                           } else {

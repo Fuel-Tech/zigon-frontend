@@ -40,7 +40,6 @@ dependencies:
   get: ^4.5.1
   json_annotation: ^4.4.0
   font_awesome_flutter: ^10.1.0
-  change_app_package_name: ^1.1.0
   card_swiper: 2.0.4
   flutter_font_icons: ^2.2.5
   share_plus: ^6.3.0
@@ -57,12 +56,13 @@ dependencies:
   path_provider: ^2.0.14
   flutter_cache_manager: ^3.3.0
   textfield_tags: ^2.0.2
-  shimmer: ^3.0.0
   timeago: ^3.5.0
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
   google_sign_in: ^6.1.5
   persistent_bottom_nav_bar_v2: ^4.2.8
+  flutter_spinkit: ^5.1.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
