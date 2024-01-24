@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/models/user_profile_model/user_profile_model.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
@@ -33,15 +32,14 @@ class ProfileController extends GetxController {
     update();
     String url = 'followUser';
     String body = '''{
-      "sender_id: "$senderId",
-      "receiver_id: "$userID"
+      "sender_id": "$senderId",
+      "receiver_id": "$userID"
     }''';
 
     var response = await NetworkHandler.dioPost(url, body: body);
     response = jsonDecode(response);
     if (response["code"] == 200) {
       btnPressed = false;
-      update();
     } else {
       isFollowing = !isFollowing;
       btnPressed = false;
@@ -136,7 +134,6 @@ class ProfileController extends GetxController {
   }
 
   Future<void> requestVerification() async {
-    var response;
     var json;
     if (json["msg"] == 200) {
       Get.snackbar(
@@ -151,6 +148,35 @@ class ProfileController extends GetxController {
         backgroundColor: Colors.white,
       );
     }
+  }
+
+  editProfilePicture() {
+    Get.dialog(
+      Material(
+        type: MaterialType.transparency,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Container(),
+                    Container(),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   iniChecks() {
@@ -169,8 +195,11 @@ class ProfileController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     iniChecks();
     super.onInit();
   }
 }
+
+enum ProfileNavBarItem { slides, liked, saved }
+
+enum ProfileTabSelected { slides, liked, saved }

@@ -3,11 +3,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/main.dart';
 import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
@@ -36,44 +34,62 @@ class SlideScreenController extends GetxController {
           );
         }
         List<String> temp = [];
-        log(slideListModel!.msg.length.toString());
-        for (int i = 0; i < slideListModel!.msg.length; i++) {
-          log(slideListModel!.msg[i].video.video);
-          temp.add(slideListModel!.msg[i].video.video);
+        for (int i = 0; i < data.msg.length; i++) {
+          temp.add(data.msg[i].video.video);
+        }
+        if (refresh) {
+          videoList.clear();
         }
         videoList.addAll(temp);
+        isVideoLoading.value = false;
+        update();
       }
     } catch (e) {
       log("Error while setting videos: $e");
     }
   }
 
-  Future<void> fetchMoreVideos({int? newStart, bool refresh = false}) async {
-    if (!refresh) {
-      isLoading.value = true;
-    }
-    String userID = await SharedPrefHandler.getInstance()
-            .getString(SharedPrefHandler.USERID) ??
-        '0';
-    if (newStart != null) {
-      startingPoint = newStart;
+  Future<void> fetchMoreVideos({String? newStart, bool refresh = false}) async {
+    log("CONDITONS: NEWSTART=$newStart -- REFRESH=$refresh");
+    if (refresh) {
+      isVideoLoading.value = true;
+      startingPoint = 0;
     } else {
       startingPoint = startingPoint + 1;
     }
+    log("CONDITONS: STARTING POINT=$startingPoint");
+
+    String userID = await SharedPrefHandler.getInstance()
+            .getString(SharedPrefHandler.USERID) ??
+        '0';
+
     log("Getting video for slides_view");
     String endpoint = 'showRelatedVideos';
-    String body = '''{
+    String body = '';
+    if (newStart == null) {
+      body = '''{
       "user_id":${int.tryParse(userID)},
       "starting_point":$startingPoint,
       "device_id":1,
       "limit":4
     }''';
+    } else {
+      body = '''{
+      "user_id":${int.tryParse(userID)},
+      "starting_point":$startingPoint,
+      "device_id":1,
+      "limit":4,
+      "video_id": $newStart
+    }''';
+    }
+
     var response = await NetworkHandler.dioPost(endpoint, body: body);
+    log("CONDITONS: $body");
     var json = jsonDecode(response);
     if (json['code'] == 200) {
       var newSlideListModel = SlideListModel.fromJson(json);
-      setVideoData(newSlideListModel, refresh: refresh);
-      isLoading.value = false;
+      log("CONDITONS: COUNTS ${newSlideListModel.msg.length}");
+      setVideoData(newSlideListModel, refresh: false);
     } else if (json['code'] == 201) {
       log("NO MORE VIDEOS TO SHOW!!!");
     }
@@ -89,7 +105,6 @@ class SlideScreenController extends GetxController {
     String userId =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
     commentLoader.value = true;
-    Dio dio = Dio();
     String postUrl = 'showVideoComments';
     Map<String, String> body = {"video_id": videoID, "user_id": userId};
     var response = await NetworkHandler.dioPost(postUrl, body: body);
@@ -97,7 +112,6 @@ class SlideScreenController extends GetxController {
     log(json.toString());
     if (json['code'] == 200) {
       commentList = CommentListModel.fromJson(json);
-      Get.toNamed(PageRouteList.slides);
       // log(commentList.toString());
       update();
     } else if (json["code"] == 201) {
@@ -288,7 +302,6 @@ class SlideScreenController extends GetxController {
 
   final currentIndex = 0.obs;
   VideoPlayerController? activeVideoController;
-
   void updateIndex(int index, VideoPlayerController? videoController) {
     currentIndex.value = index;
     activeVideoController = videoController;
@@ -303,8 +316,7 @@ class SlideScreenController extends GetxController {
   RxBool isFullScreen = false.obs;
   toggleFullScreen() {
     isFullScreen.value = !isFullScreen.value;
-    bottomBarKey.currentState!.controller.hideNavBar =
-        !bottomBarKey.currentState!.controller.hideNavBar;
+    bottomBarKey.currentState!.toggleNavBar();
     log("FULLSCREEN: $isFullScreen");
   }
 
@@ -349,7 +361,6 @@ class SlideScreenController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     log("SLIDE CTRL INITALIZED!!!");
     Get.routing.current;
     log("INIT ROUTING ${Get.routing.current}");
@@ -366,11 +377,7 @@ class SlideScreenController extends GetxController {
     } else if (Platform.isIOS) {
       isIOS = true;
     }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    super.onInit();
   }
 
   // @override

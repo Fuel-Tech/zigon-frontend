@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zigonflutter/ui/views/splash_view.dart';
+import 'package:zigonflutter/utility/navigation_utility.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -71,7 +72,7 @@ class RegisterController extends GetxController {
         json["msg"]["User"]["id"],
         SharedPrefHandler.USERID,
       );
-      Get.offAll(() => SplashScreen());
+      Get.offAllNamed(PageRouteList.splash);
     } else if (json["code"] == 201) {
       isLoading.value = false;
       Get.snackbar(

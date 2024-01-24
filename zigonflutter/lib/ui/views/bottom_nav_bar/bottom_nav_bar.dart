@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:zigonflutter/controllers/discover_controller.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/views/discover_view/discover_view.dart';
 import 'package:zigonflutter/ui/views/notifications_view/notifications_view.dart';
 import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
@@ -29,6 +27,14 @@ class BottomBar extends StatefulWidget {
 class BottomBarState extends State<BottomBar> {
   final BottomBarController controller = Get.put(BottomBarController());
 
+  bool hideNavBar = false;
+
+  toggleNavBar() {
+    setState(() {
+      hideNavBar = !hideNavBar;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +51,15 @@ class BottomBarState extends State<BottomBar> {
             } else {
               Get.find<SlideScreenController>().playActiveVideo();
             }
+
+            if (value == 2) {
+              log("camera");
+            }
           } else {
             log("Unable to navigate");
           }
         },
-        hideNavigationBar: controller.hideNavBar,
+        hideNavigationBar: hideNavBar,
         bottomScreenMargin: 0,
         items: [
           // SLIDES
@@ -97,10 +107,14 @@ class BottomBarState extends State<BottomBar> {
               controller.toggleNavBar();
               if (AppUtil.isLoggedIn) {
                 // toggleNavBar();
+                controller.cameraView = true;
+                if (hideNavBar == false) {
+                  toggleNavBar();
+                }
                 controller.navBarController.index = 2;
                 Get.find<SlideScreenController>().stopActiveVideo();
               } else {
-                log("Unable to navigate");
+                log("NOT LOGGED IN");
                 LoginWidgets().loginBottomSheet(context);
               }
             },
@@ -167,7 +181,7 @@ class BottomBarState extends State<BottomBar> {
             controller.navBarController.index = 0;
             Get.find<SlideScreenController>().playActiveVideo();
             if (controller.cameraView) {
-              controller.toggleNavBar();
+              toggleNavBar();
               controller.cameraView = false;
             }
             return false;

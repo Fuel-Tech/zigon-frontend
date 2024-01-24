@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/bottombar_controller.dart';
@@ -29,10 +30,9 @@ class NotificationsView extends StatelessWidget {
         body: GetBuilder<NotificationController>(builder: (ctrl) {
           return ctrl.isLoading
               ? Center(
-                  child: CircularProgressIndicator(
-                    color: AppUtil.secondary,
-                  ),
-                )
+                  child: SpinKitFadingCircle(
+                  color: AppUtil.secondary,
+                ))
               : Column(
                   children: [
                     Expanded(

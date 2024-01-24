@@ -21,13 +21,13 @@ class NetworkHandler {
 
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
-      "User-Id": userID,
-      "Auth-Token": token,
-      "device": AppUtil.DEVICE,
-      "version": AppUtil.APP_VERSION,
-      "ip": AppUtil.IP,
-      "device-token": AppUtil.DEVICE_TOKEN,
-      "content-type": "application/json"
+      // "User-Id": userID,
+      // "Auth-Token": token,
+      // "device": AppUtil.DEVICE,
+      // "version": AppUtil.APP_VERSION,
+      // "ip": AppUtil.IP,
+      // "device-token": AppUtil.DEVICE_TOKEN,
+      // "content-type": "application/json"
     };
 
     dio.options.headers.addAll(headers);

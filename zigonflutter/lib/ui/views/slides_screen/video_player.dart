@@ -78,26 +78,3 @@ class _CachedVideoPlayerState extends State<CachedVideoPlayer> {
     );
   }
 }
-
-class SlideLoaderWidget extends StatefulWidget {
-  const SlideLoaderWidget({super.key});
-
-  @override
-  State<SlideLoaderWidget> createState() => _SlideLoaderWidgetState();
-}
-
-class _SlideLoaderWidgetState extends State<SlideLoaderWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: Get.width,
-      height: Get.height,
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border.fromBorderSide(
-          BorderSide(color: Colors.red),
-        ),
-      ),
-    );
-  }
-}

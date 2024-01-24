@@ -3,7 +3,7 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zigonflutter/utility/auth_services.dart';
+import 'package:zigonflutter/utility/firebase/auth_services.dart';
 
 import '../../controllers/slide_screen_controller.dart';
 import '../../utility/app_utility.dart';

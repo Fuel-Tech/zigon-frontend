@@ -216,8 +216,8 @@ class CommonWidgets {
       return Padding(
         padding: EdgeInsets.only(bottom: Get.mediaQuery.viewInsets.bottom),
         child: Container(
-          width: AppUtil.screenWidth(context),
-          height: AppUtil.screenHeight(context),
+          width: Get.width,
+          height: Get.height,
           decoration: BoxDecoration(
             color: AppUtil.primary,
             borderRadius: const BorderRadius.only(
@@ -362,9 +362,12 @@ class CommonWidgets {
                   decoration: InputDecoration(
                       suffixIcon: Obx(
                         () => ctrl.addingComment.isTrue
-                            ? CircularProgressIndicator(
-                                color: AppUtil.secondary,
-                              )
+                            ? Transform.scale(
+                              scale: .5,
+                              child: CircularProgressIndicator(
+                                  color: AppUtil.secondary,
+                                ),
+                            )
                             : IconButton(
                                 onPressed: () {
                                   if (ctrl.commentFieldController.text

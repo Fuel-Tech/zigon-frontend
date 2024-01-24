@@ -7,9 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zigonflutter/controllers/profile_controller.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/views/splash_view.dart';
-import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 
 import '../models/user_profile_model/user_profile_model.dart';
 import '../utility/network_utility.dart';
@@ -33,10 +31,10 @@ class SettingsController extends GetxController {
   Future<void> updateProfile() async {
     String path = "editProfile";
     String body = """{
-      "username": "",
+      "username": ${userNameCtrl.text},
       "user_id":"1",
-      "first_name":"MOhammed Jassim",
-      "last_name":"PV",
+      "first_name":${fistNameCtrl.text},
+      "last_name":${lastNameCtrl.text},
       "gender": "Male",
       "website":".com",
       "bio":"iam jassimpv" 
@@ -128,9 +126,6 @@ class SettingsController extends GetxController {
   }
 
   Future<void> talkToUs() async {
-    String userId =
-        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
-    DateTime now = DateTime.now();
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'info@zigon.in', // recipient email address
@@ -188,7 +183,6 @@ class SettingsController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     initalizeSettings();
     super.onInit();
   }

@@ -47,9 +47,7 @@ class DiscoverView extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        Get.to(() => TestPage02());
-                      },
+                      onTap: () {},
                       child: const Icon(
                         Icons.cached,
                         size: 24,
@@ -259,17 +257,7 @@ class _PopularVideoWidgetState extends State<PopularVideoWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SlideBackground(videoData: {
-              "video": widget.video,
-              "username": widget.userName,
-              "thumb": widget.thumb,
-              "likeCount": widget.likeCount,
-              "commentCount": widget.commentCount,
-              "description": widget.description,
-              "sound": widget.sound,
-              "soundId": widget.soundId,
-              "profilePic": widget.profilePic,
-            }));
+        Get.to(() => SlideBackground(), arguments: {"videoId": widget.id});
       },
       onLongPressStart: (value) {
         setState(() {
@@ -283,89 +271,120 @@ class _PopularVideoWidgetState extends State<PopularVideoWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(isGif ? widget.gif : widget.thumb),
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.high,
-          ),
           borderRadius: BorderRadius.circular(6),
         ),
         alignment: Alignment.bottomCenter,
-        //Toolbar
-        child: Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(6),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: Stack(
             children: [
-              Container(
-                height: 40,
-                width: 40,
-                decoration: widget.profilePic == ""
-                    ? BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/prodp.jpg"),
-                            fit: BoxFit.cover),
-                        shape: BoxShape.circle)
-                    : BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage("$IMG_URL${widget.profilePic}"),
-                            fit: BoxFit.cover),
-                        shape: BoxShape.circle),
+              SizedBox(
+                width: Get.width,
+                child: CachedNetworkImage(
+                  imageUrl: isGif ? widget.gif : widget.thumb,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) {
+                    return Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          child: CachedNetworkImage(
+                            imageUrl: widget.thumb,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SpinKitFadingCircle(color: Colors.white)
+                      ],
+                    );
+                  },
+                ),
               ),
-              //Name, Views, Comments, Likes
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.userName,
-                    style: GoogleFonts.raleway(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+              //Toolbar
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.5),
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(6),
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  //Views, Likes
-                  Row(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      //Views
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.grey,
-                            size: 16,
-                          ),
-                          Text(
-                            widget.views,
-                            style: GoogleFonts.quicksand(fontSize: 12),
-                          )
-                        ],
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: widget.profilePic == ""
+                            ? BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage("assets/images/prodp.jpg"),
+                                    fit: BoxFit.cover),
+                                shape: BoxShape.circle)
+                            : BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "$IMG_URL${widget.profilePic}"),
+                                    fit: BoxFit.cover),
+                                shape: BoxShape.circle),
                       ),
-                      SizedBox(width: 10),
-                      //Likes
-                      Row(
+                      //Name, Views, Comments, Likes
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
-                            Icons.favorite,
-                            color: Colors.grey,
-                            size: 16,
-                          ),
                           Text(
-                            widget.likeCount.toString(),
-                            style: GoogleFonts.quicksand(fontSize: 12),
-                          )
+                            widget.userName,
+                            style: GoogleFonts.raleway(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          //Views, Likes
+                          Row(
+                            children: [
+                              //Views
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.remove_red_eye,
+                                    color: Colors.grey,
+                                    size: 16,
+                                  ),
+                                  Text(
+                                    widget.views,
+                                    style: GoogleFonts.quicksand(fontSize: 12),
+                                  )
+                                ],
+                              ),
+                              SizedBox(width: 10),
+                              //Likes
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.favorite,
+                                    color: Colors.grey,
+                                    size: 16,
+                                  ),
+                                  Text(
+                                    widget.likeCount.toString(),
+                                    style: GoogleFonts.quicksand(fontSize: 12),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -413,19 +432,7 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => SlideBackground(
-              videoData: {
-                "video": widget.video,
-                "username": widget.userName,
-                "thumb": widget.thumb,
-                "likeCount": widget.likeCount,
-                "commentCount": widget.commentCount,
-                "description": widget.description,
-                "sound": widget.sound,
-                "soundId": widget.soundId,
-                "profilePic": widget.profilePic,
-              },
-            ));
+        Get.to(() => SlideBackground(), arguments: {"videoId": widget.id});
       },
       onLongPressStart: (value) {
         setState(() {
@@ -445,7 +452,6 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.bottomCenter,
-          //Toolbar
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Stack(
@@ -456,18 +462,29 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
                     imageUrl: showGif ? widget.gif : widget.thumb,
                     fit: BoxFit.cover,
                     placeholder: (context, url) {
-                      return CachedNetworkImage(
-                        imageUrl: widget.thumb,
-                        fit: BoxFit.cover,
+                      return Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            child: CachedNetworkImage(
+                              imageUrl: widget.thumb,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SpinKitFadingCircle(color: Colors.white),
+                        ],
                       );
                     },
                   ),
                 ),
+                //Toolbar
                 Positioned(
+                  left: 0,
+                  right: 0,
                   bottom: 0,
                   child: Container(
                     height: 60,
-                    width: Get.width,
                     decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.5),
                       borderRadius: const BorderRadius.vertical(
@@ -560,24 +577,27 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
                             ),
                           ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: AppUtil.secondary,
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppUtil.secondary,
-                                  blurRadius: 6,
-                                  offset: Offset(0, 4),
-                                )
-                              ]),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 15),
-                          child: Text(
-                            'Follow',
-                            style: GoogleFonts.raleway(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
+                        Opacity(
+                          opacity: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppUtil.secondary,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppUtil.secondary,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 4),
+                                  )
+                                ]),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            child: Text(
+                              'Follow',
+                              style: GoogleFonts.raleway(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ),
@@ -616,114 +636,4 @@ Widget discoverAppBar() {
       ],
     ),
   );
-}
-
-class TestPage02 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Loader Border Animation',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: Page02(),
-    );
-  }
-}
-
-class Page02 extends StatelessWidget {
-  const Page02({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BorderPathRunner(),
-    );
-  }
-}
-
-class BorderPathRunner extends StatefulWidget {
-  @override
-  _BorderPathRunnerState createState() => _BorderPathRunnerState();
-}
-
-class _BorderPathRunnerState extends State<BorderPathRunner>
-    with SingleTickerProviderStateMixin {
-  AnimationController? _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 5),
-    )..repeat();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          width: 200,
-          height: 200,
-          child: AnimatedBuilder(
-            animation: _controller!,
-            builder: (context, child) {
-              return CustomPaint(
-                painter: BorderPathPainter(_controller!.value),
-                child: child,
-              );
-            },
-            child: Container(), // This is your container's child
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller!.dispose();
-    super.dispose();
-  }
-}
-
-class BorderPathPainter extends CustomPainter {
-  final double percentage;
-  BorderPathPainter(this.percentage);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 4
-      ..style = PaintingStyle.stroke;
-
-    final Path path = Path();
-    double completedLength = percentage * (2 * size.width + 2 * size.height);
-
-    Offset currentPoint = Offset(0, 0);
-
-    // Move through each border and draw based on the completedLength
-    if (completedLength < size.width) {
-      currentPoint = Offset(completedLength, 0);
-    } else if (completedLength < size.width + size.height) {
-      path.moveTo(size.width, 0);
-      currentPoint = Offset(size.width, completedLength - size.width);
-    } else if (completedLength < 2 * size.width + size.height) {
-      path.moveTo(size.width, size.height);
-      currentPoint = Offset(2 * size.width - completedLength, size.height);
-    } else {
-      path.moveTo(0, size.height);
-      currentPoint =
-          Offset(0, 2 * size.width + 2 * size.height - completedLength);
-    }
-
-    path.lineTo(currentPoint.dx, currentPoint.dy);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
 }

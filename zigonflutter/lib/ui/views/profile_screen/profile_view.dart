@@ -9,10 +9,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
 import 'package:zigonflutter/ui/views/single_slide_view/single_slide_view.dart';
 import 'package:zigonflutter/ui/views/user_settings_screen.dart/user_settings_view.dart';
-import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/ui/widgets/profile_widgets.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
@@ -41,7 +39,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
               return Obx(
                 () => ctrl.isLoading.isTrue
                     ? Center(
-                        child: SpinKitFadingFour(
+                        child: SpinKitFadingCircle(
                         color: AppUtil.secondary,
                       ))
                     : Padding(
@@ -73,16 +71,23 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: NetworkImage(
+                                              InkWell(
+                                                onTap: () {
+                                                  ctrl.editProfilePicture();
+                                                },
+                                                child: CircleAvatar(
+                                                  radius: 50,
+                                                  backgroundImage:
+                                                      CachedNetworkImageProvider(
                                                     IMG_URL +
                                                         (ctrl
                                                                 .userProfileModel
                                                                 ?.msg
                                                                 .User
                                                                 .profile_pic ??
-                                                            '')),
+                                                            ''),
+                                                  ),
+                                                ),
                                               ),
                                               SizedBox(width: 8),
                                               Column(
@@ -182,12 +187,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                       Text(
                                                         ctrl.userProfileSelected
                                                             ? 'Chat'
-                                                            : ctrl
-                                                                        .userProfileModel!
-                                                                        .msg
-                                                                        .User
-                                                                        .button ==
-                                                                    "following"
+                                                            : ctrl.isFollowing
                                                                 ? 'Unfollow'
                                                                 : 'Follow',
                                                         style:
@@ -349,35 +349,10 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                                 ['Video']
                                                                 ["view"]
                                                             .toString(),
-                                                        videoUrl:
-                                                            ctrl.publicVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ["video"],
-                                                        description:
-                                                            ctrl.publicVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ['description'],
-                                                        profilePic: ctrl.publicVideos[
-                                                                        index]
-                                                                    ['User'][
-                                                                'profile_pic'] ??
-                                                            "",
-                                                        sound:
-                                                            ctrl.publicVideos[
-                                                                        index]
-                                                                    ['Sound']
-                                                                ['name'],
-                                                        soundId:
-                                                            ctrl.publicVideos[
-                                                                    index]
-                                                                ['Sound']['id'],
-                                                        username:
-                                                            ctrl.publicVideos[
-                                                                        index]
-                                                                    ['User']
-                                                                ['username'],
+                                                        videoId: ctrl
+                                                            .publicVideos[index]
+                                                                ['Video']["id"]
+                                                            .toString(),
                                                       );
                                                     },
                                                   ),
@@ -412,35 +387,10 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                         views: ctrl.likedVideos[
                                                                 index]["Video"]
                                                             ['view'],
-                                                        videoUrl:
-                                                            ctrl.likedVideos[
-                                                                        index]
-                                                                    ["Video"]
-                                                                ['video'],
-                                                        description:
-                                                            ctrl.likedVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ['description'],
-                                                        profilePic: ctrl.likedVideos[
-                                                                            index]
-                                                                        [
-                                                                        'Video']
-                                                                    ['User'][
-                                                                'profile_pic'] ??
-                                                            "",
-                                                        sound: ctrl.likedVideos[
-                                                                index]['Video']
-                                                            ['Sound']['name'],
-                                                        soundId:
-                                                            ctrl.likedVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ['Sound']['id'],
-                                                        username: ctrl
-                                                                    .likedVideos[
-                                                                index]['Video'][
-                                                            'User']['username'],
+                                                        videoId: ctrl
+                                                            .likedVideos[index]
+                                                                ['Video']["id"]
+                                                            .toString(),
                                                       );
                                                     },
                                                   ),
@@ -481,37 +431,11 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                                 index]['Video']
                                                                 ["view"]
                                                             .toString(),
-                                                        videoUrl:
-                                                            ctrl.privateVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ["video"],
-                                                        description:
-                                                            ctrl.privateVideos[
-                                                                        index]
-                                                                    ['Video']
-                                                                ['description'],
-                                                        profilePic:
-                                                            ctrl.privateVideos[
-                                                                            index]
-                                                                        ['User']
-                                                                    [
-                                                                    'profile_pic'] ??
-                                                                "",
-                                                        sound:
-                                                            ctrl.privateVideos[
-                                                                        index]
-                                                                    ['Sound']
-                                                                ['name'],
-                                                        soundId:
-                                                            ctrl.privateVideos[
-                                                                    index]
-                                                                ['Sound']['id'],
-                                                        username:
-                                                            ctrl.privateVideos[
-                                                                        index]
-                                                                    ['User']
-                                                                ['username'],
+                                                        videoId: ctrl
+                                                            .privateVideos[
+                                                                index]['Video']
+                                                                ["id"]
+                                                            .toString(),
                                                       );
                                                     },
                                                   ),
@@ -559,29 +483,13 @@ slideGridWidgets({
   String likes = '0',
   String comments = '0',
   String views = '0',
-  required String videoUrl,
-  required String username,
-  required String description,
-  required String sound,
-  required String soundId,
-  required String profilePic,
+  required String videoId,
 }) {
   return GestureDetector(
     onTap: () {
       Get.to(
-        () => SlideBackground(
-          videoData: {
-            "video": videoUrl,
-            "username": username,
-            "thumb": thumbUrl,
-            "likeCount": likes,
-            "commentCount": comments,
-            "description": description,
-            "sound": sound,
-            "soundId": soundId,
-            "profilePic": profilePic,
-          },
-        ),
+        () => SlideBackground(),
+        arguments: {"videoId": videoId},
         transition: Transition.upToDown,
       );
     },
@@ -600,7 +508,8 @@ slideGridWidgets({
         ],
       );
     },
-    child: Container(
+    child: AnimatedContainer(
+      duration: Duration(milliseconds: 300),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: CachedNetworkImageProvider(

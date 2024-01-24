@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:zigonflutter/ui/views/single_slide_view/single_slide_view.dart';
-import 'package:zigonflutter/ui/views/slides_view.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 import 'package:zigonflutter/models/notifications_model/notifications_model.dart';
@@ -41,25 +40,13 @@ class NotificationController extends GetxController {
     var value,
   }) {
     if (type.contains("video")) {
-      Get.to(
-          () => SlideBackground(videoData: {
-                "video": value["video"],
-                "username": value["username"],
-                "thumb": value["thumb"],
-                "likeCount": value["likeCount"],
-                "commentCount": value["commentCount"],
-                "description": value["description"],
-                "sound": value["sound"],
-                "soundId": value["soundId"],
-                "profilePic": value["profilePic"],
-              }),
-          transition: Transition.upToDown);
+      Get.to(() => SlideBackground(),
+          arguments: {"videoId": value["id"]}, transition: Transition.upToDown);
     } else {}
   }
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getNotifications();
   }

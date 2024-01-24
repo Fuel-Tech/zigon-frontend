@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:zigonflutter/models/slide-list-model/slide_list_model.dart';
-import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -65,7 +64,6 @@ class DiscoverController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     getPopularVideo();
     getTrendingVideo();
     super.onInit();

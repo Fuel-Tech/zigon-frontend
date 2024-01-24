@@ -49,26 +49,20 @@ class UserSettingsView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        ctrl.isProfileEdited.value
-                            ? GestureDetector(
-                                onTap: () {},
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.save,
+                        Obx(
+                          () => ctrl.isProfileEdited.value
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: const Icon(
+                                      Icons.save_as_outlined,
                                       size: 26,
                                     ),
-                                    Text(
-                                      'Save',
-                                      style: GoogleFonts.openSans(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : SizedBox.shrink()
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        )
                       ],
                     ),
                     Expanded(
@@ -122,6 +116,9 @@ accountWidget(SettingsController ctrl) {
       const SizedBox(height: 25),
       userDetailsWidget('First Name',
           value: 'Sreehari Rajeev', textController: ctrl.fistNameCtrl),
+      const SizedBox(height: 25),
+      userDetailsWidget('LastName',
+          value: 'Sreehari Rajeev', textController: ctrl.lastNameCtrl),
       const SizedBox(height: 25),
       userDetailsWidget('Birthday',
           value: 'Sreehari Rajeev', textController: ctrl.dobCtrl, isDob: true),
@@ -314,6 +311,11 @@ userDetailsWidget(
             },
             readOnly: isDob,
             controller: textController,
+            onChanged: (value) {
+              if (!Get.find<SettingsController>().isProfileEdited.value) {
+                Get.find<SettingsController>().isProfileEdited.value = true;
+              }
+            },
             textAlign: TextAlign.end,
             style: GoogleFonts.openSans(
                 fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),

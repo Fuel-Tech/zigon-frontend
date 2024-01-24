@@ -10,6 +10,5 @@ class PageRouteList {
   static String uploadFinal = '/uploadFinal';
   static String discover = '/discover';
   static String notification = '/notification';
-  static String viewSlides = '/viewSlides';
   static String userSettings = '/userSettings';
 }

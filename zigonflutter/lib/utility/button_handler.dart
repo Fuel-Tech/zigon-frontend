@@ -11,6 +11,7 @@ import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
 import 'package:zigonflutter/ui/widgets/login_widget.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
+import 'package:zigonflutter/utility/firebase/dynamic_link_handler.dart';
 
 import '../ui/views/register_view/register_view.dart';
 import '../ui/widgets/common_widgets.dart';
@@ -35,45 +36,62 @@ class ButtonHandler {
           Get.find<SlideScreenController>().playActiveVideo();
         }
       } else if (buttonTypes == ButtonTypes.share) {
-        var shareUrl = value;
-        Share.share('Check out this video from ZigOn - $shareUrl');
+        var videoId = value["videoId"];
+        DynamicLinkHandler().shareSlideLink(videoId: videoId).then((value) =>
+            Share.share('Check out this video from ZigOn - $value'));
       } else if (buttonTypes == ButtonTypes.slidesList) {
       } else if (buttonTypes == ButtonTypes.setting) {}
-    }
-    // LOGIN REQUIRED FUNCTIONS
-    else {
+    } else {
       if (AppUtil.isLoggedIn) {
+        // LOGIN REQUIRED FUNCTIONS
+
+        //GOTO CAMERA
         if (buttonTypes == ButtonTypes.camera) {
           Get.find<SlideScreenController>().stopActiveVideo();
           Get.toNamed(PageRouteList.camera);
-        } else if (buttonTypes == ButtonTypes.discover) {
+        }
+        //GOTO DISCOVER
+        else if (buttonTypes == ButtonTypes.discover) {
           if (buttonController.selectedNavBarItem !=
               NavBarSelectionItem.discover) {
             Get.find<SlideScreenController>().stopActiveVideo();
             buttonController.navBarHandler(NavBarSelectionItem.discover);
             Get.toNamed(PageRouteList.discover);
           }
-        } else if (buttonTypes == ButtonTypes.notification) {
+        }
+        //GOTO NOTIFICATIONS
+        else if (buttonTypes == ButtonTypes.notification) {
           Get.find<SlideScreenController>().stopActiveVideo();
           buttonController.navBarHandler(NavBarSelectionItem.notification);
           Get.toNamed(PageRouteList.notification);
-        } else if (buttonTypes == ButtonTypes.userprofile) {
+        }
+        //GOTO USERPROFILE
+        else if (buttonTypes == ButtonTypes.userprofile) {
           Get.find<SlideScreenController>().stopActiveVideo();
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
           Get.to(() => ProfileView());
-        } else if (buttonTypes == ButtonTypes.like) {
+        }
+        // LIKE ACTION
+        else if (buttonTypes == ButtonTypes.like) {
           Get.find<SlideScreenController>()
               .toggleLike(videoID: value["videoId"], index: value["index"]);
-        } else if (buttonTypes == ButtonTypes.comment) {
+        }
+        // LIKE COMMENT
+        else if (buttonTypes == ButtonTypes.comment) {
           Get.find<SlideScreenController>().getComments(videoID: value);
-          showModalBottomSheet(
-            context: context,
-            // isScrollControlled: true,
+          Get.bottomSheet(
+            CommonWidgets.commentDialogWidget(context),
+            isScrollControlled: false,
             backgroundColor: Colors.transparent,
-            builder: (context) {
-              return CommonWidgets.commentDialogWidget(context);
-            },
           );
+          // showModalBottomSheet(
+          //   context: context,
+          //   // isScrollControlled: true,
+          //   backgroundColor: Colors.transparent,
+          //   builder: (context) {
+          //     return CommonWidgets.commentDialogWidget(context);
+          //   },
+          // );
         } else if (buttonTypes == ButtonTypes.followingSlidesList) {
         } else if (buttonTypes == ButtonTypes.slidesList) {
         } else if (buttonTypes == ButtonTypes.live) {

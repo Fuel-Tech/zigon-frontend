@@ -2,7 +2,6 @@
 //
 //     final notificationModel = notificationModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 NotificationModel notificationModelFromJson(String str) => NotificationModel.fromJson(json.decode(str));
