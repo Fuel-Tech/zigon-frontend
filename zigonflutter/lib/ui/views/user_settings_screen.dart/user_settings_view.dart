@@ -1,89 +1,95 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/controllers/settings_controller.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
 class UserSettingsView extends StatelessWidget {
   UserSettingsView({Key? key}) : super(key: key);
-  final SlidesController settingsController = Get.find();
+  final SettingsController controller = Get.put(SettingsController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppUtil.primary,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      body: GetBuilder<SettingsController>(builder: (ctrl) {
+        return SafeArea(
+          child: ctrl.isLoading
+              ? SpinKitFadingCircle(
+                  color: Colors.white,
+                  size: 40,
+                )
+              : Column(
                   children: [
-                    IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios_new,
-                          size: 28,
-                        )),
-                    const SizedBox(width: 15),
-                    Text(
-                      'Settings',
-                      style: GoogleFonts.raleway(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 28,
+                                )),
+                            const SizedBox(width: 15),
+                            Text(
+                              'Settings',
+                              style: GoogleFonts.raleway(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Obx(
+                          () => ctrl.isProfileEdited.value
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: const Icon(
+                                      Icons.save_as_outlined,
+                                      size: 26,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        )
+                      ],
                     ),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: ListView(
+                        children: [
+                          accountWidget(ctrl),
+                          const SizedBox(height: 20),
+                          supportWidget(),
+                          const SizedBox(height: 20),
+                          privacyWidget(ctrl),
+                          const SizedBox(height: 20),
+                          actionsWidget(),
+                        ],
+                      ),
+                    ))
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    settingsController.logOut();
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.logout_rounded,
-                        size: 28,
-                      ),
-                      Text(
-                        'Log Out',
-                        style: GoogleFonts.openSans(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: ListView(
-                children: [
-                  accountWidget(),
-                  const SizedBox(height: 20),
-                  supportWidget(),
-                  const SizedBox(height: 20),
-                  privacyWidget(),
-                  const SizedBox(height: 20),
-                  actionsWidget(),
-                ],
-              ),
-            ))
-          ],
-        ),
-      ),
+        );
+      }),
     );
   }
 }
 
-accountWidget() {
+accountWidget(SettingsController ctrl) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -105,23 +111,29 @@ accountWidget() {
         ],
       ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Name', value: 'Sreehari Rajeev'),
+      userDetailsWidget('User Name',
+          value: 'Sreehari Rajeev', textController: ctrl.userNameCtrl),
       const SizedBox(height: 25),
-      settingsSubWidgets('Username', value: 'Sreehari Rajeev'),
+      userDetailsWidget('First Name',
+          value: 'Sreehari Rajeev', textController: ctrl.fistNameCtrl),
       const SizedBox(height: 25),
-      settingsSubWidgets('Birthday', value: '11/06/1998'),
+      userDetailsWidget('LastName',
+          value: 'Sreehari Rajeev', textController: ctrl.lastNameCtrl),
       const SizedBox(height: 25),
-      settingsSubWidgets('Mobile No', value: '7025136470'),
+      userDetailsWidget('Birthday',
+          value: 'Sreehari Rajeev', textController: ctrl.dobCtrl, isDob: true),
       const SizedBox(height: 25),
-      settingsSubWidgets('Email', value: '-'),
+      userDetailsWidget('Mobile No',
+          value: 'Sreehari Rajeev', textController: ctrl.mobileCtrl),
+      const SizedBox(height: 25),
+      userDetailsWidget('Email',
+          value: 'Sreehari Rajeev', textController: ctrl.emailCtrl),
       const SizedBox(height: 25),
       settingsSubWidgets('Link Accounts', value: 'Click here'),
       const SizedBox(height: 25),
       settingsSubWidgets('Get The Badge', value: 'Click here'),
       const SizedBox(height: 25),
       settingsSubWidgets('Direct Message', value: 'Everyone'),
-      const SizedBox(height: 25),
-      settingsSubWidgets('Duet', value: 'Following'),
       const SizedBox(height: 25),
       settingsSubWidgets('Liked Video', value: 'Me Only'),
       const SizedBox(height: 25),
@@ -130,7 +142,7 @@ accountWidget() {
   );
 }
 
-privacyWidget() {
+privacyWidget(SettingsController ctrl) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -152,9 +164,21 @@ privacyWidget() {
         ],
       ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Terms & Conditions', value: 'Click here'),
+      settingsSubWidgets(
+        'Terms & Conditions',
+        value: 'Click here',
+        function: () {
+          ctrl.gotoTerms();
+        },
+      ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Privacy Policy', value: 'Click here'),
+      settingsSubWidgets(
+        'Privacy Policy',
+        value: 'Click here',
+        function: () {
+          ctrl.gotoTerms();
+        },
+      ),
     ],
   );
 }
@@ -182,11 +206,23 @@ supportWidget() {
         ],
       ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Report A Bug', value: 'Click here'),
+      settingsSubWidgets(
+        'Report A Bug',
+        value: 'Click here',
+        function: Get.find<SettingsController>().reportABug,
+      ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Share Feedbacks', value: 'Click here'),
+      settingsSubWidgets(
+        'Share Feedbacks',
+        value: 'Click here',
+        function: Get.find<SettingsController>().shareFeedback,
+      ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Talk To Us', value: 'Click here'),
+      settingsSubWidgets(
+        'Talk To Us',
+        value: 'Click here',
+        function: Get.find<SettingsController>().talkToUs,
+      ),
     ],
   );
 }
@@ -213,16 +249,21 @@ actionsWidget() {
         ],
       ),
       const SizedBox(height: 25),
-      settingsSubWidgets('Permissions', value: 'Click here'),
+      settingsSubWidgets('Permissions',
+          value: 'Click here',
+          function: Get.find<SettingsController>().permissionSettings),
       const SizedBox(height: 25),
-      settingsSubWidgets('Blocked', value: 'Click here'),
+      settingsSubWidgets('Delete Account',
+          value: 'Click here',
+          function: Get.find<SettingsController>().deleteAccountSnackBar),
       const SizedBox(height: 25),
-      settingsSubWidgets('Delete Account', value: 'Click here'),
+      settingsSubWidgets('Log Out',
+          value: 'Click here', function: Get.find<AppController>().logOut),
     ],
   );
 }
 
-settingsSubWidgets(String title, {Function? function, String? value}) {
+settingsSubWidgets(String title, {Function()? function, String? value}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -231,10 +272,60 @@ settingsSubWidgets(String title, {Function? function, String? value}) {
         style: GoogleFonts.openSans(
             fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
       ),
+      InkWell(
+        onTap: function,
+        child: Text(
+          value!,
+          style: GoogleFonts.openSans(
+              fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+        ),
+      ),
+    ],
+  );
+}
+
+userDetailsWidget(
+  String title, {
+  Function()? function,
+  String? value,
+  required TextEditingController textController,
+  bool isDob = false,
+}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
       Text(
-        value!,
+        title,
         style: GoogleFonts.openSans(
-            fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+            fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
+      ),
+      InkWell(
+        child: SizedBox(
+          width: Get.width * .45,
+          child: TextFormField(
+            onTap: () {
+              if (isDob) {
+                log("IN");
+                Get.find<SettingsController>().selectDate(Get.context!);
+              }
+            },
+            readOnly: isDob,
+            controller: textController,
+            onChanged: (value) {
+              if (!Get.find<SettingsController>().isProfileEdited.value) {
+                Get.find<SettingsController>().isProfileEdited.value = true;
+              }
+            },
+            textAlign: TextAlign.end,
+            style: GoogleFonts.openSans(
+                fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+              border: OutlineInputBorder(borderSide: BorderSide.none),
+            ),
+          ),
+        ),
       ),
     ],
   );

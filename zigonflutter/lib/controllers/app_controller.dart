@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:zigonflutter/controllers/profile_controller.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:dio/dio.dart' as dio;
+import '../ui/views/splash_view.dart';
 import '../utility/app_utility.dart';
 import '../utility/shared_prefs.dart';
 
@@ -11,6 +15,12 @@ class AppController extends GetxController {
   navBarHandler(var value) {
     selectedNavBarItem = value;
     update();
+  }
+
+  logOut() async {
+    await SharedPrefHandler.getInstance().clearStorage();
+    log("User Logged Out");
+    Get.offAll(() => SplashScreen());
   }
 
   Future<void> uploadVideo(
@@ -40,7 +50,10 @@ class AppController extends GetxController {
     isUploadingVideo.value = true;
     await dios.post(postUrl, data: body, onSendProgress: (sent, total) {
       uploadProgress.value = sent / total;
-    });
+    }).then((value) => Get.back());
+    if (Get.isRegistered<ProfileController>()) {
+      Get.find<ProfileController>().reloadScreen();
+    }
     isUploadingVideo.value = false;
   }
 }

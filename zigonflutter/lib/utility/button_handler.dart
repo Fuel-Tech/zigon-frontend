@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:get/get.dart';
@@ -6,13 +8,12 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zigonflutter/controllers/app_controller.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
-import 'package:zigonflutter/ui/views/discover_view/discover_view.dart';
-import 'package:zigonflutter/ui/views/notifications_view/notifications_view.dart';
 import 'package:zigonflutter/ui/views/profile_screen/profile_view.dart';
-import 'package:zigonflutter/ui/views/slides_screen/slides_view2.dart';
+import 'package:zigonflutter/ui/widgets/login_widget.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
+import 'package:zigonflutter/utility/firebase/dynamic_link_handler.dart';
 
-import '../ui/views/video_upload_screens/camera_page.dart';
+import '../ui/views/register_view/register_view.dart';
 import '../ui/widgets/common_widgets.dart';
 import 'navigation_utility.dart';
 
@@ -29,520 +30,77 @@ class ButtonHandler {
         buttonTypes == ButtonTypes.slidesList ||
         buttonTypes == ButtonTypes.setting) {
       if (buttonTypes == ButtonTypes.slide) {
-        buttonController.navBarHandler(NavBarSelectionItem.slide);
-        Get.toNamed(PageRouteList.slides);
-        Get.find<SlideScreenController>().playActiveVideo();
+        if (buttonController.selectedNavBarItem != NavBarSelectionItem.slide) {
+          buttonController.navBarHandler(NavBarSelectionItem.slide);
+          Get.toNamed(PageRouteList.slides);
+          Get.find<SlideScreenController>().playActiveVideo();
+        }
       } else if (buttonTypes == ButtonTypes.share) {
-        var shareUrl = value;
-        Share.share('Check out this video from ZigOn - $shareUrl');
+        var videoId = value["videoId"];
+        DynamicLinkHandler().shareSlideLink(videoId: videoId).then((value) =>
+            Share.share('Check out this video from ZigOn - $value'));
       } else if (buttonTypes == ButtonTypes.slidesList) {
       } else if (buttonTypes == ButtonTypes.setting) {}
-    }
-    // LOGIN REQUIRED FUNCTIONS
-    else {
+    } else {
       if (AppUtil.isLoggedIn) {
+        // LOGIN REQUIRED FUNCTIONS
+
+        //GOTO CAMERA
         if (buttonTypes == ButtonTypes.camera) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           Get.toNamed(PageRouteList.camera);
-        } else if (buttonTypes == ButtonTypes.discover) {
+        }
+        //GOTO DISCOVER
+        else if (buttonTypes == ButtonTypes.discover) {
+          if (buttonController.selectedNavBarItem !=
+              NavBarSelectionItem.discover) {
+            Get.find<SlideScreenController>().stopActiveVideo();
+            buttonController.navBarHandler(NavBarSelectionItem.discover);
+            Get.toNamed(PageRouteList.discover);
+          }
+        }
+        //GOTO NOTIFICATIONS
+        else if (buttonTypes == ButtonTypes.notification) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
-          buttonController.navBarHandler(NavBarSelectionItem.discover);
-          Get.toNamed(PageRouteList.discover);
-        } else if (buttonTypes == ButtonTypes.notification) {
-          Get.find<SlideScreenController>().stopActiveVideo();
-
           buttonController.navBarHandler(NavBarSelectionItem.notification);
           Get.toNamed(PageRouteList.notification);
-        } else if (buttonTypes == ButtonTypes.userprofile) {
+        }
+        //GOTO USERPROFILE
+        else if (buttonTypes == ButtonTypes.userprofile) {
           Get.find<SlideScreenController>().stopActiveVideo();
-
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
           Get.to(() => ProfileView());
-        } else if (buttonTypes == ButtonTypes.like) {
-          // buttonController.likeButtonHandler(0);
-        } else if (buttonTypes == ButtonTypes.comment) {
-          Get.find<SlideScreenController>().getComments();
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return CommonWidgets.commentDialogWidget(context);
-            },
+        }
+        // LIKE ACTION
+        else if (buttonTypes == ButtonTypes.like) {
+          Get.find<SlideScreenController>()
+              .toggleLike(videoID: value["videoId"], index: value["index"]);
+        }
+        // LIKE COMMENT
+        else if (buttonTypes == ButtonTypes.comment) {
+          Get.find<SlideScreenController>().getComments(videoID: value);
+          Get.bottomSheet(
+            CommonWidgets.commentDialogWidget(context),
+            isScrollControlled: false,
+            backgroundColor: Colors.transparent,
           );
+          // showModalBottomSheet(
+          //   context: context,
+          //   // isScrollControlled: true,
+          //   backgroundColor: Colors.transparent,
+          //   builder: (context) {
+          //     return CommonWidgets.commentDialogWidget(context);
+          //   },
+          // );
         } else if (buttonTypes == ButtonTypes.followingSlidesList) {
         } else if (buttonTypes == ButtonTypes.slidesList) {
         } else if (buttonTypes == ButtonTypes.live) {
         } else if (buttonTypes == ButtonTypes.profile) {}
       } else {
-        loginBottomSheet(context);
+        LoginWidgets().loginBottomSheet(context);
       }
     }
   }
-}
-
-loginBottomSheet(BuildContext context) {
-  //Pop Login Dialog Box
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: false,
-    backgroundColor: const Color.fromARGB(255, 228, 228, 228),
-    builder: (context) {
-      return Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: GetBuilder<SlideScreenController>(builder: (controller) {
-          return Wrap(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 20, bottom: 20),
-                  child: controller.loginType == LoginTypes.none
-                      ? defaultLoginState(context, controller)
-                      : controller.loginType == LoginTypes.email
-                          ? emailLoginState(context, controller)
-                          : controller.loginType == LoginTypes.otp
-                              ? otpLoginState(context, controller)
-                              : controller.loginType == LoginTypes.createAccount
-                                  ? createAccountState(controller, context)
-                                  : defaultLoginState(context, controller),
-                ),
-              ),
-            ],
-          );
-        }),
-      );
-    },
-  );
-}
-
-defaultLoginState(BuildContext context, SlideScreenController controller) {
-  return Column(
-    children: [
-      //Login With Google or Apple
-      controller.isIOS
-          ? GestureDetector(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Ionicons.logo_apple,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'Login With Apple ID',
-                        style: GoogleFonts.quicksand(
-                            fontSize: 17, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : GestureDetector(
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.6),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Ionicons.logo_google,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'Login With Google',
-                        style: GoogleFonts.quicksand(
-                            fontSize: 17, color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-      //Login with OTP
-      GestureDetector(
-        onTap: () {
-          controller.loginTypeSelector(LoginTypes.otp);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Container(
-            height: 55,
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.mobile_friendly_outlined,
-                  color: Colors.white,
-                ),
-                Text(
-                  'Login in with OTP',
-                  style:
-                      GoogleFonts.quicksand(fontSize: 17, color: Colors.white),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-      //Login With Email
-      GestureDetector(
-        onTap: () {
-          controller.loginTypeSelector(LoginTypes.email);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Container(
-            height: 55,
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                Text(
-                  'Login in with Email',
-                  style:
-                      GoogleFonts.quicksand(fontSize: 17, color: Colors.white),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-
-      SizedBox(height: 10),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          onTap: () async {
-            Uri url = Uri.parse("https://google.in");
-            await launchUrl(url);
-          },
-          child: Text(
-            'Terms & Conditions',
-            style: GoogleFonts.raleway(
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      )
-    ],
-  );
-}
-
-otpLoginState(BuildContext context, SlideScreenController controller) {
-  return ListView(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-              onPressed: () {
-                controller.loginTypeSelector(LoginTypes.none);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.black,
-                size: 24,
-              )),
-          Text(
-            'Login with OTP',
-            style: GoogleFonts.raleway(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.transparent,
-              )),
-        ],
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-        child: Material(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          elevation: 4,
-          child: TextFormField(
-            controller: controller.emailFieldController,
-            keyboardType: TextInputType.phone,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              isDense: true,
-              hintText: 'Mobile NO.',
-              hintStyle: TextStyle(color: Colors.grey.shade500),
-              filled: true,
-              fillColor: Colors.white,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-        child: Material(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          elevation: 4,
-          child: TextFormField(
-            controller: controller.emailFieldController,
-            keyboardType: TextInputType.number,
-            style: TextStyle(color: Colors.black),
-            decoration: InputDecoration(
-              isDense: true,
-              hintText: 'OTP',
-              hintStyle: TextStyle(color: Colors.grey.shade500),
-              filled: true,
-              fillColor: Colors.white,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-        ),
-      ),
-      SizedBox(height: 30),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 100),
-        child: GestureDetector(
-          onTap: () async {},
-          child: Container(
-            height: 40,
-            decoration: BoxDecoration(
-                color: AppUtil.secondary,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade600,
-                    offset: Offset(0, 4),
-                    blurRadius: 6.0,
-                  )
-                ]),
-            alignment: Alignment.center,
-            child: Text(
-              'Get OTP',
-              style: GoogleFonts.quicksand(
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ),
-      ),
-      Text('Retry')
-    ],
-  );
-}
-
-emailLoginState(BuildContext context, SlideScreenController controller) {
-  return Obx(
-    () => Form(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    controller.loginTypeSelector(LoginTypes.none);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.black,
-                    size: 24,
-                  )),
-              Text(
-                'Login with email',
-                style: GoogleFonts.raleway(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.transparent,
-                  )),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Material(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              elevation: 4,
-              child: TextFormField(
-                controller: controller.emailFieldController,
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: 'Email',
-                  hintStyle: TextStyle(color: Colors.grey.shade500),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Material(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-              elevation: 4,
-              child: TextFormField(
-                controller: controller.passwordFieldController,
-                obscureText: true,
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  isDense: true,
-                  hintText: 'Password',
-                  hintStyle: TextStyle(color: Colors.grey.shade500),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey)),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: AppUtil.secondary),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 90),
-            child: GestureDetector(
-              onTap: () async {
-                await controller.userLogin();
-              },
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    color: AppUtil.secondary,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade600,
-                        offset: Offset(0, 4),
-                        blurRadius: 6.0,
-                      )
-                    ]),
-                alignment: Alignment.center,
-                child: controller.isLoading.isTrue
-                    ? const CircularProgressIndicator.adaptive(
-                        backgroundColor: Colors.white,
-                      )
-                    : Text(
-                        'Login',
-                        style: GoogleFonts.quicksand(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                      ),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-        ],
-      ),
-    ),
-  );
-}
-
-createAccountState(SlideScreenController controller, BuildContext context) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-              onPressed: () {
-                controller.loginTypeSelector(LoginTypes.none);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.black,
-                size: 24,
-              )),
-          Text(
-            'Create Account',
-            style: GoogleFonts.raleway(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.transparent,
-            ),
-          ),
-        ],
-      ),
-    ],
-  );
 }
 
 enum SubButtonType {

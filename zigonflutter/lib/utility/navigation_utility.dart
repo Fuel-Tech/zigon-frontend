@@ -1,5 +1,6 @@
 class PageRouteList {
   static String splash = '/';
+  static String bottomBar = '/bottomBar';
   static String slides = '/slides';
   static String profile = '/profile';
   static String camera = '/camera';
@@ -9,6 +10,5 @@ class PageRouteList {
   static String uploadFinal = '/uploadFinal';
   static String discover = '/discover';
   static String notification = '/notification';
-  static String viewSlides = '/viewSlides';
   static String userSettings = '/userSettings';
 }

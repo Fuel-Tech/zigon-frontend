@@ -31,7 +31,7 @@ class UploadFinalScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                videoUploadController.postVideo();
+                videoUploadController.postVideo(context);
               },
               child: Text(
                 'Share',
@@ -60,7 +60,7 @@ class UploadFinalScreen extends StatelessWidget {
                           color: Colors.black,
                           image: DecorationImage(
                             image: MemoryImage(
-                              Get.arguments['thumb'],
+                              videoUploadController.thumbImage,
                             ),
                             fit: BoxFit.cover,
                           ),

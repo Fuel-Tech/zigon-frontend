@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:zigonflutter/controllers/slides_controller.dart';
+import 'package:zigonflutter/main.dart';
+import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -21,10 +22,10 @@ class SlideScreenController extends GetxController {
   int startingPoint = 1;
   RxBool isVideoLoading = false.obs;
 
-  setVideoData(SlideListModel? data) {
+  setVideoData(SlideListModel? data, {bool refresh = false}) {
     try {
       if (data != null) {
-        if (slideListModel == null) {
+        if (slideListModel == null || refresh == true) {
           slideListModel = data;
         } else {
           slideListModel = SlideListModel(
@@ -33,39 +34,63 @@ class SlideScreenController extends GetxController {
           );
         }
         List<String> temp = [];
-        log(slideListModel!.msg.length.toString());
-        for (int i = 0; i < slideListModel!.msg.length; i++) {
-          log(slideListModel!.msg[i].Video.video);
-          temp.add(slideListModel!.msg[i].Video.video);
+        for (int i = 0; i < data.msg.length; i++) {
+          temp.add(data.msg[i].video.video);
+        }
+        if (refresh) {
+          videoList.clear();
         }
         videoList.addAll(temp);
+        isVideoLoading.value = false;
+        update();
       }
     } catch (e) {
       log("Error while setting videos: $e");
     }
   }
 
-  Future<void> fetchMoreVideos() async {
-    isLoading.value = true;
+  Future<void> fetchMoreVideos({String? newStart, bool refresh = false}) async {
+    log("CONDITONS: NEWSTART=$newStart -- REFRESH=$refresh");
+    if (refresh) {
+      isVideoLoading.value = true;
+      startingPoint = 0;
+    } else {
+      startingPoint = startingPoint + 1;
+    }
+    log("CONDITONS: STARTING POINT=$startingPoint");
+
     String userID = await SharedPrefHandler.getInstance()
             .getString(SharedPrefHandler.USERID) ??
         '0';
-    startingPoint = startingPoint + 1;
+
     log("Getting video for slides_view");
     String endpoint = 'showRelatedVideos';
-    String body = '''{
+    String body = '';
+    if (newStart == null) {
+      body = '''{
       "user_id":${int.tryParse(userID)},
       "starting_point":$startingPoint,
       "device_id":1,
       "limit":4
     }''';
+    } else {
+      body = '''{
+      "user_id":${int.tryParse(userID)},
+      "starting_point":$startingPoint,
+      "device_id":1,
+      "limit":4,
+      "video_id": $newStart
+    }''';
+    }
+
     var response = await NetworkHandler.dioPost(endpoint, body: body);
-    if (response['code'] == 200) {
-      var json = jsonDecode(response);
+    log("CONDITONS: $body");
+    var json = jsonDecode(response);
+    if (json['code'] == 200) {
       var newSlideListModel = SlideListModel.fromJson(json);
-      setVideoData(newSlideListModel);
-      isLoading.value = false;
-    } else if (response['code'] == 201) {
+      log("CONDITONS: COUNTS ${newSlideListModel.msg.length}");
+      setVideoData(newSlideListModel, refresh: false);
+    } else if (json['code'] == 201) {
       log("NO MORE VIDEOS TO SHOW!!!");
     }
     // slideListModel = SlideListModel.fromJson(json);
@@ -73,21 +98,84 @@ class SlideScreenController extends GetxController {
     return;
   }
 
+  RxBool commentLoader = false.obs;
   // COMMENTS
   CommentListModel? commentList;
-  getComments() async {
-    Dio dio = Dio();
-    String postUrl = 'https://mocki.io/v1/ba663eae-94c4-4176-a73c-9e167ef48697';
-    try {
-      var response = await dio.get(postUrl);
-      log(response.toString());
-      if (response.statusCode == 200) {
-        commentList = CommentListModel.fromJson(response.data);
-        Get.toNamed(PageRouteList.slides);
-        // log(commentList.toString());
-        update();
-      }
-    } catch (e) {}
+  getComments({required String videoID}) async {
+    String userId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    commentLoader.value = true;
+    String postUrl = 'showVideoComments';
+    Map<String, String> body = {"video_id": videoID, "user_id": userId};
+    var response = await NetworkHandler.dioPost(postUrl, body: body);
+    var json = jsonDecode(response);
+    log(json.toString());
+    if (json['code'] == 200) {
+      commentList = CommentListModel.fromJson(json);
+      // log(commentList.toString());
+      update();
+    } else if (json["code"] == 201) {
+      log("No comments yet");
+    } else {
+      Get.snackbar("Try Again",
+          "Unable to fetch comments, check your network and try agian🫡",
+          colorText: Colors.black, backgroundColor: Colors.white);
+    }
+
+    commentLoader.value = false;
+  }
+
+  getTime(DateTime dt) {
+    return timeago.format(dt);
+  }
+
+  TextEditingController commentFieldController = TextEditingController();
+
+  RxBool addingComment = false.obs;
+
+  Future<void> addComment(String videoId, String comment) async {
+    addingComment.value = true;
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "postCommentOnVideo";
+    Map<String, String> body = {
+      "video_id": videoId,
+      "user_id": userID,
+      "comment": comment
+    };
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    log(response.toString());
+    var json = jsonDecode(response);
+    if (json['code'] == 200) {
+      log(json.toString());
+      getComments(videoID: videoId);
+      update();
+    } else {
+      Get.snackbar(
+        "Try Again",
+        "Unable to comment, check your network and try again🫡",
+        backgroundColor: Colors.white,
+        colorText: Colors.black,
+      );
+    }
+    commentFieldController.clear();
+    addingComment.value = false;
+  }
+
+  Future<void> addCommentLike(String commentId) async {
+    String userId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "likeComment";
+    Map<String, String> body = {"comment_id": commentId, "user_id": userId};
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    var json = jsonDecode(response);
+    if (json["code"] == 200) {
+      log("comment like api called");
+    } else {
+      log("unable to like");
+    }
   }
 
   // USER LOGIN HANDLER
@@ -99,8 +187,9 @@ class SlideScreenController extends GetxController {
     log("loggin in");
     String path = 'login';
     String body = '''{
-      "email": "${emailFieldController.text}",
-      "password":"${passwordFieldController.text}"
+      "email":"${emailFieldController.text}",
+      "password":"${passwordFieldController.text}",
+      "fcm":"$fcm"
     }''';
     // var body = {"email": "jassimpv@gmail.com", "password": "123@123"};
     log(body.toString());
@@ -137,6 +226,71 @@ class SlideScreenController extends GetxController {
     isLoading.value = false;
   }
 
+  RxBool toggleLikeActivate = false.obs;
+  toggleLike({required String videoID, required int index}) async {
+    // toggleLikeActivate.value = false;
+    if (toggleLikeActivate.isFalse) {
+      addRemoveLike(slideListModel!.msg[index].video.isVideoLiked, index);
+      toggleLikeActivate.value = true;
+      await toggleLikeApi(videoID: videoID);
+      toggleLikeActivate.value = false;
+    }
+  }
+
+  addRemoveLike(bool likeStatus, int index) {
+    if (!likeStatus) {
+      final originalVideo = slideListModel!.msg[index]
+          .video; // Assuming you want to increment the like count of the first video
+      final updatedVideo = originalVideo.copyWith(
+        like_count: originalVideo.like_count + 1,
+        isVideoLiked: !originalVideo.isVideoLiked,
+      );
+
+      final updatedMsg =
+          slideListModel!.msg[index].copyWith(video: updatedVideo);
+      final updatedMsgList =
+          slideListModel!.msg.toList(); // Create a copy of the list
+      updatedMsgList[index] =
+          updatedMsg; // Update the first Msg object in the list
+
+      slideListModel = slideListModel!.copyWith(msg: updatedMsgList);
+    } else {
+      final originalVideo = slideListModel!.msg[index]
+          .video; // Assuming you want to increment the like count of the first video
+      final updatedVideo = originalVideo.copyWith(
+        like_count: originalVideo.like_count - 1,
+        isVideoLiked: !originalVideo.isVideoLiked,
+      );
+
+      final updatedMsg =
+          slideListModel!.msg[index].copyWith(video: updatedVideo);
+      final updatedMsgList =
+          slideListModel!.msg.toList(); // Create a copy of the list
+      updatedMsgList[index] =
+          updatedMsg; // Update the first Msg object in the list
+
+      slideListModel = slideListModel!.copyWith(msg: updatedMsgList);
+    }
+    update();
+  }
+
+  Future<void> toggleLikeApi({required String videoID}) async {
+    String userID =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String url = "likeVideo";
+
+    Map<String, String> body = {"video_id": videoID, "user_id": userID};
+
+    var response = await NetworkHandler.dioPost(url, body: body);
+    var json = jsonDecode(response);
+    log("$json");
+    if (json["code"] == 200) {
+      log("video like api called");
+    } else {
+      log("UNABLE TO LIKE");
+    }
+  }
+
   LoginTypes loginType = LoginTypes.none;
 
   loginTypeSelector(LoginTypes selectedType) {
@@ -148,7 +302,6 @@ class SlideScreenController extends GetxController {
 
   final currentIndex = 0.obs;
   VideoPlayerController? activeVideoController;
-
   void updateIndex(int index, VideoPlayerController? videoController) {
     currentIndex.value = index;
     activeVideoController = videoController;
@@ -156,7 +309,38 @@ class SlideScreenController extends GetxController {
 
   void stopActiveVideo() {
     log("VIDEO STATUS: STOPPED");
+    isPlaying = false;
     activeVideoController?.pause();
+  }
+
+  RxBool isFullScreen = false.obs;
+  toggleFullScreen() {
+    isFullScreen.value = !isFullScreen.value;
+    bottomBarKey.currentState!.toggleNavBar();
+    log("FULLSCREEN: $isFullScreen");
+  }
+
+  resetMute() {
+    activeVideoController!.setVolume(1.0);
+  }
+
+  toggleMute() {
+    if (activeVideoController!.value.volume == 0.0) {
+      activeVideoController!.setVolume(1.0);
+    } else {
+      activeVideoController!.setVolume(0.0);
+    }
+  }
+
+  bool isPlaying = true;
+  togglePause() {
+    if (isPlaying) {
+      activeVideoController!.pause();
+      isPlaying = false;
+    } else {
+      activeVideoController!.play();
+      isPlaying = true;
+    }
   }
 
   void playActiveVideo() {
@@ -177,7 +361,6 @@ class SlideScreenController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     log("SLIDE CTRL INITALIZED!!!");
     Get.routing.current;
     log("INIT ROUTING ${Get.routing.current}");
@@ -194,11 +377,7 @@ class SlideScreenController extends GetxController {
     } else if (Platform.isIOS) {
       isIOS = true;
     }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    super.onInit();
   }
 
   // @override

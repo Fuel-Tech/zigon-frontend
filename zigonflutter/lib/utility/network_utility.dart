@@ -1,11 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
-String BASE_URL = 'https://zigon.in/mobile/api/';
-String IMG_URL = 'https://zigon.in/mobile/';
+String BASE_URL = 'http://zigon.in/mobile/api/';
+String IMG_URL = 'http://zigon.in/mobile/';
 
 class NetworkHandler {
   static final Dio dio = Dio();
@@ -14,18 +15,19 @@ class NetworkHandler {
     String userID =
         SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID) ??
             '0';
-    
-    log("ssssad");
+    String token = SharedPrefHandler.getInstance()
+            .getString(SharedPrefHandler.USERTOKEN) ??
+        '0';
 
     Map<String, dynamic> headers = {
       "Api-Key": AppUtil.API_KEY,
-      "User-Id": userID,
-      "Auth-Token": userToken,
-      "device": AppUtil.DEVICE,
-      "version": AppUtil.APP_VERSION,
-      "ip": AppUtil.IP,
-      "device-token": AppUtil.DEVICE_TOKEN,
-      "content-type": "application/json"
+      // "User-Id": userID,
+      // "Auth-Token": token,
+      // "device": AppUtil.DEVICE,
+      // "version": AppUtil.APP_VERSION,
+      // "ip": AppUtil.IP,
+      // "device-token": AppUtil.DEVICE_TOKEN,
+      // "content-type": "application/json"
     };
 
     dio.options.headers.addAll(headers);
@@ -44,6 +46,7 @@ class NetworkHandler {
     log("Status Code: ${response.statusCode}");
 
     if (response.statusCode == 200) {
+      log("data: ${response.data}");
       return response.data;
     } else if (response.statusCode == 201) {
       log('$postUrl - Created');

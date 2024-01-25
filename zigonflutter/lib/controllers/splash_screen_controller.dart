@@ -12,12 +12,12 @@ class SplashScreenController extends GetxController {
   SlideListModel? slideListModel;
 
   initilizeapp() async {
-    int loggedInStatus = await isUserLoggedIn();
-    int videoStatus = await showRelatedVideos();
-    log("INITIAL CHECK COMPLETE :: $videoStatus : $loggedInStatus");
+    await isUserLoggedIn();
+    await showRelatedVideos();
+    log("INITIAL CHECK COMPLETE");
   }
 
-  Future<int> showRelatedVideos() async {
+  showRelatedVideos() async {
     String userID = await SharedPrefHandler.getInstance()
             .getString(SharedPrefHandler.USERID) ??
         '0';
@@ -30,23 +30,23 @@ class SplashScreenController extends GetxController {
       "device_id":1,
       "limit":4
     }''';
+    log("YES WE ARE IN");
     var response = await NetworkHandler.dioPost(endpoint, body: body);
-    var json = jsonDecode(response);
+    log("YES WE ARE IN2");
+    Map<String, dynamic> json = jsonDecode(response);
+    log("DECODED: $json");
     if (json["code"] == 200) {
+      log("YES WE ARE IN3");
       slideListModel = SlideListModel.fromJson(json);
       log("SUCCESS 200");
-
-      return 0;
     } else if (json["code"] == 201) {
       slideListModel = null;
-      return 1;
     } else {
-      log("ERROR: $json");
-      return 2;
+      log("ERROR: ${json["code"]}");
     }
   }
 
-  Future<int> isUserLoggedIn() async {
+  isUserLoggedIn() async {
     log("Checking if user is Logged In");
     var userToken = await SharedPrefHandler.getInstance()
         .getString(SharedPrefHandler.USERTOKEN);
@@ -54,11 +54,9 @@ class SplashScreenController extends GetxController {
     if (userToken == null || userToken == "USERTOKEN") {
       log('User Not Logged In');
       AppUtil.isLoggedIn = false;
-      return 1;
     } else {
       log('User Logged In');
       AppUtil.isLoggedIn = true;
-      return 0;
     }
   }
 }

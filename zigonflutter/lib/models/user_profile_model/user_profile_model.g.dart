@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'user_profile_model.dart';
 
 // **************************************************************************
@@ -113,6 +115,7 @@ _$_Users _$$_UsersFromJson(Map<String, dynamic> json) => _$_Users(
       reset_wallet_datetime: json['reset_wallet_datetime'] as String,
       fb_id: json['fb_id'] as String,
       created: DateTime.parse(json['created'] as String),
+      button: json['button'] as String?,
       followers_count: (json['followers_count'] as num?)?.toDouble(),
       following_count: (json['following_count'] as num?)?.toDouble(),
       likes_count: (json['likes_count'] as num?)?.toDouble(),
@@ -157,6 +160,7 @@ Map<String, dynamic> _$$_UsersToJson(_$_Users instance) => <String, dynamic>{
       'reset_wallet_datetime': instance.reset_wallet_datetime,
       'fb_id': instance.fb_id,
       'created': instance.created.toIso8601String(),
+      'button': instance.button,
       'followers_count': instance.followers_count,
       'following_count': instance.following_count,
       'likes_count': instance.likes_count,
