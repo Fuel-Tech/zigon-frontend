@@ -189,7 +189,7 @@ class SlideScreenController extends GetxController {
     String body = '''{
       "email":"${emailFieldController.text}",
       "password":"${passwordFieldController.text}",
-      "fcm":"$fcm"
+      "fcm":"$fcmToken"
     }''';
     // var body = {"email": "jassimpv@gmail.com", "password": "123@123"};
     log(body.toString());

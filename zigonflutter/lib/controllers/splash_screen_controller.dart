@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:zigonflutter/main.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 
 import '../models/slide-list-model/slide_list_model.dart';
@@ -56,6 +57,7 @@ class SplashScreenController extends GetxController {
       AppUtil.isLoggedIn = false;
     } else {
       log('User Logged In');
+      await requestPermissions();
       AppUtil.isLoggedIn = true;
     }
   }

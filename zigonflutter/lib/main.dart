@@ -27,43 +27,25 @@ import 'ui/views/slides_screen/slides_view2.dart';
 import 'ui/views/splash_view.dart';
 import 'utility/navigation_utility.dart';
 
-
 List<CameraDescription> cameras = [];
-String? fcm;
+String? fcmToken;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefHandler().instanceInit();
-  cameras = await availableCameras();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await Firebase.initializeApp();
-  await _requestPermissions();
-  fcm = await FirebaseMessaging.instance.getToken();
   HttpOverrides.global = MyHttpOverrides();
-  Get.lazyPut(() => AppController(), fenix: true);
+  cameras = await availableCameras();
+  await Firebase.initializeApp();
+  await SharedPrefHandler().instanceInit();
+  await FcmService().startFCMService();
   await DynamicLinkHandler().initDynamicLink();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  Get.lazyPut(() => AppController(), fenix: true);
   Get.put(SlideScreenController(), permanent: true);
   runApp(MyApp());
 }
 
-Future<void> _requestPermissions() async {
-  await Permission.camera.request();
-  await Permission.microphone.request();
-  await Permission.storage.request();
-}
-
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    FcmService().startFCMService(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +87,14 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  log("background message ${message.data}");
+  fcmHandleMethod(message);
 }
 
+Future<void> requestPermissions() async {
+  await Permission.camera.request();
+  await Permission.microphone.request();
+  await Permission.storage.request();
+}
 
 
 

@@ -33,6 +33,9 @@ class VideoSwiper extends StatelessWidget {
                       log("VIDEO PLAYING: ${ctrl.isPlaying}");
                       ctrl.togglePause();
                     },
+                    onDoubleTap: () {
+                      ctrl.toggleMute();
+                    },
                     onLongPress: () {
                       ctrl.toggleFullScreen();
                       // bottomBarKey.currentState?.toggleNavBar();
