@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:zigonflutter/controllers/splash_screen_controller.dart';
+import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/navigation_utility.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // import 'package:zigonflutter/controllers/spalsh_controller.dart';
 
@@ -34,8 +36,8 @@ class SplashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset('assets/logo.png'),
-                const CircularProgressIndicator(
-                  color: Colors.amber,
+                SpinKitCircle(
+                  color: AppUtil.secondary,
                 )
               ],
             );

@@ -243,7 +243,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
                     thumbnailList.isEmpty
                         ? SizedBox.shrink()
                         : Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: DefaultTabController(
                               length: 3,
                               child: Column(

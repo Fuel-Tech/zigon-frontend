@@ -37,14 +37,14 @@ class ButtonHandler {
         }
       } else if (buttonTypes == ButtonTypes.share) {
         var videoId = value["videoId"];
-        DynamicLinkHandler().shareSlideLink(videoId: videoId).then((value) =>
-            Share.share('Check out this video from ZigOn - $value'));
+        DynamicLinkHandler().shareSlideLink(videoId: videoId).then(
+            (value) => Share.share('Check out this video from ZigOn - $value'));
       } else if (buttonTypes == ButtonTypes.slidesList) {
       } else if (buttonTypes == ButtonTypes.setting) {}
     } else {
-      if (AppUtil.isLoggedIn) {
-        // LOGIN REQUIRED FUNCTIONS
+      // LOGIN REQUIRED FUNCTIONS
 
+      if (AppUtil.isLoggedIn) {
         //GOTO CAMERA
         if (buttonTypes == ButtonTypes.camera) {
           Get.find<SlideScreenController>().stopActiveVideo();
