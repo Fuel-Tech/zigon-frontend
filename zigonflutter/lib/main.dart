@@ -32,13 +32,13 @@ String? fcmToken;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  cameras = await availableCameras();
   await Firebase.initializeApp();
   await SharedPrefHandler().instanceInit();
   await FcmService().startFCMService();
   await DynamicLinkHandler().initDynamicLink();
+  cameras = await availableCameras();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+//test@123
   Get.lazyPut(() => AppController(), fenix: true);
   Get.put(SlideScreenController(), permanent: true);
   runApp(MyApp());
