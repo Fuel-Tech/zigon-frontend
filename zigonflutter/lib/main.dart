@@ -27,6 +27,13 @@ import 'ui/views/slides_screen/slides_view2.dart';
 import 'ui/views/splash_view.dart';
 import 'utility/navigation_utility.dart';
 
+// options: FirebaseOptions(
+//           apiKey:
+//               "AAAAe8JZL3M:APA91bFk10x1PkJNwbG95-blA58siUN0VaJwIdFZt14-WKhQvnS_XZY1a9xi7QNGM_PHwx_HLIUmTVLn2q5Fy3ndJbXdypu2e0TEbgjNUVDjqp71rm-m9MolUlsQ_K2Rdmqt5boT_EQH",
+//           appId: "1:531541602163:ios:65e74760096d96f3535f06",
+//           messagingSenderId: "531541602163",
+//           projectId: "zigonfirebase")
+
 List<CameraDescription> cameras = [];
 String? fcmToken;
 Future<void> main() async {

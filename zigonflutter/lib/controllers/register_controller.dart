@@ -59,6 +59,11 @@ class RegisterController extends GetxController {
       "password": passwordCtrl.text
     };
 
+    if (fromSocial) {
+      body.addAll(
+          {"social": social, "social_id": socialId, "auth_token": authToken});
+    }
+
     var response = await NetworkHandler.dioPost(url, body: body);
     log("Res:$response");
 
@@ -83,5 +88,26 @@ class RegisterController extends GetxController {
         snackPosition: SnackPosition.TOP,
       );
     }
+  }
+
+  String social = '';
+  String socialId = '';
+  String authToken = '';
+  bool fromSocial = false;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+
+    String? email = Get.arguments["email"];
+
+    if (email != "") {
+      fromSocial = true;
+      emailCtrl.text = email!;
+      social = Get.arguments["social"];
+      socialId = Get.arguments["socialId"];
+      authToken = Get.arguments["authToken"];
+    }
+    super.onInit();
   }
 }

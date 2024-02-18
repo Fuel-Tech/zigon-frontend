@@ -13,6 +13,7 @@ import 'package:zigonflutter/ui/widgets/login_widget.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/firebase/dynamic_link_handler.dart';
 
+import '../controllers/profile_controller.dart';
 import '../ui/views/register_view/register_view.dart';
 import '../ui/widgets/common_widgets.dart';
 import 'navigation_utility.dart';
@@ -71,6 +72,17 @@ class ButtonHandler {
           buttonController.navBarHandler(NavBarSelectionItem.userprofile);
           Get.to(() => ProfileView());
         }
+        //GOTO PROFILE
+        else if (buttonTypes == ButtonTypes.profile) {
+          if (Get.isRegistered<ProfileController>()) {
+            Get.delete<ProfileController>();
+          }
+          Get.find<SlideScreenController>().stopActiveVideo();
+          Get.toNamed(PageRouteList.profile, arguments: {
+            'id': value["id"],
+            "fromSlides": value["fromSlides"],
+          });
+        }
         // LIKE ACTION
         else if (buttonTypes == ButtonTypes.like) {
           Get.find<SlideScreenController>()
@@ -94,8 +106,7 @@ class ButtonHandler {
           // );
         } else if (buttonTypes == ButtonTypes.followingSlidesList) {
         } else if (buttonTypes == ButtonTypes.slidesList) {
-        } else if (buttonTypes == ButtonTypes.live) {
-        } else if (buttonTypes == ButtonTypes.profile) {}
+        } else if (buttonTypes == ButtonTypes.live) {}
       } else {
         LoginWidgets().loginBottomSheet(context);
       }

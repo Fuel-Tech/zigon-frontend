@@ -2,15 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class FFmpegServices {
-  final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
-
   cancelTasks() {
-    _flutterFFmpeg.cancel();
+    FFmpegKit.cancel();
   }
 
   //Video Filter Service//
@@ -31,7 +29,7 @@ class FFmpegServices {
           '-i $ip -vf colorchannelmixer=$channelmixer -qscale 2 -y $op';
 
       log(commandToExecute);
-      await _flutterFFmpeg.execute(commandToExecute);
+      await FFmpegKit.execute(commandToExecute);
       op = op.replaceRange(0, 5, '');
       return op;
     } else if (await Permission.storage.isPermanentlyDenied ||
@@ -52,14 +50,14 @@ class FFmpegServices {
     final Directory tempDir = await getTemporaryDirectory();
     final String thumbnailPath = '${tempDir.path}/$thumbnailName.jpg';
 
-    final int resultCode = await _flutterFFmpeg.execute(
+    await FFmpegKit.execute(
         '-y -i $videoPath -ss ${timeMs ~/ 1000} -vframes 1 -vf scale=$width:-1 $thumbnailPath');
 
-    if (resultCode == 0) {
-      return File(thumbnailPath).readAsBytes();
-    } else {
-      return null;
-    }
+    // if (resultCode == 0) {
+    //   return File(thumbnailPath).readAsBytes();
+    // } else {
+    //   return null;
+    // }
   }
 
   //Video Trim Service//
@@ -77,14 +75,14 @@ class FFmpegServices {
     String command =
         '-y -i $inputPath -ss ${startTimeInMs}ms -t ${durationInMs}ms -qscale 2 -c copy $outputPath';
 
-    int resultCode = await _flutterFFmpeg.execute(command);
+    FFmpegKit.execute(command);
 
-    if (resultCode == 0) {
-      log('Trimming successful. Output file: $outputPath');
-      return outputPath;
-    } else {
-      log('Trimming failed with error code: $resultCode');
-    }
+    // if (resultCode == 0) {
+    //   log('Trimming successful. Output file: $outputPath');
+    //   return outputPath;
+    // } else {
+    //   log('Trimming failed with error code: $resultCode');
+    // }
   }
 
   extractCoverService() {}
@@ -132,15 +130,7 @@ class FFmpegServices {
     // command = '-i $inputPath -vf "transpose=2,format=yuv420p" $outputPath';
     // String command2 =
     // '-y -i $inputPath -vf "transpose=(($angle + 90) / 90),format=yuv420p" -codec:v libx264 -preset slow -crf 18 -codec:a copy $outputPath';
-    int exitCode = await _flutterFFmpeg.execute(command);
-
-    if (exitCode == 0) {
-      print('Video rotated successfully');
-      return outputPath;
-    } else {
-      print('Error rotating video');
-      return null;
-    }
+    FFmpegKit.execute(command);
   }
 
   cropVideo() {}

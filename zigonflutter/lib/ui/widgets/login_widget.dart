@@ -111,35 +111,35 @@ class LoginWidgets {
                   ),
                 ),
               ),
-        //Login with OTP
-        GestureDetector(
-          onTap: () {
-            controller.loginTypeSelector(LoginTypes.otp);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              height: 55,
-              decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.mobile_friendly_outlined,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    'Login in with OTP',
-                    style: GoogleFonts.quicksand(
-                        fontSize: 17, color: Colors.white),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        //Login with OTP - TODO: HIDDEN
+        // GestureDetector(
+        //   onTap: () {
+        //     controller.loginTypeSelector(LoginTypes.otp);
+        //   },
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(12.0),
+        //     child: Container(
+        //       height: 55,
+        //       decoration: BoxDecoration(
+        //           color: Colors.black.withOpacity(0.6),
+        //           borderRadius: BorderRadius.circular(10)),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: [
+        //           Icon(
+        //             Icons.mobile_friendly_outlined,
+        //             color: Colors.white,
+        //           ),
+        //           Text(
+        //             'Login in with OTP',
+        //             style: GoogleFonts.quicksand(
+        //                 fontSize: 17, color: Colors.white),
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
         //Login With Email
         GestureDetector(
           onTap: () {
@@ -436,7 +436,7 @@ class LoginWidgets {
             SizedBox(height: 20),
             TextButton(
                 onPressed: () {
-                  Get.to(() => RegisterUserScreen());
+                  Get.to(() => RegisterUserScreen(), arguments: {"email": ""});
                 },
                 child: RichText(
                   text: TextSpan(
