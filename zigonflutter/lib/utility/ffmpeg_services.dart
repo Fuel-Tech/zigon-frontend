@@ -3,6 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_session.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -46,18 +49,21 @@ class FFmpegServices {
     int timeMs = 0,
     int width = 128,
   }) async {
-    log('GetVideoThumbnail');
     final Directory tempDir = await getTemporaryDirectory();
     final String thumbnailPath = '${tempDir.path}/$thumbnailName.jpg';
 
-    await FFmpegKit.execute(
+    FFmpegSession session = await FFmpegKit.execute(
         '-y -i $videoPath -ss ${timeMs ~/ 1000} -vframes 1 -vf scale=$width:-1 $thumbnailPath');
 
-    // if (resultCode == 0) {
-    //   return File(thumbnailPath).readAsBytes();
-    // } else {
-    //   return null;
-    // }
+    final returnCode = await session.getReturnCode();
+
+    if (ReturnCode.isSuccess(returnCode)) {
+      Uint8List img = await File(thumbnailPath).readAsBytes();
+      return img;
+    } else {
+      log("FAILED");
+      return null;
+    }
   }
 
   //Video Trim Service//
@@ -75,17 +81,15 @@ class FFmpegServices {
     String command =
         '-y -i $inputPath -ss ${startTimeInMs}ms -t ${durationInMs}ms -qscale 2 -c copy $outputPath';
 
-    FFmpegKit.execute(command);
+    FFmpegSession session = await FFmpegKit.execute(command);
+    final returnCode = await session.getReturnCode();
 
-    // if (resultCode == 0) {
-    //   log('Trimming successful. Output file: $outputPath');
-    //   return outputPath;
-    // } else {
-    //   log('Trimming failed with error code: $resultCode');
-    // }
+    if (ReturnCode.isSuccess(returnCode)) {
+      return outputPath;
+    } else {
+      return null;
+    }
   }
-
-  extractCoverService() {}
 
   Future<String?> rotateVideo(
       String inputPath, String outputPath, int angle) async {
@@ -106,31 +110,15 @@ class FFmpegServices {
           '-i $inputPath -vf "hflip,vflip,format=yuv420p" -qscale 2 $outputPath';
     }
 
-// // Build the FFmpeg command
-//     List<String> command;
-//     if (transposeValue != -1) {
-//       command = [
-//         '-i',
-//         '/data/user/0/com.example.ffmpegvideoeditor/cache/tempeditfile.mp4',
-//         '-vf',
-//         'transpose=$transposeValue,format=yuv420p',
-//         '/data/user/0/com.example.ffmpegvideoeditor/cache/temprotatedfile.mp4',
-//       ];
-//     } else {
-//       // If no rotation is needed, just copy the input video to the output without any modifications
-//       command = [
-//         '-i',
-//         '/data/user/0/com.example.ffmpegvideoeditor/cache/tempeditfile.mp4',
-//         '-c',
-//         'copy',
-//         '/data/user/0/com.example.ffmpegvideoeditor/cache/temprotatedfile.mp4',
-//       ];
-//     }
+    FFmpegSession session = await FFmpegKit.execute(command);
 
-    // command = '-i $inputPath -vf "transpose=2,format=yuv420p" $outputPath';
-    // String command2 =
-    // '-y -i $inputPath -vf "transpose=(($angle + 90) / 90),format=yuv420p" -codec:v libx264 -preset slow -crf 18 -codec:a copy $outputPath';
-    FFmpegKit.execute(command);
+    final returnCode = await session.getReturnCode();
+
+    if (ReturnCode.isSuccess(returnCode)) {
+      return outputPath;
+    } else {
+      return null;
+    }
   }
 
   cropVideo() {}

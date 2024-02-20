@@ -1,22 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'controllers/app_controller.dart';
-import 'controllers/slide_screen_controller.dart';
+import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'utility/firebase/dynamic_link_handler.dart';
 import 'utility/firebase/fcm_handler.dart';
+import 'controllers/app_controller.dart';
+import 'controllers/slide_screen_controller.dart';
 import 'utility/shared_prefs.dart';
-
 import 'ui/views/discover_view/discover_view.dart';
 import 'ui/views/user_settings_screen.dart/user_settings_view.dart';
 import 'ui/views/video_upload_screens/camera_page.dart';
@@ -34,12 +33,15 @@ import 'utility/navigation_utility.dart';
 //           messagingSenderId: "531541602163",
 //           projectId: "zigonfirebase")
 
+final GlobalKey<CameraPageState> cameraKey = GlobalKey<CameraPageState>();
+final GlobalKey<BottomBarState> bottomBarKey = GlobalKey<BottomBarState>();
+
 List<CameraDescription> cameras = [];
 String? fcmToken;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SharedPrefHandler().instanceInit();
   await FcmService().startFCMService();
   await DynamicLinkHandler().initDynamicLink();
@@ -78,7 +80,11 @@ class MyApp extends StatelessWidget {
             name: PageRouteList.notification, page: () => NotificationsView()),
         GetPage(
             name: PageRouteList.userSettings, page: () => UserSettingsView()),
-        GetPage(name: PageRouteList.camera, page: () => CameraPage()),
+        GetPage(
+            name: PageRouteList.camera,
+            page: () => CameraPage(
+                  key: cameraKey,
+                )),
       ],
     );
   }

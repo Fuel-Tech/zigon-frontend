@@ -38,6 +38,14 @@
           }
         },
         {
+          "client_id": "531541602163-flcfqrke7mi7fm7p8569g51udjg91029.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "0e4f307b9f5543767e1017225c844b95029814ce"
+          }
+        },
+        {
           "client_id": "531541602163-sn37h0dvi9n97r4j9a58g5oc24k26tlo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

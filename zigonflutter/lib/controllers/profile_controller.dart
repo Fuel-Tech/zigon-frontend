@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zigonflutter/models/user_profile_model/user_profile_model.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileController extends GetxController {
   bool userProfileSelected = true;
@@ -150,6 +153,25 @@ class ProfileController extends GetxController {
     }
   }
 
+  File? file;
+
+  pickImage(bool isCamera) async {
+    ImagePicker _picker = ImagePicker();
+
+    if (isCamera) {
+      XFile? xfile = await _picker.pickImage(source: ImageSource.camera);
+      if (xfile != null) {
+        file = File(xfile.path);
+      }
+    } else {
+      XFile? xfile = await _picker.pickImage(source: ImageSource.gallery);
+      if (xfile != null) {
+        file = File(xfile.path);
+      }
+    }
+    update();
+  }
+
   editProfilePicture() {
     Get.dialog(
       Material(
@@ -159,18 +181,47 @@ class ProfileController extends GetxController {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    Container(),
-                    Container(),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () async {
+                        pickImage(true);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "Capture from camera",
+                          style: GoogleFonts.poppins(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        pickImage(false);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "Pick from Gallery",
+                          style: GoogleFonts.poppins(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             )
           ],

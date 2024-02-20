@@ -42,7 +42,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
     _startPosition = 0;
     _endPosition = 0;
     final duration = await checkVideoDuration(videoFile);
-    if (duration > Duration(seconds: 30)) {
+    if (duration > Duration(seconds: 31)) {
       Directory tempDir = await getTemporaryDirectory();
       String opPath = "${tempDir.path}/trimmedFile.mp4";
       String trimmedFilePath = await videoTrimmerFn(
@@ -120,6 +120,7 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        log("SSAS");
         setState(() {
           _fFmpegServices.cancelTasks();
           _controller.dispose();
@@ -617,10 +618,13 @@ class _VideoEditorPageState extends State<VideoEditorPage> {
       for (int i = 0; i < duration; i++) {
         var thumbnail = await fFmpegServices.getVideoThumbnail(
             videoPath: videoPath, thumbnailName: '$i', timeMs: i);
+        log(thumbnail.toString());
         if (thumbnail != null) {
           thumbnailList.add(thumbnail);
         }
       }
+
+      log("THUMBLIST GENERATED");
 
       Uint8List? endThumbnail = await fFmpegServices.getVideoThumbnail(
           videoPath: videoPath, thumbnailName: 'last', timeMs: duration * 1000);

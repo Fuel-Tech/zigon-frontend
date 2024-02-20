@@ -63,6 +63,7 @@ dependencies:
   firebase_dynamic_links: ^5.4.8
   ffmpeg_kit_flutter: ^5.1.0
   lottie: ^3.0.0
+  sign_in_with_apple: ^5.0.0
 
 dev_dependencies:
   flutter_test:

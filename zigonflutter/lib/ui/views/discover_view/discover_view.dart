@@ -308,7 +308,7 @@ class _PopularVideoWidgetState extends State<PopularVideoWidget> {
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.black.withOpacity(0.7),
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(6),
                     ),
@@ -338,11 +338,15 @@ class _PopularVideoWidgetState extends State<PopularVideoWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            widget.userName,
-                            style: GoogleFonts.raleway(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              widget.userName,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.raleway(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -486,7 +490,7 @@ class _TopPickVideoWidgetState extends State<TopPickVideoWidget> {
                   child: Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Colors.black.withOpacity(0.7),
                       borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(12),
                       ),

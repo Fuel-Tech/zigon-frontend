@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>531541602163-8r2536la65p6a48eujgo1uon4opekh1p.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.531541602163-8r2536la65p6a48eujgo1uon4opekh1p</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>531541602163-ad9pvn3fh3i830jfn4dku6r2mfkgjkrr.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDs864nki5-71KoXx-xpBSo0eQHpN2R6FA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>531541602163</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fuel.zigonflutter.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>zigonfirebase</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zigonfirebase.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:531541602163:ios:eb5667d8bc12acb6535f06</string>
+</dict>
+</plist>

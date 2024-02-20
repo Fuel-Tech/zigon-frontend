@@ -22,13 +22,12 @@
 		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Need to upload image</string>
 		<key>NSCameraUsageDescription</key>
 		<string>To enable camera access when recording</string>
-
 		<key>NSMicrophoneUsageDescription</key>
-		<string>To enable microphone access when recording video
-		</string>
-
+		<string>To enable microphone access when recording video</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>To enable GPS location access for Exif data
 		</string>
