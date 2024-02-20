@@ -13,9 +13,8 @@ import 'package:zigonflutter/ui/views/video_upload_screens/camera_page.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 
 import '../../../controllers/bottombar_controller.dart';
+import '../../../main.dart';
 import '../../widgets/login_widget.dart';
-
-final GlobalKey<BottomBarState> bottomBarKey = GlobalKey<BottomBarState>();
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -182,6 +181,13 @@ class BottomBarState extends State<BottomBar> {
             Get.find<SlideScreenController>().playActiveVideo();
             if (controller.cameraView) {
               toggleNavBar();
+
+              cameraKey.currentState!.recordingProgresss = 0.0;
+              cameraKey.currentState!.recordingTimeSecond = 0;
+              cameraKey.currentState!.startedRecording = false;
+              cameraKey.currentState!.isPlaying = false;
+              cameraKey.currentState!.timer.cancel;
+
               controller.cameraView = false;
             }
             return false;

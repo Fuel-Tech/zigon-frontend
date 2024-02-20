@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:zigonflutter/main.dart';
 import 'package:zigonflutter/ui/views/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:zigonflutter/ui/views/slides_screen/slides_view2.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 
@@ -89,7 +90,7 @@ class SlideScreenController extends GetxController {
     if (json['code'] == 200) {
       var newSlideListModel = SlideListModel.fromJson(json);
       log("CONDITONS: COUNTS ${newSlideListModel.msg.length}");
-      setVideoData(newSlideListModel, refresh: false);
+      setVideoData(newSlideListModel, refresh: refresh);
     } else if (json['code'] == 201) {
       log("NO MORE VIDEOS TO SHOW!!!");
     }
@@ -210,14 +211,14 @@ class SlideScreenController extends GetxController {
         Get.snackbar(
           "Invalid Login",
           "Incorrect login details",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       } else {
         log(json.toString());
         Get.snackbar(
           "Unable to login",
           "Please try again later",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
     } on Exception catch (e) {
@@ -254,6 +255,7 @@ class SlideScreenController extends GetxController {
           updatedMsg; // Update the first Msg object in the list
 
       slideListModel = slideListModel!.copyWith(msg: updatedMsgList);
+      likeAnimDialog();
     } else {
       final originalVideo = slideListModel!.msg[index]
           .video; // Assuming you want to increment the like count of the first video
@@ -305,6 +307,16 @@ class SlideScreenController extends GetxController {
   void updateIndex(int index, VideoPlayerController? videoController) {
     currentIndex.value = index;
     activeVideoController = videoController;
+  }
+
+  int? descriptionMaxLine = 2;
+
+  toggleDescription() {
+    if (descriptionMaxLine == 2) {
+      descriptionMaxLine = null;
+    } else {
+      descriptionMaxLine = 2;
+    }
   }
 
   void stopActiveVideo() {

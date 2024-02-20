@@ -168,9 +168,9 @@ class RightToolBar extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       controller.slideListModel!.msg[index].video.isVideoLiked
-                          ? const Icon(Icons.favorite,
-                              color: Colors.red, size: 30)
-                          : const Icon(Icons.favorite_border_outlined,
+                          ? const Icon(Icons.thumb_up,
+                              color: Colors.amber, size: 30)
+                          : const Icon(Icons.thumb_up_outlined,
                               color: Colors.white, size: 30),
                       const SizedBox(height: 3),
                       Text(
@@ -266,49 +266,41 @@ class BottomToolbar extends StatelessWidget {
           children: [
             // const SizedBox(height: 5),
             //Name, tag, views, options
-            GestureDetector(
+            InkWell(
               onTap: () {
                 ButtonHandler.onTapHandler(
-                    buttonTypes: ButtonTypes.profile, context: context);
+                    buttonTypes: ButtonTypes.profile,
+                    context: context,
+                    value: {
+                      "id": controller.slideListModel!.msg[index].user.id,
+                      "fromSlides": true
+                    });
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //Profile picture
-                  InkWell(
-                    onTap: () async {
-                      if (Get.isRegistered<ProfileController>()) {
-                        Get.delete<ProfileController>();
-                      }
-                      controller.stopActiveVideo();
-                      Get.toNamed(PageRouteList.profile, arguments: {
-                        'id': controller.slideListModel!.msg[index].user.id,
-                        "fromSlides": true,
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        controller.slideListModel?.msg[index].user
-                                    .profile_pic ==
-                                null
-                            ? const CircleAvatar(
-                                radius: 20,
-                                backgroundImage:
-                                    AssetImage('assets/images/prodp.jpg'),
-                              )
-                            : CircleAvatar(
-                                radius: 20,
-                                backgroundImage: NetworkImage(IMG_URL +
-                                    controller.slideListModel!.msg[index].user
-                                        .profile_pic!),
-                              ),
-                        SizedBox(width: 5),
-                        Text(
-                          '${controller.slideListModel!.msg[index].user.username}',
-                          style: AppUtil.textStyle1(weight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      controller.slideListModel?.msg[index].user.profile_pic ==
+                              null
+                          ? const CircleAvatar(
+                              radius: 20,
+                              backgroundImage:
+                                  AssetImage('assets/images/prodp.jpg'),
+                            )
+                          : CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(IMG_URL +
+                                  controller.slideListModel!.msg[index].user
+                                      .profile_pic!),
+                            ),
+                      SizedBox(width: 5),
+                      Text(
+                        '${controller.slideListModel!.msg[index].user.username}',
+                        style: AppUtil.textStyle1(weight: FontWeight.w600),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(width: 15),
@@ -329,12 +321,34 @@ class BottomToolbar extends StatelessWidget {
             const SizedBox(height: 5),
             //Video Description
             FittedBox(
-              child: SizedBox(
-                width: AppUtil.screenWidth(context) / 1.5,
-                child: Text(
-                  '${controller.slideListModel!.msg[index].video.description}',
-                  style: AppUtil.textStyle2(
-                    textSize: 12,
+              child: InkWell(
+                onTap: () {
+                  if (controller.slideListModel!.msg[index].video.description
+                          .toString()
+                          .length >
+                      100) {
+                    controller.toggleDescription();
+                  }
+                },
+                child: SizedBox(
+                  width: AppUtil.screenWidth(context) / 1.5,
+                  child: Text(
+                    controller.slideListModel!.msg[index].video.description
+                                .toString()
+                                .length >
+                            50
+                        ? '${controller.slideListModel!.msg[index].video.description.toString().substring(0, 49)} ...'
+                        : '${controller.slideListModel!.msg[index].video.description}',
+                    maxLines: controller
+                                .slideListModel!.msg[index].video.description
+                                .toString()
+                                .length >
+                            50
+                        ? controller.descriptionMaxLine
+                        : null,
+                    style: AppUtil.textStyle2(
+                      textSize: 12,
+                    ),
                   ),
                 ),
               ),

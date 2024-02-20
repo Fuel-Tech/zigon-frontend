@@ -72,23 +72,45 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               InkWell(
-                                                onTap: () {
-                                                  ctrl.editProfilePicture();
-                                                },
-                                                child: CircleAvatar(
-                                                  radius: 50,
-                                                  backgroundImage:
-                                                      CachedNetworkImageProvider(
-                                                    IMG_URL +
-                                                        (ctrl
-                                                                .userProfileModel
-                                                                ?.msg
-                                                                .User
-                                                                .profile_pic ??
-                                                            ''),
-                                                  ),
-                                                ),
-                                              ),
+                                                  onTap: () {
+                                                    ctrl.editProfilePicture();
+                                                  },
+                                                  child: Container(
+                                                    width: 100,
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    child: ctrl.file != null
+                                                        ? ClipOval(
+                                                            child: Image.file(
+                                                                ctrl.file!))
+                                                        : ClipOval(
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl: IMG_URL +
+                                                                  (ctrl
+                                                                          .userProfileModel
+                                                                          ?.msg
+                                                                          .User
+                                                                          .profile_pic ??
+                                                                      ''),
+                                                              errorWidget:
+                                                                  (context, url,
+                                                                      error) {
+                                                                return ClipOval(
+                                                                  child: Image
+                                                                      .asset(
+                                                                    "assets/images/prodp.jpg",
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                  )),
                                               SizedBox(width: 8),
                                               Column(
                                                 crossAxisAlignment:

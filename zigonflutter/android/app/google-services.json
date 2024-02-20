@@ -14,11 +14,43 @@
       },
       "oauth_client": [
         {
+          "client_id": "531541602163-ad9pvn3fh3i830jfn4dku6r2mfkgjkrr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "301b7bcf6828593c6cc8e09abba8ef824ef49ef9"
+          }
+        },
+        {
+          "client_id": "531541602163-f5icfk769tvdvurl009kte076584165a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "31bfe20fc4c0b4e501f9667776894a6420648669"
+          }
+        },
+        {
           "client_id": "531541602163-fcdm7lohd04bf3bg7640l7pg3licgcqc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fuel.zigonflutter",
             "certificate_hash": "5ed87c9078ec7a6c766520c2ad7e265af347372b"
+          }
+        },
+        {
+          "client_id": "531541602163-flcfqrke7mi7fm7p8569g51udjg91029.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "0e4f307b9f5543767e1017225c844b95029814ce"
+          }
+        },
+        {
+          "client_id": "531541602163-sn37h0dvi9n97r4j9a58g5oc24k26tlo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fuel.zigonflutter",
+            "certificate_hash": "1ddb26c3f33e60c2617aa15de26b6720faa767bd"
           }
         },
         {
@@ -37,6 +69,13 @@
             {
               "client_id": "531541602163-0us8or6f74ks2urcvmuhr9ad778dl1b7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "531541602163-k5d6f5o0ve19kg7jmnrjppqpj901k30j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fueltech.zigonApp"
+              }
             }
           ]
         }

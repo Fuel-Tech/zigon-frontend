@@ -10,14 +10,20 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // import 'package:zigonflutter/controllers/spalsh_controller.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final SplashScreenController splashScreenController =
       Get.put(SplashScreenController());
 
   Future<void> splashCheck() async {
     //Check User Logged In
+    await Future.delayed(Duration(seconds: 2));
     await splashScreenController.initilizeapp();
     Get.find<SlideScreenController>()
         .setVideoData(splashScreenController.slideListModel);
@@ -26,22 +32,25 @@ class SplashScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    splashCheck();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: FutureBuilder(
-          future: splashCheck(),
-          builder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/logo.png'),
-                SpinKitCircle(
-                  color: AppUtil.secondary,
-                )
-              ],
-            );
-          }),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/logo.png'),
+          SpinKitCircle(
+            color: AppUtil.secondary,
+          )
+        ],
+      ),
     );
   }
 }

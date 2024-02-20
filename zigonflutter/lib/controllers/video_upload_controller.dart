@@ -100,6 +100,7 @@ class VideoUploadController extends GetxController {
     await Get.find<AppController>().uploadVideo(url, body: body);
     Get.back();
     Get.back();
+    Get.back();
   }
 
   initCheck() {

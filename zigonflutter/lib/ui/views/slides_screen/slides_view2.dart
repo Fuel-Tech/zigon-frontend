@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:zigonflutter/controllers/slide_screen_controller.dart';
 import 'package:card_swiper/card_swiper.dart';
 import '../../../utility/app_utility.dart';
+import '../../../utility/button_handler.dart';
 import '../../widgets/slides_widgets.dart';
 import 'video_player.dart';
 
@@ -34,7 +36,15 @@ class VideoSwiper extends StatelessWidget {
                       ctrl.togglePause();
                     },
                     onDoubleTap: () {
-                      ctrl.toggleMute();
+                      // ctrl.toggleMute();
+                      ButtonHandler.onTapHandler(
+                          buttonTypes: ButtonTypes.like,
+                          context: context,
+                          value: {
+                            "index": ctrl.currentIndex.value,
+                            "videoId": ctrl.slideListModel!
+                                .msg[ctrl.currentIndex.value].video.id
+                          });
                     },
                     onLongPress: () {
                       ctrl.toggleFullScreen();
@@ -155,4 +165,16 @@ class VideoSwiper extends StatelessWidget {
           );
         }));
   }
+}
+
+likeAnimDialog() {
+  Future.delayed(Duration(milliseconds: 400)).then((value) => Get.back());
+  Get.dialog(
+      Lottie.asset(
+        "assets/images/like.json",
+        frameRate: FrameRate(60),
+        onLoaded: (p0) {},
+      ),
+      barrierDismissible: false,
+      barrierColor: Colors.transparent);
 }

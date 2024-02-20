@@ -16,11 +16,11 @@ class CameraPage extends StatefulWidget {
   CameraPage({Key? key}) : super(key: key);
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  State<CameraPage> createState() => CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> {
-  late CameraController _camera;
+class CameraPageState extends State<CameraPage> {
+  late CameraController camera;
   XFile? file;
   bool isPlaying = false;
   bool startedRecording = false;
@@ -30,8 +30,8 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   void initState() {
-    _camera = CameraController(cameras[0], ResolutionPreset.max);
-    _camera.initialize().then((value) {
+    camera = CameraController(cameras[0], ResolutionPreset.max);
+    camera.initialize().then((value) {
       getZoomLevels();
       setState(() {});
     });
@@ -63,9 +63,9 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   getZoomLevels() async {
-    if (_camera.value.isInitialized) {
-      minZoomLevel = await _camera.getMinZoomLevel();
-      maxZoomLevel = await _camera.getMaxZoomLevel();
+    if (camera.value.isInitialized) {
+      minZoomLevel = await camera.getMinZoomLevel();
+      maxZoomLevel = await camera.getMaxZoomLevel();
     }
   }
 
@@ -87,11 +87,10 @@ class _CameraPageState extends State<CameraPage> {
 
   IconData icons = Icons.flash_off;
   void _toggleFlash() {
-    log(_camera.value.flashMode.toString());
-    _camera.value.flashMode == FlashMode.torch
-        ? _camera.setFlashMode(FlashMode.off)
-        : _camera.setFlashMode(FlashMode.torch);
-    icons = _camera.value.flashMode == FlashMode.torch
+    camera.value.flashMode == FlashMode.torch
+        ? camera.setFlashMode(FlashMode.off)
+        : camera.setFlashMode(FlashMode.torch);
+    icons = camera.value.flashMode == FlashMode.torch
         ? Icons.flash_off
         : Icons.flash_on;
     setState(() {});
@@ -121,181 +120,180 @@ class _CameraPageState extends State<CameraPage> {
     await controller.initialize();
 
     setState(() {
-      _camera = controller;
+      camera = controller;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    log(_camera.value.isInitialized.toString());
     return Material(
-      child: GestureDetector(
-        // onScaleStart: _onScaleStart,
-        // onScaleUpdate: _onScaleUpdate,
-        child: CameraPreview(
-          _camera,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //Top Toolbar
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(20)),
+      type: MaterialType.transparency,
+      child: CameraPreview(
+        camera,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //Top Toolbar
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //ADD MUSIC BUTTON
+                        isPlaying
+                            ? const SizedBox.shrink()
+                            : IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.music_note_outlined)),
+                        //TOGGLE FLASH BUTTON
+                        IconButton(
+                            onPressed: () {
+                              _toggleFlash();
+                            },
+                            icon: Icon(icons)),
+                        //TOGGLE CAMERA DIRECTION
+                        isPlaying
+                            ? const SizedBox.shrink()
+                            : IconButton(
+                                onPressed: () {
+                                  _switchCameras();
+                                },
+                                icon: const Icon(
+                                  Icons.rotate_right,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    LinearProgressIndicator(
+                      minHeight: 6,
+                      value: recordingProgresss,
+                      color: Colors.amber,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    Container(
+                      height: Get.height * .2,
+                      color: Colors.black.withOpacity(0.5),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          //ADD MUSIC BUTTON
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black.withOpacity(0.4)),
+                            child: IconButton(
+                                onPressed: () async {
+                                  ImagePicker _picker = ImagePicker();
+
+                                  file = await _picker.pickVideo(
+                                      source: ImageSource.gallery);
+
+                                  if (file != null) {
+                                    log(file!.name.removeAllWhitespace);
+                                    camera.dispose();
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute(
+                                      builder: (context) {
+                                        return VideoEditorPage(
+                                            videoFile: File(file!.path));
+                                      },
+                                    ));
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.folder_copy,
+                                  color: Colors.white,
+                                  size: 25,
+                                )),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (startedRecording) {
+                                if (isPlaying) {
+                                  timer.cancel();
+                                  isPlaying = false;
+                                  camera.pauseVideoRecording();
+                                  setState(() {});
+                                } else {
+                                  recordTimer();
+                                  isPlaying = true;
+                                  camera.resumeVideoRecording();
+                                  setState(() {});
+                                }
+                              } else {
+                                startedRecording = true;
+                                isPlaying = true;
+                                recordTimer();
+                                camera.startVideoRecording();
+
+                                setState(() {});
+                              }
+                            },
+                            child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: isPlaying
+                                    ? BoxDecoration()
+                                    : BoxDecoration(
+                                        color: Colors.transparent,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Colors.white, width: 5),
+                                      ),
+                                alignment: Alignment.center,
+                                child: isPlaying
+                                    ? const Icon(
+                                        Icons.pause,
+                                        color: Colors.white,
+                                        size: 25,
+                                      )
+                                    : Container()),
+                          ),
                           isPlaying
-                              ? const SizedBox.shrink()
-                              : IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.music_note_outlined)),
-                          //TOGGLE FLASH BUTTON
-                          IconButton(
-                              onPressed: () {
-                                _toggleFlash();
-                              },
-                              icon: Icon(icons)),
-                          //TOGGLE CAMERA DIRECTION
-                          isPlaying
-                              ? const SizedBox.shrink()
-                              : IconButton(
-                                  onPressed: () {
-                                    _switchCameras();
-                                  },
-                                  icon: const Icon(
-                                    Icons.rotate_right,
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.black.withOpacity(0.4)),
+                                  child: IconButton(
+                                      onPressed: () async {
+                                        await stopAndSaveVideo();
+                                      },
+                                      icon: const Icon(
+                                        Icons.stop,
+                                        color: Colors.red,
+                                        size: 25,
+                                      )),
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
+                                  child: IconButton(
+                                      onPressed: () async {},
+                                      icon: const Icon(
+                                        Icons.folder_copy,
+                                        color: Colors.transparent,
+                                        size: 25,
+                                      )),
                                 ),
                         ],
                       ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      LinearProgressIndicator(
-                        minHeight: 6,
-                        value: recordingProgresss,
-                        color: Colors.amber,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      Container(
-                        height: Get.height * .2,
-                        color: Colors.black.withOpacity(0.5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.black.withOpacity(0.4)),
-                              child: IconButton(
-                                  onPressed: () async {
-                                    ImagePicker _picker = ImagePicker();
-
-                                    file = await _picker.pickVideo(
-                                        source: ImageSource.gallery);
-
-                                    if (file != null) {
-                                      log(file!.name.removeAllWhitespace);
-                                      _camera.dispose();
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(
-                                        builder: (context) {
-                                          return VideoEditorPage(
-                                              videoFile: File(file!.path));
-                                        },
-                                      ));
-                                    }
-                                  },
-                                  icon: const Icon(
-                                    Icons.folder_copy,
-                                    color: Colors.white,
-                                    size: 25,
-                                  )),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (startedRecording) {
-                                  isPlaying
-                                      ? setState(() {
-                                          isPlaying = false;
-                                          _camera.pauseVideoRecording();
-                                        })
-                                      : setState(() {
-                                          isPlaying = true;
-                                          _camera.resumeVideoRecording();
-                                        });
-                                } else {
-                                  startedRecording = true;
-                                  isPlaying = true;
-                                  recordTimer();
-                                  setState(() {
-                                    _camera.startVideoRecording();
-                                  });
-                                }
-                              },
-                              child: Container(
-                                  height: 80,
-                                  width: 80,
-                                  decoration: isPlaying
-                                      ? BoxDecoration()
-                                      : BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: Colors.white, width: 5),
-                                        ),
-                                  alignment: Alignment.center,
-                                  child: isPlaying
-                                      ? const Icon(
-                                          Icons.pause,
-                                          color: Colors.white,
-                                          size: 25,
-                                        )
-                                      : Container()),
-                            ),
-                            isPlaying
-                                ? Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.black.withOpacity(0.4)),
-                                    child: IconButton(
-                                        onPressed: () async {
-                                          await stopAndSaveVideo();
-                                        },
-                                        icon: const Icon(
-                                          Icons.stop,
-                                          color: Colors.red,
-                                          size: 25,
-                                        )),
-                                  )
-                                : Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: IconButton(
-                                        onPressed: () async {},
-                                        icon: const Icon(
-                                          Icons.folder_copy,
-                                          color: Colors.transparent,
-                                          size: 25,
-                                        )),
-                                  ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -309,7 +307,7 @@ class _CameraPageState extends State<CameraPage> {
       recordingProgresss = 0.0;
       recordingTimeSecond = 0;
     }
-    file = await _camera.stopVideoRecording();
+    file = await camera.stopVideoRecording();
     startedRecording = false;
     isPlaying = false;
     // setState(() async {
