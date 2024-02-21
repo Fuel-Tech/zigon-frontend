@@ -27,7 +27,6 @@ import 'ui/views/slides_screen/slides_view2.dart';
 import 'ui/views/splash_view.dart';
 import 'utility/navigation_utility.dart';
 
-
 List<CameraDescription> cameras = [];
 String? fcm;
 Future<void> main() async {
@@ -37,7 +36,12 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await Firebase.initializeApp();
   await _requestPermissions();
-  fcm = await FirebaseMessaging.instance.getToken();
+  if (Platform.isIOS) {
+    fcm = await FirebaseMessaging.instance.getAPNSToken();
+  } else {
+    fcm = await FirebaseMessaging.instance.getToken();
+  }
+
   HttpOverrides.global = MyHttpOverrides();
   Get.lazyPut(() => AppController(), fenix: true);
   await DynamicLinkHandler().initDynamicLink();

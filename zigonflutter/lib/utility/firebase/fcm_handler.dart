@@ -13,8 +13,7 @@ class FcmService {
     fcm.onTokenRefresh.listen((token) {
       // updateFCMToken(token);
     });
-    String? fcmToken = await FirebaseMessaging.instance.getToken();
-    log("Fcm service started:$fcmToken");
+
     try {
       RemoteMessage? initialMessage = await fcm.getInitialMessage();
       if (initialMessage != null) {}
