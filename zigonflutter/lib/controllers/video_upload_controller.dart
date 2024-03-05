@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:zigonflutter/controllers/app_controller.dart';
+import 'package:zigonflutter/main.dart';
 import 'package:zigonflutter/utility/app_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
 import 'package:textfield_tags/textfield_tags.dart';
@@ -101,6 +102,8 @@ class VideoUploadController extends GetxController {
     Get.back();
     Get.back();
     Get.back();
+    Get.back();
+    bottomBarKey.currentState!.controller.navBarController.index == 0;
   }
 
   initCheck() {

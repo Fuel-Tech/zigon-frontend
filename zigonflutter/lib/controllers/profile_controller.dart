@@ -162,14 +162,42 @@ class ProfileController extends GetxController {
       XFile? xfile = await _picker.pickImage(source: ImageSource.camera);
       if (xfile != null) {
         file = File(xfile.path);
+        uploadImage();
       }
     } else {
       XFile? xfile = await _picker.pickImage(source: ImageSource.gallery);
       if (xfile != null) {
         file = File(xfile.path);
+        uploadImage();
       }
     }
+    Get.back();
     update();
+  }
+
+  RxBool isAddingImage = false.obs;
+
+  uploadImage() async {
+    isAddingImage.value = true;
+
+    List<int> bytes = file!.readAsBytesSync();
+
+    String base64 = base64Encode(bytes);
+    base64 = "data:image/jpeg;base64,$base64";
+    log(base64.toString());
+
+    String userId =
+        SharedPrefHandler.getInstance().getString(SharedPrefHandler.USERID);
+    String path = "addUserImage";
+    Map<String, dynamic> body = {
+      "user_id": userId,
+      "profile_pic_small": base64,
+      "profile_pic": base64
+    };
+
+    var response = await NetworkHandler.dioPost(path, body: body);
+    log(response.toString());
+    isAddingImage.value = false;
   }
 
   editProfilePicture() {

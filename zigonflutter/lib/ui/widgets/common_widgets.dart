@@ -363,11 +363,11 @@ class CommonWidgets {
                       suffixIcon: Obx(
                         () => ctrl.addingComment.isTrue
                             ? Transform.scale(
-                              scale: .5,
-                              child: CircularProgressIndicator(
+                                scale: .5,
+                                child: CircularProgressIndicator(
                                   color: AppUtil.secondary,
                                 ),
-                            )
+                              )
                             : IconButton(
                                 onPressed: () {
                                   if (ctrl.commentFieldController.text
