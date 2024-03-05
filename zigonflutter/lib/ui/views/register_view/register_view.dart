@@ -40,6 +40,46 @@ class RegisterUserScreen extends StatelessWidget {
           child: ListView(
             physics: BouncingScrollPhysics(),
             children: [
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    ctrl.addProfileImage();
+                  },
+                  child: Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: Offset(0, 4),
+                          blurRadius: 6,
+                        )
+                      ],
+                    ),
+                    child: FittedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ctrl.file == null
+                            ? Text("Add Profile Image",
+                                style: AppUtil.textStyle2()
+                                    .copyWith(color: Colors.black))
+                            : ClipRRect(
+                                child: Image.file(
+                                  fit: BoxFit.fill,
+                                  ctrl.file!,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: ctrl.usernameCtrl,
                 validator: (value) {
@@ -68,6 +108,50 @@ class RegisterUserScreen extends StatelessWidget {
                 style: AppUtil.textStyle2().copyWith(
                   color: Colors.grey,
                   fontSize: 12,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: ctrl.firstNameCtrl,
+                validator: (value) {
+                  if (value.toString().removeAllWhitespace.isEmpty) {
+                    return "First Name cannot be empty";
+                  }
+                  return null;
+                },
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: "First Name",
+                  hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: ctrl.lastNameCtrl,
+                validator: (value) {
+                  if (value.toString().removeAllWhitespace.isEmpty) {
+                    return "Last Name cannot be empty";
+                  }
+                  return null;
+                },
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: "Last Name",
+                  hintStyle: AppUtil.textStyle2().copyWith(color: Colors.black),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey, width: 0.5),
+                  ),
                 ),
               ),
               SizedBox(height: 20),

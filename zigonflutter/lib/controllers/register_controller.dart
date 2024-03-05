@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:zigonflutter/ui/views/splash_view.dart';
+import 'package:zigonflutter/ui/widgets/common_widgets.dart';
 import 'package:zigonflutter/utility/navigation_utility.dart';
 import 'package:zigonflutter/utility/network_utility.dart';
 import 'package:zigonflutter/utility/shared_prefs.dart';
@@ -29,7 +33,7 @@ class RegisterController extends GetxController {
     agreedToTerms.value = value;
   }
 
-  DateFormat format = DateFormat("dd/MM/yyyy");
+  DateFormat format = DateFormat("yyyy-MM-dd");
   DateTime selectedDate = DateTime.now();
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -49,12 +53,111 @@ class RegisterController extends GetxController {
     isHidden.value = !isHidden.value;
   }
 
+  addProfileImage() {
+    Get.dialog(
+      Material(
+        type: MaterialType.transparency,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () async {
+                        pickImage(true);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "Capture from camera",
+                          style: GoogleFonts.poppins(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        pickImage(false);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "Pick from Gallery",
+                          style: GoogleFonts.poppins(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  File? file;
+
+  pickImage(bool isCamera) async {
+    ImagePicker _picker = ImagePicker();
+
+    if (isCamera) {
+      XFile? xfile = await _picker.pickImage(source: ImageSource.camera);
+      if (xfile != null) {
+        file = File(xfile.path);
+      }
+    } else {
+      XFile? xfile = await _picker.pickImage(source: ImageSource.gallery);
+      if (xfile != null) {
+        file = File(xfile.path);
+      }
+    }
+    Get.back();
+    update();
+  }
+
+  uploadImage(String id) async {
+    List<int> bytes = file!.readAsBytesSync();
+
+    String base64 = base64Encode(bytes);
+    base64 = "data:image/jpeg;base64,$base64";
+    log(base64.toString());
+
+    String path = "addUserImage";
+    Map<String, dynamic> body = {
+      "user_id": id,
+      "profile_pic_small": base64,
+      "profile_pic": base64
+    };
+
+    var response = await NetworkHandler.dioPost(path, body: body);
+    log(response.toString());
+  }
+
   Future<void> registerUser() async {
+    CommonWidgets.loadingDialog();
     String url = "registerUser";
 
     Map<String, String> body = {
       "dob": dobCtrl.text,
       "username": usernameCtrl.text,
+      "first_name": firstNameCtrl.text,
+      "last_name": lastNameCtrl.text,
       "email": emailCtrl.text,
       "password": passwordCtrl.text
     };
@@ -77,9 +180,10 @@ class RegisterController extends GetxController {
         json["msg"]["User"]["id"],
         SharedPrefHandler.USERID,
       );
+      await uploadImage(json["msg"]["User"]["id"]);
       Get.offAllNamed(PageRouteList.splash);
     } else if (json["code"] == 201) {
-      isLoading.value = false;
+      CommonWidgets.hideDialog();
       Get.snackbar(
         "Hey",
         "There is already an account under this email, try signing in",

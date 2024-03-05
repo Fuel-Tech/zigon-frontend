@@ -318,7 +318,7 @@ userDetailsWidget(
             },
             textAlign: TextAlign.end,
             style: GoogleFonts.openSans(
-                fontSize: 18, fontWeight: FontWeight.w400, color: Colors.grey),
+                fontSize: 16, fontWeight: FontWeight.w400, color: Colors.grey),
             decoration: InputDecoration(
               isDense: true,
               contentPadding: EdgeInsets.zero,

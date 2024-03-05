@@ -73,7 +73,10 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                             children: [
                                               InkWell(
                                                   onTap: () {
-                                                    ctrl.editProfilePicture();
+                                                    if (ctrl.isAddingImage
+                                                        .isFalse) {
+                                                      ctrl.editProfilePicture();
+                                                    }
                                                   },
                                                   child: Container(
                                                     width: 100,
@@ -83,9 +86,30 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                       color: Colors.amber,
                                                     ),
                                                     child: ctrl.file != null
-                                                        ? ClipOval(
-                                                            child: Image.file(
-                                                                ctrl.file!))
+                                                        ? Obx(
+                                                            () => ClipOval(
+                                                              child: Stack(
+                                                                children: [
+                                                                  Positioned(
+                                                                    left: 0,
+                                                                    right: 0,
+                                                                    child: Image
+                                                                        .file(
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      ctrl.file!,
+                                                                    ),
+                                                                  ),
+                                                                  ctrl.isAddingImage
+                                                                              .value ==
+                                                                          true
+                                                                      ? CircularProgressIndicator()
+                                                                      : SizedBox
+                                                                          .shrink()
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          )
                                                         : ClipOval(
                                                             child:
                                                                 CachedNetworkImage(
@@ -96,6 +120,7 @@ class ProfileView extends StatelessWidget with ProfileWidgets {
                                                                           .User
                                                                           .profile_pic ??
                                                                       ''),
+                                                              fit: BoxFit.cover,
                                                               errorWidget:
                                                                   (context, url,
                                                                       error) {
